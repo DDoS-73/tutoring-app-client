@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+
+@mixin body-background($theme) {
+  $color-config: mat.get-color-config($theme);
+
+  $accent-palette: map-get($color-config, 'accent');
+
+  app-body {
+    background-color: mat.get-color-from-palette($accent-palette, 200);
+    border-top: 1px solid mat.get-color-from-palette($accent-palette, 400);
+  }
+}

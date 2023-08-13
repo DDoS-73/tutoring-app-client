@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@use '../app/shared/components/body/body-theme';
+
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$grey-palette);
+$warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-dark-theme($primary, $accent, $warn);
+
+@mixin app-theme {
+  @include body-theme.body-background($theme);
+}

@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-subtitle-1: mat.define-typography-level(
+  $font-family: Montserrat,
+  $font-weight: 500,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+$my-headline-5: mat.define-typography-level(
+  $font-family: Montserrat,
+  $font-weight: 700,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+$my-typography: mat.define-typography-config(
+  $subtitle-1: $my-subtitle-1,
+  $headline-5: $my-headline-5,
+);
+
+$my-theme: mat.define-light-theme((
+  typography: $my-typography,
+));
+
+@include mat.all-component-themes($my-theme);
+@include mat.typography-hierarchy($my-typography);

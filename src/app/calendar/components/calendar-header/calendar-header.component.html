@@ -1,0 +1,11 @@
+<div class="container" fxLayout="row">
+  <div *ngFor="let date of datesOfTheWeek; let i = index"
+       class="week_day"
+       fxFlex="1 2 0"
+       fxLayout="column"
+       fxLayoutAlign="center center"
+  >
+    <p>{{ date }}</p>
+    <p>{{ daysOfTheWeek[i] }}</p>
+  </div>
+</div>

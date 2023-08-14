@@ -4,8 +4,10 @@
   <div fxFlex="1 1 0" style="padding: 8px 0 0 5px">
     <mat-grid-list cols="7" rowHeight="80px">
       <mat-grid-tile
-        *ngFor="let tile of tiles;"
-        style="background-color: white"
+        *ngFor="let tile of tiles; let i = index"
+        appHighlightToday
+        id="mat-grid-tile"
+        [day]="(i+1) % 7"
       >
       </mat-grid-tile>
     </mat-grid-list>

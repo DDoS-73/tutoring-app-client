@@ -5,13 +5,15 @@ import { CalendarHeaderComponent } from './components/calendar-header/calendar-h
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CalendarBodyComponent } from './components/calendar-body/calendar-body.component';
 import { CalendarBodyHourListComponent } from './components/calendar-body/components/calendar-body-hour-list/calendar-body-hour-list.component';
+import { HighlightTodayDirective } from './directives/highlight-today.directive';
 
 
 @NgModule({
   declarations: [
     CalendarHeaderComponent,
     CalendarBodyComponent,
-    CalendarBodyHourListComponent
+    CalendarBodyHourListComponent,
+    HighlightTodayDirective
   ],
   exports: [
     CalendarHeaderComponent,

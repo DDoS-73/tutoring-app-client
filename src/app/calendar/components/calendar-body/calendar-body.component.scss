@@ -1,0 +1,8 @@
+.container {
+  height: calc(100vh - 130px);
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}

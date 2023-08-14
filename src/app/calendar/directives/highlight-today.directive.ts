@@ -11,7 +11,6 @@ export class HighlightTodayDirective implements OnInit {
     const today = new Date().getDay();
     if (today === this.day) {
       this.elRef.nativeElement.classList.add('highlight_today');
-      // this.elRef.nativeElement.style.backgroundColor = '#e0e0e0';
     }
   }
 }

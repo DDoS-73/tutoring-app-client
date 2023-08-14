@@ -1,10 +1,10 @@
 .container {
-  height: calc(100vh - 130px);
+  height: calc(100vh - 135px);
   overflow-y: scroll;
-}
 
-.container::-webkit-scrollbar {
-  display: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 mat-grid-tile {

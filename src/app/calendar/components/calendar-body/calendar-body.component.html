@@ -4,10 +4,13 @@
   <div fxFlex="1 1 0" style="padding-left: 5px">
     <mat-grid-list cols="7" rowHeight="80px">
       <mat-grid-tile
+        id="mat-grid-tile"
         *ngFor="let tile of tiles; let i = index"
         appHighlightToday
-        id="mat-grid-tile"
-        [day]="(i+1) % 7"
+        [day]="calculateDay(i)"
+        [attr.data-col]="calculateDay(i)"
+        [attr.data-row]="calculateRow(i)"
+        (click)="onTileClick($event)"
       >
       </mat-grid-tile>
     </mat-grid-list>

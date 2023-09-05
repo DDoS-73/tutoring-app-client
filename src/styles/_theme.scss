@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @use '../app/shared/components/body/body-theme';
 @use '../app/calendar/components/calendar-header/calendar-header-theme' as calendar-header;
+@use 'input-theme';
 @use 'typography' as typography;
 
 $primary: mat.define-palette(mat.$indigo-palette);
@@ -19,4 +20,5 @@ $theme: mat.define-light-theme((
 @mixin app-theme {
   @include body-theme.body-background($theme);
   @include calendar-header.calendar-header($theme);
+  @include input-theme.input-theme($theme);
 }

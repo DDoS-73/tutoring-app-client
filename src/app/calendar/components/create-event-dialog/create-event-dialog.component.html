@@ -1,0 +1,10 @@
+<div class="container">
+  <h2 class="dialog-title">
+    Створення події
+    <mat-icon (click)="close()" fontIcon="close"></mat-icon>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <app-event-form (formSubmit)="createEvent($event)"></app-event-form>
+  </mat-dialog-content>
+</div>

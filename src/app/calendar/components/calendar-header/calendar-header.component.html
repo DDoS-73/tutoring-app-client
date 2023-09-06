@@ -1,13 +1,13 @@
 <div class="container" fxLayout="row">
   <div
-    *ngFor="let date of datesOfTheWeek; let i = index"
+    *ngFor="let date of dateService.weekDays | async; let i = index"
     class="week_day"
     fxFlex="1 2 0"
     fxLayout="column"
     fxLayoutAlign="center center"
     appHighlightToday
     [day]="i + 1">
-    <p>{{ date }}</p>
+    <p>{{ date.getDate() }}</p>
     <p>{{ daysOfTheWeek[i] }}</p>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DateService } from '../../services/date.service';
 
 @Component({
   selector: 'app-calendar-header',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class CalendarHeaderComponent {
   daysOfTheWeek: readonly string[] = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
-  datesOfTheWeek = [13, 14, 15, 16, 17, 18, 19];
+  constructor(public dateService: DateService) {}
 }

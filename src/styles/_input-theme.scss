@@ -17,8 +17,9 @@
       color: mat.get-color-from-palette($accent-palette, 500);
     }
 
-    &:focus, &:focus-visible {
-      border-color: mat.get-color-from-palette($primary-palette, 200);;
+    &:focus,
+    &:focus-visible {
+      border-color: mat.get-color-from-palette($primary-palette, 200);
     }
   }
 

@@ -4,7 +4,7 @@ import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 
 @Injectable()
-export class CustomDateAdapter extends NativeDateAdapter  {
+export class CustomDateAdapter extends NativeDateAdapter {
   override getFirstDayOfWeek(): number {
     return 1;
   }
@@ -14,7 +14,7 @@ export class CustomDateAdapter extends NativeDateAdapter  {
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.scss'],
-  providers:[{ provide: DateAdapter, useClass: CustomDateAdapter}]
+  providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 export class EventFormComponent {
   clients = ['Vlad', 'Dana', 'Katya'];
@@ -24,14 +24,14 @@ export class EventFormComponent {
   eventForm = this.fb.group({
     client: this.fb.group({
       name: [''],
-      price: ['']
+      price: [''],
     }),
     datetime: this.fb.group({
       date: [new Date()],
       start: ['18:00'],
-      finish: ['19:00']
-    })
-  })
+      finish: ['19:00'],
+    }),
+  });
 
   submit() {
     this.formSubmit.emit(this.eventForm.value);
@@ -40,7 +40,7 @@ export class EventFormComponent {
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
       bodyBackgroundColor: '#424242',
-      buttonColor: '#fff'
+      buttonColor: '#fff',
     },
     dial: {
       dialBackgroundColor: '#555',
@@ -48,7 +48,7 @@ export class EventFormComponent {
     clockFace: {
       clockFaceBackgroundColor: '#555',
       clockHandColor: '#9fbd90',
-      clockFaceTimeInactiveColor: '#fff'
-    }
+      clockFaceTimeInactiveColor: '#fff',
+    },
   };
 }

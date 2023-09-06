@@ -1,11 +1,11 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[appHighlightToday]'
+  selector: '[appHighlightToday]',
 })
 export class HighlightTodayDirective implements OnInit {
   @Input({ required: true }) day!: number;
-  constructor(private elRef: ElementRef) {  }
+  constructor(private elRef: ElementRef) {}
 
   ngOnInit() {
     const today = new Date().getDay();

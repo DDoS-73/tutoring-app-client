@@ -2,35 +2,56 @@
   <div formGroupName="client">
     <h2>Клієнт</h2>
     <p class="custom_input_label">Ім'я клієнта</p>
-    <input type="text" formControlName='name' [matAutocomplete]="auto" class="custom_input">
+    <input
+      type="text"
+      formControlName="name"
+      [matAutocomplete]="auto"
+      class="custom_input" />
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of clients" [value]="option">
-        {{option}}
+        {{ option }}
       </mat-option>
     </mat-autocomplete>
 
     <p class="custom_input_label">Ціна</p>
-    <input type="number" formControlName='price' class="custom_input">
+    <input type="number" formControlName="price" class="custom_input" />
   </div>
   <div formGroupName="datetime">
     <h2>Дата і час</h2>
 
     <p class="custom_input_label">Дата</p>
     <mat-form-field style="width: 75%">
-      <input formControlName="date" class="custom_input" matInput [matDatepicker]="picker">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <input
+        formControlName="date"
+        class="custom_input"
+        matInput
+        [matDatepicker]="picker" />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <div fxLayout="row" fxLayoutAlign="space-between stretch" style="margin-top: 10px; width: 75%">
-      <ng-container *ngTemplateOutlet="timeField; context: {
-        label: 'Початок',
-        formControlName: 'start'
-      }"></ng-container>
-      <ng-container *ngTemplateOutlet="timeField; context: {
-        label: 'Кінець',
-        formControlName: 'finish'
-      }"></ng-container>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between stretch"
+      style="margin-top: 10px; width: 75%">
+      <ng-container
+        *ngTemplateOutlet="
+          timeField;
+          context: {
+            label: 'Початок',
+            formControlName: 'start'
+          }
+        "></ng-container>
+      <ng-container
+        *ngTemplateOutlet="
+          timeField;
+          context: {
+            label: 'Кінець',
+            formControlName: 'finish'
+          }
+        "></ng-container>
     </div>
 
     <div class="btn_block">
@@ -39,20 +60,21 @@
   </div>
 </form>
 
-
-<ng-template #timeField let-label='label' let-formControlName='formControlName'>
+<ng-template #timeField let-label="label" let-formControlName="formControlName">
   <div [formGroup]="eventForm">
-    <div formGroupName='datetime' class="time">
+    <div formGroupName="datetime" class="time">
       <p class="custom_input_label">{{ label }}</p>
-      <input class="custom_input"
-             [min]="'08:00'"
-             [max]="'22:00'"
-             [format]="24"
-             [ngxTimepicker]="timepicker"
-             [formControlName]="formControlName"
-             readonly
-      >
+      <input
+        class="custom_input"
+        [min]="'08:00'"
+        [max]="'22:00'"
+        [format]="24"
+        [ngxTimepicker]="timepicker"
+        [formControlName]="formControlName"
+        readonly />
     </div>
   </div>
-  <ngx-material-timepicker #timepicker [theme]="darkTheme"></ngx-material-timepicker>
+  <ngx-material-timepicker
+    #timepicker
+    [theme]="darkTheme"></ngx-material-timepicker>
 </ng-template>

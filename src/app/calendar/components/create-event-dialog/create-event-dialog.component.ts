@@ -5,7 +5,7 @@ import { Event } from '../../models/Event.model';
 @Component({
   selector: 'app-create-event-dialog',
   templateUrl: './create-event-dialog.component.html',
-  styleUrls: ['./create-event-dialog.component.scss']
+  styleUrls: ['./create-event-dialog.component.scss'],
 })
 export class CreateEventDialogComponent {
   constructor(

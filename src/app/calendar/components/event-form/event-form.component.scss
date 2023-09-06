@@ -50,16 +50,22 @@
     background-color: #fff;
   }
 
-  div.mat-mdc-text-field-wrapper, div.mat-mdc-form-field-infix {
+  div.mat-mdc-text-field-wrapper,
+  div.mat-mdc-form-field-infix {
     max-height: 30px;
     padding-left: 0;
   }
 
-  div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+  div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+      .mdc-text-field--textarea
+    )
+    .mat-mdc-form-field-infix {
     padding: 5px;
   }
 
-  div.mat-mdc-form-field-icon-suffix, mat-datepicker-toggle.mat-datepicker-toggle > button.mat-mdc-icon-button.mat-mdc-button-base {
+  div.mat-mdc-form-field-icon-suffix,
+  mat-datepicker-toggle.mat-datepicker-toggle
+    > button.mat-mdc-icon-button.mat-mdc-button-base {
     position: absolute;
     width: 100%;
     max-height: 30px;
@@ -83,9 +89,3 @@
     z-index: 1003 !important;
   }
 }
-
-
-
-
-
-

@@ -6,10 +6,10 @@ import { TileData } from '../../models/TileData.model';
 @Component({
   selector: 'app-calendar-body',
   templateUrl: './calendar-body.component.html',
-  styleUrls: ['./calendar-body.component.scss']
+  styleUrls: ['./calendar-body.component.scss'],
 })
 export class CalendarBodyComponent {
-  tiles = new Array(14*7);
+  tiles = new Array(14 * 7);
 
   constructor(private dialog: MatDialog) {}
 
@@ -25,7 +25,10 @@ export class CalendarBodyComponent {
   onTileClick(event: MouseEvent) {
     const target = event.target as HTMLDivElement;
     const currentMatTile = target.closest('mat-grid-tile') as HTMLElement;
-    this.openDialog(currentMatTile.dataset['row'], currentMatTile.dataset['col']);
+    this.openDialog(
+      currentMatTile.dataset['row'],
+      currentMatTile.dataset['col']
+    );
   }
 
   calculateDay(index: number): number {

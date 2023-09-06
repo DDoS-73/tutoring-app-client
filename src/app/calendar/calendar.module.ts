@@ -19,7 +19,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
-
 @NgModule({
   declarations: [
     CalendarHeaderComponent,
@@ -29,10 +28,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     CreateEventDialogComponent,
     EventFormComponent,
   ],
-  exports: [
-    CalendarHeaderComponent,
-    CalendarBodyComponent
-  ],
+  exports: [CalendarHeaderComponent, CalendarBodyComponent],
   imports: [
     CommonModule,
     MatGridListModule,
@@ -46,8 +42,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatAutocompleteModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaterialTimepickerModule
-  ]
+    NgxMaterialTimepickerModule,
+  ],
 })
-export class CalendarModule {
-}
+export class CalendarModule {}

@@ -8,7 +8,7 @@ describe('CreateRecordDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateEventDialogComponent]
+      declarations: [CreateEventDialogComponent],
     });
     fixture = TestBed.createComponent(CreateEventDialogComponent);
     component = fixture.componentInstance;

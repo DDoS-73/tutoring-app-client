@@ -40,10 +40,10 @@
 </form>
 
 
-<ng-template #timeField let-title='title' let-formControlName='formControlName'>
+<ng-template #timeField let-label='label' let-formControlName='formControlName'>
   <div [formGroup]="eventForm">
     <div formGroupName='datetime' class="time">
-      <p class="custom_input_label">{{ title }}</p>
+      <p class="custom_input_label">{{ label }}</p>
       <input class="custom_input"
              [min]="'08:00'"
              [max]="'22:00'"

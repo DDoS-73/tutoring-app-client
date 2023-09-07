@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DateService } from '../../../calendar/services/date.service';
+import { DateService } from '../../../calendar/services/DateService/date.service';
 
 @Component({
   selector: 'app-header',

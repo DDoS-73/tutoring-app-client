@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
-import { DateService } from '../../services/date.service';
+import { DateService } from '../../services/DateService/date.service';
 
 @Component({
   selector: 'app-calendar-body',

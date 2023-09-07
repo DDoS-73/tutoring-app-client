@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {
   monthNames,
   monthNamesInGenitiveCase,
-} from '../../shared/const/monthNames';
+} from '../../../shared/const/monthNames';
 
 @Injectable({
   providedIn: 'root',

@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DateService } from '../../../calendar/services/date.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  month = 'Серпень';
   actualMonthEarnings = 500;
   predictedMonthEarnings = 1000;
 
-  weekDate = '14 - 20 Серпня';
   actualWeekEarnings = 100;
   predictedWeekEarnings = 200;
+
+  constructor(public dateService: DateService) {}
 }

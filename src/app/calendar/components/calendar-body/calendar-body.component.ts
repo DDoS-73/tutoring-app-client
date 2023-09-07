@@ -17,7 +17,7 @@ export class CalendarBodyComponent {
     private dateService: DateService
   ) {}
 
-  openDialog(row: string | undefined = '', col: string | undefined = '') {
+  openDialog(row: number, col: number) {
     const dialogConfig = new MatDialogConfig<TileData>();
     dialogConfig.minWidth = '100vw';
     dialogConfig.minHeight = '100vh';
@@ -26,21 +26,12 @@ export class CalendarBodyComponent {
     this.dialog.open(CreateEventDialogComponent, dialogConfig);
   }
 
-  onTileClick(event: MouseEvent) {
-    const target = event.target as HTMLDivElement;
-    const currentMatTile = target.closest('mat-grid-tile') as HTMLElement;
-    this.openDialog(
-      currentMatTile.dataset['row'],
-      currentMatTile.dataset['col']
-    );
-  }
-
   calculateDay(index: number): number {
     return (index + 1) % 7 ? (index + 1) % 7 : 7;
   }
 
   calculateRow(index: number): number {
-    return Math.floor((index + 8) / 7);
+    return Math.floor(index / 7);
   }
 
   onSwipeLeft() {

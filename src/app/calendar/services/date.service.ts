@@ -76,4 +76,8 @@ export class DateService {
     prevMonday.setDate(thisMonday.getDate() - 7);
     this.updateWeekDays(prevMonday);
   }
+
+  public getWeekDayByIndex(index: number) {
+    return this.weekDays$.getValue()[index];
+  }
 }

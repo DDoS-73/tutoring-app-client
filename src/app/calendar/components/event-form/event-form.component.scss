@@ -9,8 +9,18 @@
       color: black;
     }
 
-    div[formGroupName='client'] {
-      margin-bottom: 20px;
+    input[type='number'] {
+      margin-bottom: 10px;
+    }
+
+    .repeatable_checkbox {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+
+      input {
+        margin: 0 5px 0 0;
+      }
     }
 
     .time {

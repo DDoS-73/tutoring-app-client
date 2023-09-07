@@ -1,11 +1,10 @@
+import { Client } from './Client.model';
+
 export interface Event {
-  client: {
-    name: string;
-    price: number;
-  };
-  datetime: {
-    date: Date;
-    start: string;
-    finish: string;
-  };
+  client: Client;
+  price: number;
+  date: Date;
+  startTime: string;
+  finishTime: string;
+  repeatable: boolean;
 }

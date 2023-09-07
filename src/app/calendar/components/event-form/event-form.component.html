@@ -4,7 +4,7 @@
     <p class="custom_input_label">Ім'я клієнта</p>
     <input
       type="text"
-      formControlName="name"
+      formControlName="fullName"
       [matAutocomplete]="auto"
       class="custom_input" />
     <mat-autocomplete #auto="matAutocomplete">
@@ -12,57 +12,58 @@
         {{ option }}
       </mat-option>
     </mat-autocomplete>
-
-    <p class="custom_input_label">Ціна</p>
-    <input type="number" formControlName="price" class="custom_input" />
   </div>
-  <div formGroupName="datetime">
-    <h2>Дата і час</h2>
 
-    <p class="custom_input_label">Дата</p>
-    <mat-form-field style="width: 75%">
-      <input
-        formControlName="date"
-        class="custom_input"
-        matInput
-        [matDatepicker]="picker" />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+  <p class="custom_input_label">Ціна</p>
+  <input type="number" formControlName="price" class="custom_input" />
 
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-between stretch"
-      style="margin-top: 10px; width: 75%">
-      <ng-container
-        *ngTemplateOutlet="
-          timeField;
-          context: {
-            label: 'Початок',
-            formControlName: 'start'
-          }
-        "></ng-container>
-      <ng-container
-        *ngTemplateOutlet="
-          timeField;
-          context: {
-            label: 'Кінець',
-            formControlName: 'finish'
-          }
-        "></ng-container>
-    </div>
+  <h2>Дата і час</h2>
+  <p class="custom_input_label">Дата</p>
+  <mat-form-field style="width: 75%">
+    <input
+      formControlName="date"
+      class="custom_input"
+      matInput
+      [matDatepicker]="picker" />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
 
-    <div class="btn_block">
-      <button type="submit">Підтвердити</button>
-    </div>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-between stretch"
+    style="margin-top: 10px; width: 75%">
+    <ng-container
+      *ngTemplateOutlet="
+        timeField;
+        context: {
+          label: 'Початок',
+          formControlName: 'startTime'
+        }
+      "></ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        timeField;
+        context: {
+          label: 'Кінець',
+          formControlName: 'finishTime'
+        }
+      "></ng-container>
+  </div>
+
+  <label class="custom_input_label repeatable_checkbox">
+    <input type="checkbox" formControlName="repeatable" />
+    Повторювати щотижня
+  </label>
+
+  <div class="btn_block">
+    <button type="submit">Підтвердити</button>
   </div>
 </form>
 
 <ng-template #timeField let-label="label" let-formControlName="formControlName">
   <div [formGroup]="eventForm">
-    <div formGroupName="datetime" class="time">
+    <div class="time">
       <p class="custom_input_label">{{ label }}</p>
       <input
         class="custom_input"

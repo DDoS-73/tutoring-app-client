@@ -1,4 +1,4 @@
 export interface TileData {
-  row: string;
-  col: string;
+  row: number;
+  col: number;
 }

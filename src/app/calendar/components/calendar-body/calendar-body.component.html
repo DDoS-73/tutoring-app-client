@@ -12,9 +12,7 @@
         *ngFor="let tile of tiles; let i = index"
         appHighlightToday
         [day]="calculateDay(i)"
-        [attr.data-col]="calculateDay(i)"
-        [attr.data-row]="calculateRow(i)"
-        (click)="onTileClick($event)">
+        (click)="openDialog(calculateRow(i), calculateDay(i))">
       </mat-grid-tile>
     </mat-grid-list>
   </div>

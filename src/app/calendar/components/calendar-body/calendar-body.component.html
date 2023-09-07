@@ -1,4 +1,8 @@
-<div fxLayout="row" class="container">
+<div
+  fxLayout="row"
+  class="container"
+  (swipeleft)="onSwipeLeft()"
+  (swiperight)="onSwipeRight()">
   <app-calendar-body-hour-list></app-calendar-body-hour-list>
 
   <div fxFlex="1 1 0" style="padding-left: 5px">

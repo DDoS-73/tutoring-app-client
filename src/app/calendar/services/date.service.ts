@@ -11,8 +11,6 @@ import {
 export class DateService {
   constructor() {
     this.updateWeekDays(new Date());
-    this.updateWeekRange();
-    this.updateCurrentMonth();
   }
 
   private weekDays$ = new BehaviorSubject<Date[]>([]);
@@ -39,6 +37,9 @@ export class DateService {
       mostRecentMonday.setDate(mostRecentMonday.getDate() + 1);
     }
     this.weekDays$.next(current7DaysStartingFromMonday);
+
+    this.updateWeekRange();
+    this.updateCurrentMonth();
   }
 
   private updateWeekRange() {
@@ -63,10 +64,16 @@ export class DateService {
   }
 
   public getNextWeek() {
-    //empty
+    const thisMonday = this.weekDays$.getValue()[0];
+    const nextMonday = new Date(thisMonday);
+    nextMonday.setDate(thisMonday.getDate() + 7);
+    this.updateWeekDays(nextMonday);
   }
 
   public getPrevWeek() {
-    //empty
+    const thisMonday = this.weekDays$.getValue()[0];
+    const prevMonday = new Date(thisMonday);
+    prevMonday.setDate(thisMonday.getDate() - 7);
+    this.updateWeekDays(prevMonday);
   }
 }

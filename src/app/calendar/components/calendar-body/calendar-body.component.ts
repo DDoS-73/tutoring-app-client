@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
+import { DateService } from '../../services/date.service';
 
 @Component({
   selector: 'app-calendar-body',
@@ -11,7 +12,10 @@ import { TileData } from '../../models/TileData.model';
 export class CalendarBodyComponent {
   tiles = new Array(14 * 7);
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private dateService: DateService
+  ) {}
 
   openDialog(row: string | undefined = '', col: string | undefined = '') {
     const dialogConfig = new MatDialogConfig<TileData>();
@@ -37,5 +41,13 @@ export class CalendarBodyComponent {
 
   calculateRow(index: number): number {
     return Math.floor((index + 8) / 7);
+  }
+
+  onSwipeLeft() {
+    this.dateService.getNextWeek();
+  }
+
+  onSwipeRight() {
+    this.dateService.getPrevWeek();
   }
 }

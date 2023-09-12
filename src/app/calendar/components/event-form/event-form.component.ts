@@ -10,6 +10,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { Event } from '../../models/Event.model';
+import { EventService } from '../../services/EventService/event.service';
+import { Observable } from 'rxjs';
+import { Client } from '../../models/Client.model';
 
 @Injectable()
 export class CustomDateAdapter extends NativeDateAdapter {
@@ -25,28 +28,35 @@ export class CustomDateAdapter extends NativeDateAdapter {
   providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 export class EventFormComponent implements OnInit {
-  clients = ['Vlad', 'Dana', 'Katya'];
+  clients$!: Observable<Client[]>;
   @Input({ required: true }) initData!: Event;
   @Output() formSubmit = new EventEmitter();
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private eventService: EventService
+  ) {}
 
   eventForm!: FormGroup;
 
   ngOnInit() {
     this.eventForm = this.fb.group({
-      client: this.fb.group({
-        name: [this.initData.client.name],
-      }),
+      client: [this.initData.client],
       price: [],
       date: [this.initData.date],
       startTime: [this.initData.startTime],
       finishTime: [this.initData.finishTime],
       repeatable: [this.initData.repeatable],
     });
+
+    this.clients$ = this.eventService.getAllClients();
   }
 
   submit() {
     this.formSubmit.emit(this.eventForm.value);
+  }
+
+  public displayFn(client: Client): string {
+    return client.name;
   }
 
   darkTheme: NgxMaterialTimepickerTheme = {

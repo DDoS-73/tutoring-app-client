@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
+import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
 
 @Component({
   selector: 'app-calendar-body',
@@ -11,6 +12,7 @@ import { DateService } from '../../services/DateService/date.service';
 })
 export class CalendarBodyComponent {
   tiles = new Array(14 * 7);
+  cellHeight = CELL_HEIGHT;
 
   constructor(
     private dialog: MatDialog,

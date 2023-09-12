@@ -6,7 +6,7 @@
   <app-calendar-body-hour-list></app-calendar-body-hour-list>
 
   <div fxFlex="1 1 0" style="padding-left: 5px">
-    <mat-grid-list cols="7" rowHeight="80px">
+    <mat-grid-list cols="7" [rowHeight]="cellHeight + 'px'">
       <mat-grid-tile
         id="mat-grid-tile"
         *ngFor="let tile of tiles; let i = index"

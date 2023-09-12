@@ -1,7 +1,10 @@
 <div style="width: 15px">
   <div
     *ngFor="let hour of hours; let i = index"
-    style="height: 81px; text-align: end">
+    [ngStyle]="{
+      height: cellHeight + 1 + 'px',
+      textAlign: 'end'
+    }">
     {{ i + 8 }}
   </div>
 </div>

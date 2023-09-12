@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CELL_HEIGHT } from '../../../../../shared/const/cellHeight';
 
 @Component({
   selector: 'app-calendar-body-hour-list',
@@ -8,4 +9,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class CalendarBodyHourListComponent {
   hours = new Array(14);
+  cellHeight = CELL_HEIGHT;
 }

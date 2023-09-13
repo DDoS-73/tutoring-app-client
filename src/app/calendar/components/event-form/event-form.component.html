@@ -1,18 +1,16 @@
 <form [formGroup]="eventForm" (ngSubmit)="submit()">
-  <div formGroupName="client">
-    <h2>Клієнт</h2>
-    <p class="custom_input_label">Ім'я клієнта</p>
-    <input
-      type="text"
-      formControlName="name"
-      [matAutocomplete]="auto"
-      class="custom_input" />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-      <mat-option *ngFor="let option of clients$ | async" [value]="option">
-        {{ option.name }}
-      </mat-option>
-    </mat-autocomplete>
-  </div>
+  <h2>Клієнт</h2>
+  <p class="custom_input_label">Ім'я клієнта</p>
+  <input
+    type="text"
+    formControlName="client"
+    [matAutocomplete]="auto"
+    class="custom_input" />
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let option of clients$ | async" [value]="option">
+      {{ option.name }}
+    </mat-option>
+  </mat-autocomplete>
 
   <p class="custom_input_label">Ціна</p>
   <input type="number" formControlName="price" class="custom_input" />

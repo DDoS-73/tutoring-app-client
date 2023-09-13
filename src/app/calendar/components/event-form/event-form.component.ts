@@ -40,7 +40,7 @@ export class EventFormComponent implements OnInit {
 
   ngOnInit() {
     this.eventForm = this.fb.group({
-      client: [this.initData.client],
+      client: this.fb.group(this.initData.client),
       price: [],
       date: [this.initData.date],
       startTime: [this.initData.startTime],

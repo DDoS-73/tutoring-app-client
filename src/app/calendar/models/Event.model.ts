@@ -1,7 +1,7 @@
 import { Client } from './Client.model';
 
 export interface Event {
-  client: Client | string;
+  client: Client;
   price: number;
   date: Date;
   startTime: string;

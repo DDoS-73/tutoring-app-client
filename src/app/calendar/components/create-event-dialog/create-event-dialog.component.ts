@@ -18,7 +18,7 @@ export class CreateEventDialogComponent {
   ) {}
 
   initFormData: Event = {
-    client: '',
+    client: { name: '' },
     price: 0,
     date: this.dateService.getWeekDayByIndex(this.data.col - 1),
     startTime: 8 + this.data.row + ':00',

@@ -27,6 +27,10 @@ export class CalendarBodyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getEvents();
+  }
+
+  private getEvents() {
     this.dateService.weekDays
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(days => {
@@ -40,7 +44,14 @@ export class CalendarBodyComponent implements OnInit {
     dialogConfig.minHeight = '100vh';
     dialogConfig.data = { row, col };
     dialogConfig.autoFocus = false;
-    this.dialog.open(CreateEventDialogComponent, dialogConfig);
+    this.dialog
+      .open(CreateEventDialogComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.getEvents();
+        }
+      });
   }
 
   calculateDay(index: number): number {

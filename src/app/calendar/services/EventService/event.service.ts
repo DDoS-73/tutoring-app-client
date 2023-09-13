@@ -32,7 +32,7 @@ export class EventService {
   }
 
   public getAllEventsByWeek() {
-    this.dateService.weekDays
+    this.dateService.weekDays$
       .pipe(
         switchMap(days => {
           const params = { weekDay: days[0].toString() };

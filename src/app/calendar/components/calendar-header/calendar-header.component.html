@@ -1,6 +1,6 @@
 <div class="container" fxLayout="row">
   <div
-    *ngFor="let date of dateService.weekDays | async; let i = index"
+    *ngFor="let date of dateService.weekDays$ | async; let i = index"
     class="week_day"
     fxFlex="1 2 0"
     fxLayout="column"

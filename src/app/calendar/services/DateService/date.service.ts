@@ -13,17 +13,17 @@ export class DateService {
     this.updateWeekDays(new Date());
   }
 
-  private weekDays$ = new BehaviorSubject<Date[]>([]);
-  private weekRange$ = new BehaviorSubject<string>('');
-  private currentMonth$ = new BehaviorSubject<string>('');
-  get weekDays(): Observable<Date[]> {
-    return this.weekDays$.asObservable();
+  private _weekDays$ = new BehaviorSubject<Date[]>([]);
+  private _weekRange$ = new BehaviorSubject<string>('');
+  private _currentMonth$ = new BehaviorSubject<string>('');
+  get weekDays$(): Observable<Date[]> {
+    return this._weekDays$.asObservable();
   }
-  get weekRange(): Observable<string> {
-    return this.weekRange$.asObservable();
+  get weekRange$(): Observable<string> {
+    return this._weekRange$.asObservable();
   }
-  get currentMonth(): Observable<string> {
-    return this.currentMonth$.asObservable();
+  get currentMonth$(): Observable<string> {
+    return this._currentMonth$.asObservable();
   }
 
   private updateWeekDays(weekDay: Date) {
@@ -36,15 +36,15 @@ export class DateService {
       current7DaysStartingFromMonday.push(new Date(mostRecentMonday));
       mostRecentMonday.setDate(mostRecentMonday.getDate() + 1);
     }
-    this.weekDays$.next(current7DaysStartingFromMonday);
+    this._weekDays$.next(current7DaysStartingFromMonday);
 
     this.updateWeekRange();
     this.updateCurrentMonth();
   }
 
   private updateWeekRange() {
-    const startOfWeek = this.weekDays$.getValue()[0];
-    const endOfWeek = this.weekDays$.getValue()[6];
+    const startOfWeek = this._weekDays$.getValue()[0];
+    const endOfWeek = this._weekDays$.getValue()[6];
     const startMonth = monthNamesInGenitiveCase[startOfWeek.getMonth()];
     const endMonth = monthNamesInGenitiveCase[endOfWeek.getMonth()];
     const startDay = startOfWeek.getDate();
@@ -54,30 +54,30 @@ export class DateService {
       startOfWeek.getMonth() === endOfWeek.getMonth()
         ? `${startDay} - ${endDay} ${startMonth}`
         : `${startDay} ${startMonth} - ${endDay} ${endMonth}`;
-    this.weekRange$.next(weekRange);
+    this._weekRange$.next(weekRange);
   }
 
   private updateCurrentMonth() {
-    this.currentMonth$.next(
-      monthNames[this.weekDays$.getValue()[3].getMonth()]
+    this._currentMonth$.next(
+      monthNames[this._weekDays$.getValue()[3].getMonth()]
     );
   }
 
   public getNextWeek() {
-    const thisMonday = this.weekDays$.getValue()[0];
+    const thisMonday = this._weekDays$.getValue()[0];
     const nextMonday = new Date(thisMonday);
     nextMonday.setDate(thisMonday.getDate() + 7);
     this.updateWeekDays(nextMonday);
   }
 
   public getPrevWeek() {
-    const thisMonday = this.weekDays$.getValue()[0];
+    const thisMonday = this._weekDays$.getValue()[0];
     const prevMonday = new Date(thisMonday);
     prevMonday.setDate(thisMonday.getDate() - 7);
     this.updateWeekDays(prevMonday);
   }
 
   public getWeekDayByIndex(index: number) {
-    return this.weekDays$.getValue()[index];
+    return this._weekDays$.getValue()[index];
   }
 }

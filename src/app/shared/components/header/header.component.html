@@ -1,5 +1,5 @@
 <div class="container" fxLayout="row" fxLayoutAlign="space-between stretch">
-  <p class="mat-headline-5">{{ dateService.currentMonth | async }}</p>
+  <p class="mat-headline-5">{{ dateService.currentMonth$ | async }}</p>
   <p class="mat-headline-5">
     {{ actualMonthEarnings }}₴ з {{ predictedMonthEarnings }}₴
   </p>
@@ -8,7 +8,7 @@
 <mat-divider class="mat-divider"></mat-divider>
 
 <div class="container" fxLayout="row" fxLayoutAlign="space-between stretch">
-  <p class="mat-subtitle-1">{{ dateService.weekRange | async }}</p>
+  <p class="mat-subtitle-1">{{ dateService.weekRange$ | async }}</p>
   <p class="mat-subtitle-1">
     {{ actualWeekEarnings }}₴ з {{ predictedWeekEarnings }}₴
   </p>

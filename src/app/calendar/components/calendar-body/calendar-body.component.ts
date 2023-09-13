@@ -1,23 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
 import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { Event } from '../../models/Event.model';
+import { EventService } from '../../services/EventService/event.service';
 
 @Component({
   selector: 'app-calendar-body',
   templateUrl: './calendar-body.component.html',
   styleUrls: ['./calendar-body.component.scss'],
 })
-export class CalendarBodyComponent {
+export class CalendarBodyComponent implements OnInit {
   tiles = new Array(14 * 7);
   cellHeight = CELL_HEIGHT;
+  events$!: Observable<Event[]>;
 
   constructor(
     private dialog: MatDialog,
-    private dateService: DateService
+    private dateService: DateService,
+    private eventService: EventService,
+    private destroyRef: DestroyRef
   ) {}
+
+  ngOnInit() {
+    this.dateService.weekDays
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(days => {
+        this.events$ = this.eventService.getAllEventsByWeek(days[0]);
+      });
+  }
 
   openDialog(row: number, col: number) {
     const dialogConfig = new MatDialogConfig<TileData>();

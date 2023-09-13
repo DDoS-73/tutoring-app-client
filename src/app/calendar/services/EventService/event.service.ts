@@ -15,6 +15,11 @@ export class EventService {
     return this.http.post(`${this.url}/events`, event);
   }
 
+  public getAllEventsByWeek(weekDay: Date) {
+    const params = { weekDay: weekDay.toString() };
+    return this.http.get<Event[]>(`${this.url}/events`, { params });
+  }
+
   public getAllClients() {
     return this.http.get<Client[]>(`${this.url}/clients`);
   }

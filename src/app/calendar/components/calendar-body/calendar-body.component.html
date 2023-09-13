@@ -5,7 +5,7 @@
   (swiperight)="onSwipeRight()">
   <app-calendar-body-hour-list></app-calendar-body-hour-list>
 
-  <div fxFlex="1 1 0" style="padding-left: 5px">
+  <div fxFlex="1 1 0" style="position: relative">
     <mat-grid-list cols="7" [rowHeight]="cellHeight + 'px'">
       <mat-grid-tile
         id="mat-grid-tile"
@@ -15,5 +15,10 @@
         (click)="openDialog(calculateRow(i), calculateDay(i))">
       </mat-grid-tile>
     </mat-grid-list>
+
+    <app-event-tile
+      *ngFor="let event of events$ | async"
+      [tileHeight]="cellHeight"
+      [event]="event"></app-event-tile>
   </div>
 </div>

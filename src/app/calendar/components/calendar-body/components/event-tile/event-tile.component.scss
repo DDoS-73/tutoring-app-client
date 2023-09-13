@@ -1,0 +1,15 @@
+$tailWidth: calc((100vw - 15px) / 7);
+
+.tile {
+  position: absolute;
+  width: $tailWidth;
+  background-color: #15b083;
+  left: calc((100vw - 20px) / 7 * var(--weekday));
+  padding: 2px 4px;
+
+  p {
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+}

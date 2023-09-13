@@ -20,6 +20,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { HammerModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { EventTileComponent } from './components/calendar-body/components/event-tile/event-tile.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     HighlightTodayDirective,
     CreateEventDialogComponent,
     EventFormComponent,
+    EventTileComponent,
   ],
   exports: [CalendarHeaderComponent, CalendarBodyComponent],
   imports: [

@@ -1,6 +1,7 @@
 .container {
   height: calc(100vh - 135px);
   overflow-y: scroll;
+  touch-action: pan-y !important;
 
   &::-webkit-scrollbar {
     display: none;

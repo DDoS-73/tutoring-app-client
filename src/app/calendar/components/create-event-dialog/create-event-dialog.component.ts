@@ -26,11 +26,11 @@ export class CreateEventDialogComponent {
     repeatable: false,
   };
 
-  close(isCreated?: boolean) {
-    this.dialogRef.close(isCreated);
+  close() {
+    this.dialogRef.close();
   }
 
   createEvent(event: Event) {
-    this.eventService.createEvent(event).subscribe(() => this.close(true));
+    this.eventService.createEvent(event).subscribe(() => this.close());
   }
 }

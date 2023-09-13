@@ -1,10 +1,9 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
 import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 import { Event } from '../../models/Event.model';
 import { EventService } from '../../services/EventService/event.service';
@@ -21,21 +20,12 @@ export class CalendarBodyComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private dateService: DateService,
     private eventService: EventService,
-    private destroyRef: DestroyRef
+    private dateService: DateService
   ) {}
 
   ngOnInit() {
-    this.getEvents();
-  }
-
-  private getEvents() {
-    this.dateService.weekDays
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(days => {
-        this.events$ = this.eventService.getAllEventsByWeek(days[0]);
-      });
+    this.events$ = this.eventService.events$;
   }
 
   openDialog(row: number, col: number) {
@@ -44,14 +34,7 @@ export class CalendarBodyComponent implements OnInit {
     dialogConfig.minHeight = '100vh';
     dialogConfig.data = { row, col };
     dialogConfig.autoFocus = false;
-    this.dialog
-      .open(CreateEventDialogComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.getEvents();
-        }
-      });
+    this.dialog.open(CreateEventDialogComponent, dialogConfig);
   }
 
   calculateDay(index: number): number {

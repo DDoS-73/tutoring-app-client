@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DateService } from '../../../calendar/services/DateService/date.service';
+import { EarningsService } from '../../../calendar/services/EarningsService/earnings.service';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +9,8 @@ import { DateService } from '../../../calendar/services/DateService/date.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  actualMonthEarnings = 500;
-  predictedMonthEarnings = 1000;
-
-  actualWeekEarnings = 100;
-  predictedWeekEarnings = 200;
-
-  constructor(public dateService: DateService) {}
+  constructor(
+    public dateService: DateService,
+    public earningService: EarningsService
+  ) {}
 }

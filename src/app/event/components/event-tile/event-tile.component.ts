@@ -1,10 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   Input,
   OnInit,
 } from '@angular/core';
 import { Event } from '../../models/Event.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConfig';
+import { EventInfoDialogComponent } from '../event-info-dialog/event-info-dialog.component';
 
 @Component({
   selector: 'app-event-tile',
@@ -19,6 +23,8 @@ export class EventTileComponent implements OnInit {
   styles: Record<string, string | number> = {};
   weekDay = 0;
 
+  constructor(private dialog: MatDialog) {}
+
   ngOnInit() {
     this.event.date = new Date(this.event.date);
     this.weekDay =
@@ -29,6 +35,13 @@ export class EventTileComponent implements OnInit {
       top: this.tileHeight * topOffset + topOffset + 'px',
       '--weekday': this.weekDay,
     };
+  }
+
+  @HostListener('click')
+  openDialog() {
+    const dialogConfig = new CustomMatDialogConfig<Event>();
+    dialogConfig.data = this.event;
+    this.dialog.open(EventInfoDialogComponent, dialogConfig);
   }
 
   private timeToNumber(timeStr: string): number {

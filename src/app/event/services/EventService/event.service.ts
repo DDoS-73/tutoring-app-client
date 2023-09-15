@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Event } from '../../models/Event.model';
 import { environment } from '../../../../environments/environment';
-import { Client } from '../../models/Client.model';
-import { DateService } from '../DateService/date.service';
+import { Client } from '../../../calendar/models/Client.model';
+import { DateService } from '../../../calendar/services/DateService/date.service';
 import { BehaviorSubject, switchMap, tap } from 'rxjs';
-import { EarningsService } from '../EarningsService/earnings.service';
+import { EarningsService } from '../../../calendar/services/EarningsService/earnings.service';
 
 @Injectable({
   providedIn: 'root',

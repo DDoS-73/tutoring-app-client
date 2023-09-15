@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Event } from '../../../../models/Event.model';
+import { Event } from '../../models/Event.model';
 
 @Component({
   selector: 'app-event-tile',

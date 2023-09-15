@@ -12,7 +12,7 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { Event } from '../../models/Event.model';
 import { EventService } from '../../services/EventService/event.service';
 import { Observable } from 'rxjs';
-import { Client } from '../../models/Client.model';
+import { Client } from '../../../calendar/models/Client.model';
 
 @Injectable()
 export class CustomDateAdapter extends NativeDateAdapter {

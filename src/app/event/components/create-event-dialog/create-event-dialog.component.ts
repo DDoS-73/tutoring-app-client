@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TileData } from '../../models/TileData.model';
+import { TileData } from '../../../calendar/models/TileData.model';
 import { Event } from '../../models/Event.model';
-import { DateService } from '../../services/DateService/date.service';
+import { DateService } from '../../../calendar/services/DateService/date.service';
 import { EventService } from '../../services/EventService/event.service';
 @Component({
   selector: 'app-create-event-dialog',

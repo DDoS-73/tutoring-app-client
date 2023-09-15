@@ -1,4 +1,4 @@
-import { Client } from './Client.model';
+import { Client } from '../../calendar/models/Client.model';
 
 export interface Event {
   client: Client;

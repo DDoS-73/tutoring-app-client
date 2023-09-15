@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
+import { CreateEventDialogComponent } from '../../../event/components/create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
 import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
 import { Observable } from 'rxjs';
-import { Event } from '../../models/Event.model';
-import { EventService } from '../../services/EventService/event.service';
+import { Event } from '../../../event/models/Event.model';
+import { EventService } from '../../../event/services/EventService/event.service';
 
 @Component({
   selector: 'app-calendar-body',

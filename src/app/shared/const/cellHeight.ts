@@ -1,1 +1,1 @@
-export const CELL_HEIGHT = 80;
+export const CELL_HEIGHT = 60;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../../../event/components/create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
@@ -7,6 +7,7 @@ import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
 import { Observable } from 'rxjs';
 import { Event } from '../../../event/models/Event.model';
 import { EventService } from '../../../event/services/EventService/event.service';
+import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConfig';
 
 @Component({
   selector: 'app-calendar-body',
@@ -29,11 +30,8 @@ export class CalendarBodyComponent implements OnInit {
   }
 
   openDialog(row: number, col: number) {
-    const dialogConfig = new MatDialogConfig<TileData>();
-    dialogConfig.minWidth = '100vw';
-    dialogConfig.minHeight = '100vh';
+    const dialogConfig = new CustomMatDialogConfig<TileData>();
     dialogConfig.data = { row, col };
-    dialogConfig.autoFocus = false;
     this.dialog.open(CreateEventDialogComponent, dialogConfig);
   }
 

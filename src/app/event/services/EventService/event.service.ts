@@ -45,6 +45,20 @@ export class EventService {
       .subscribe(events => this._events$.next(events));
   }
 
+  public changePaidStatus(_id: string | number) {
+    return this.http
+      .patch<Event>(`${this.url}/events/changePaidStatus`, { _id })
+      .pipe(
+        tap(updatedEvent => {
+          this._events$.next(
+            this._events$
+              .getValue()
+              .map(event => (event._id === _id ? updatedEvent : event))
+          );
+        })
+      );
+  }
+
   public getAllClients() {
     return this.http.get<Client[]>(`${this.url}/clients`);
   }

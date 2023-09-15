@@ -9,7 +9,11 @@
 
     <div class="info_item">
       <p class="label">Вартість послуги</p>
-      <p class="info">{{ event.price }} ₴</p>
+      <p class="info">
+        {{ event.price }} ₴
+        <span *ngIf="event.isPaid">(сплачена)</span>
+        <span *ngIf="!event.isPaid">(не сплачена)</span>
+      </p>
     </div>
 
     <h2>Час</h2>
@@ -29,6 +33,10 @@
   </div>
 
   <div class="action_btn_container">
-    <button class="outline-btn">Відмітити <span>оплаченою</span></button>
+    <button (click)="changePaidStatus()" class="outline-btn">
+      Відмітити
+      <span *ngIf="!event.isPaid">оплаченою</span>
+      <span *ngIf="event.isPaid">не оплаченою</span>
+    </button>
   </div>
 </app-dialog-container>

@@ -10,6 +10,8 @@ import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as Hammer from 'hammerjs';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -30,6 +32,11 @@ export class HammerConfig extends HammerGestureConfig {
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: HammerConfig,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],

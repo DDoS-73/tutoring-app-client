@@ -1,3 +1,5 @@
 <div class="tile" [ngStyle]="styles">
-  <p>{{ event.client.name }}</p>
+  <p [style]="{ textDecoration: this.event.isPaid ? 'line-through' : 'none' }">
+    {{ event.client.name }}
+  </p>
 </div>

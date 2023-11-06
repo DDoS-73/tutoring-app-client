@@ -30,10 +30,15 @@ export class EventTileComponent implements OnInit {
     this.weekDay =
       this.event.date.getDay() === 0 ? 6 : this.event.date.getDay() - 1;
     const topOffset = this.timeToNumber(this.event.startTime) - 8;
+    const height =
+      (this.timeToNumber(this.event.finishTime) -
+        this.timeToNumber(this.event.startTime)) *
+      this.tileHeight;
     this.styles = {
-      height: this.tileHeight + 'px',
+      height: height + 'px',
       top: this.tileHeight * topOffset + topOffset + 'px',
       '--weekday': this.weekDay,
+      filter: this.event.isPaid ? 'grayscale(80%)' : 'none',
     };
   }
 

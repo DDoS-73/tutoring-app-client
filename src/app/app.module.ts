@@ -1,4 +1,4 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable, NgModule, isDevMode } from '@angular/core';
 import {
   BrowserModule,
   HAMMER_GESTURE_CONFIG,
@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as Hammer from 'hammerjs';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -27,6 +28,12 @@ export class HammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     SharedModule,
     CalendarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   providers: [
     {

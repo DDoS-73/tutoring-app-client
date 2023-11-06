@@ -6,6 +6,7 @@ import { Client } from '../../../calendar/models/Client.model';
 import { DateService } from '../../../calendar/services/DateService/date.service';
 import { BehaviorSubject, switchMap, tap } from 'rxjs';
 import { EarningsService } from '../../../calendar/services/EarningsService/earnings.service';
+import { SuccessResponse } from '../../../shared/models/SuccessResponse.model';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,16 @@ export class EventService {
           );
         })
       );
+  }
+
+  public deleteEvent(id: string | number | undefined) {
+    return this.http.delete<SuccessResponse>(`${this.url}/events/${id}`).pipe(
+      tap(() => {
+        this._events$.next(
+          this._events$.getValue().filter(el => el._id !== id)
+        );
+      })
+    );
   }
 
   public getAllClients() {

@@ -1,5 +1,5 @@
 import { Component, DestroyRef, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Event } from '../../models/Event.model';
 import { EventService } from '../../services/EventService/event.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class EventInfoDialogComponent {
   constructor(
+    private dialogRef: MatDialogRef<EventInfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public event: Event,
     private eventService: EventService,
     private destroyRef: DestroyRef
@@ -22,6 +23,15 @@ export class EventInfoDialogComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.event = event;
+      });
+  }
+
+  public deleteEvent() {
+    this.eventService
+      .deleteEvent(this.event._id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.dialogRef.close();
       });
   }
 }

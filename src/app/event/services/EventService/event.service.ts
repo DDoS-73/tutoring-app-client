@@ -66,6 +66,7 @@ export class EventService {
         this._events$.next(
           this._events$.getValue().filter(el => el._id !== id)
         );
+        this.earningService.updateEarnings();
       })
     );
   }

@@ -1,6 +1,6 @@
 {
-  "name": "tutoring-app",
-  "short_name": "tutoring-app",
+  "name": "GrowApp",
+  "short_name": "GrowApp",
   "theme_color": "#000000",
   "background_color": "#fafafa",
   "display": "standalone",

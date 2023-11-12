@@ -23,6 +23,7 @@ export class EventInfoDialogComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.event = event;
+        this.dialogRef.close();
       });
   }
 

@@ -10,6 +10,9 @@ $tailWidth: calc((100vw - 15px) / 7);
   p {
     color: #fff;
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
+    line-height: 0.8rem;
+    word-wrap: break-word;
   }
 }
+

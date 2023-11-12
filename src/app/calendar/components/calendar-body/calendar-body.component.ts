@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../../../event/components/create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
@@ -13,6 +13,7 @@ import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConf
   selector: 'app-calendar-body',
   templateUrl: './calendar-body.component.html',
   styleUrls: ['./calendar-body.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarBodyComponent implements OnInit {
   tiles = new Array(14 * 7);

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Event } from '../../../event/models/Event.model';
 import { EventService } from '../../../event/services/EventService/event.service';
 import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConfig';
+import { HOURS_AMOUNT } from '../../../shared/const/hoursAmount';
 
 @Component({
   selector: 'app-calendar-body',
@@ -16,7 +17,7 @@ import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConf
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarBodyComponent implements OnInit {
-  tiles = new Array(14 * 7);
+  tiles = new Array(HOURS_AMOUNT * 7);
   cellHeight = CELL_HEIGHT;
   events$!: Observable<Event[]>;
 

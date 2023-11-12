@@ -9,6 +9,7 @@ import { Event } from '../../models/Event.model';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomMatDialogConfig } from '../../../shared/const/CustomMatDialogConfig';
 import { EventInfoDialogComponent } from '../event-info-dialog/event-info-dialog.component';
+import { DISPLAYED_HOURS } from '../../../shared/const/hoursAmount';
 
 @Component({
   selector: 'app-event-tile',
@@ -29,7 +30,7 @@ export class EventTileComponent implements OnInit {
     this.event.date = new Date(this.event.date);
     this.weekDay =
       this.event.date.getDay() === 0 ? 6 : this.event.date.getDay() - 1;
-    const topOffset = this.timeToNumber(this.event.startTime) - 8;
+    const topOffset = this.timeToNumber(this.event.startTime) - DISPLAYED_HOURS;
     const height =
       (this.timeToNumber(this.event.finishTime) -
         this.timeToNumber(this.event.startTime)) *

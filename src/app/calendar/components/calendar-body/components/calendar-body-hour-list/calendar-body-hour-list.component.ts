@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CELL_HEIGHT } from '../../../../../shared/const/cellHeight';
+import {
+  DISPLAYED_HOURS,
+  HOURS_AMOUNT,
+} from '../../../../../shared/const/hoursAmount';
 
 @Component({
   selector: 'app-calendar-body-hour-list',
@@ -8,6 +12,7 @@ import { CELL_HEIGHT } from '../../../../../shared/const/cellHeight';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarBodyHourListComponent {
-  hours = new Array(14);
+  hours = new Array(HOURS_AMOUNT);
   cellHeight = CELL_HEIGHT;
+  DISPLAYED_HOURS = DISPLAYED_HOURS;
 }

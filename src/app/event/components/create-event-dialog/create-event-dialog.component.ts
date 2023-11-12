@@ -4,6 +4,7 @@ import { TileData } from '../../../calendar/models/TileData.model';
 import { Event } from '../../models/Event.model';
 import { DateService } from '../../../calendar/services/DateService/date.service';
 import { EventService } from '../../services/EventService/event.service';
+import { DISPLAYED_HOURS } from '../../../shared/const/hoursAmount';
 @Component({
   selector: 'app-create-event-dialog',
   templateUrl: './create-event-dialog.component.html',
@@ -21,8 +22,8 @@ export class CreateEventDialogComponent {
     client: { name: '' },
     price: 0,
     date: this.dateService.getWeekDayByIndex(this.data.col - 1),
-    startTime: 8 + this.data.row + ':00',
-    finishTime: 8 + this.data.row + 1 + ':00',
+    startTime: DISPLAYED_HOURS + this.data.row + ':00',
+    finishTime: DISPLAYED_HOURS + this.data.row + 1 + ':00',
     repeatable: false,
   };
 

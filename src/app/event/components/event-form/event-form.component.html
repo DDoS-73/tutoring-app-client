@@ -65,8 +65,8 @@
       <p class="custom_input_label">{{ label }}</p>
       <input
         class="custom_input"
-        [min]="'08:00'"
-        [max]="'22:00'"
+        [min]="'13:00'"
+        [max]="'21:00'"
         [format]="24"
         [ngxTimepicker]="timepicker"
         [formControlName]="formControlName"
@@ -75,5 +75,6 @@
   </div>
   <ngx-material-timepicker
     #timepicker
-    [theme]="darkTheme"></ngx-material-timepicker>
+    [theme]="darkTheme"
+    [minutesGap]="5"></ngx-material-timepicker>
 </ng-template>

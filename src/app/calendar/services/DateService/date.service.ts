@@ -26,7 +26,7 @@ export class DateService {
     return this._currentMonth$.asObservable();
   }
 
-  private updateWeekDays(weekDay: Date) {
+  public updateWeekDays(weekDay: Date) {
     const currentDayOfWeek = weekDay.getDay();
     const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
     const mostRecentMonday = new Date(weekDay);

@@ -13,4 +13,8 @@ export class HeaderComponent {
     public dateService: DateService,
     public earningService: EarningsService
   ) {}
+
+  onCurrentWeekClick() {
+    this.dateService.updateWeekDays(new Date());
+  }
 }

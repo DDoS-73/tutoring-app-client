@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DateService } from '../DateService/date.service';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
@@ -38,43 +38,56 @@ export class EarningsService {
     private dateService: DateService,
     private http: HttpClient
   ) {
-    this.updateEarnings();
+    this.initEarningsUpdate();
   }
 
-  private getMonthEarning() {
+  public getMonthEarnings(dayOfMonth: string) {
+    const params = { dayOfMonth };
+    return this.http.get<EarningsResponse>(`${this.url}/earnings/month`, {
+      params,
+    });
+  }
+
+  private updateMonthEarningsDependOnDate() {
     this.dateService.weekDays$
-      .pipe(
-        switchMap(days => {
-          const params = { dayOfMonth: days[3].toString() };
-          return this.http.get<EarningsResponse>(`${this.url}/earnings/month`, {
-            params,
-          });
-        })
-      )
+      .pipe(switchMap(days => this.getMonthEarnings(days[3].toString())))
       .subscribe(({ predictedEarnings, actualEarnings }) => {
         this._predictedMonthEarnings$.next(predictedEarnings);
         this._actualMonthEarnings$.next(actualEarnings);
       });
   }
 
-  private getWeekEarning() {
+  public getWeekEarnings(dayOfWeek: string) {
+    const params = { dayOfWeek };
+    return this.http.get<EarningsResponse>(`${this.url}/earnings/week`, {
+      params,
+    });
+  }
+
+  private updateWeekEarningsDependOnDate() {
     this.dateService.weekDays$
-      .pipe(
-        switchMap(days => {
-          const params = { dayOfWeek: days[3].toString() };
-          return this.http.get<EarningsResponse>(`${this.url}/earnings/week`, {
-            params,
-          });
-        })
-      )
+      .pipe(switchMap(days => this.getWeekEarnings(days[3].toString())))
       .subscribe(({ predictedEarnings, actualEarnings }) => {
         this._predictedWeekEarnings$.next(predictedEarnings);
         this._actualWeekEarnings$.next(actualEarnings);
       });
   }
 
+  private initEarningsUpdate() {
+    this.updateMonthEarningsDependOnDate();
+    this.updateWeekEarningsDependOnDate();
+  }
+
   public updateEarnings() {
-    this.getMonthEarning();
-    this.getWeekEarning();
+    forkJoin([
+      this.getWeekEarnings(this.dateService.getWeekDayByIndex(3).toString()),
+      this.getMonthEarnings(this.dateService.getWeekDayByIndex(3).toString()),
+    ]).subscribe(([weekEarnings, monthEarnings]) => {
+      this._predictedWeekEarnings$.next(weekEarnings.predictedEarnings);
+      this._actualWeekEarnings$.next(weekEarnings.actualEarnings);
+
+      this._predictedMonthEarnings$.next(monthEarnings.predictedEarnings);
+      this._actualMonthEarnings$.next(monthEarnings.actualEarnings);
+    });
   }
 }

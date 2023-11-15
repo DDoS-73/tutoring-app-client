@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   monthNames,
@@ -58,9 +58,14 @@ export class DateService {
   }
 
   private updateCurrentMonth() {
-    this._currentMonth$.next(
+    if (
+      this._currentMonth$.getValue() !==
       monthNames[this._weekDays$.getValue()[3].getMonth()]
-    );
+    ) {
+      this._currentMonth$.next(
+        monthNames[this._weekDays$.getValue()[3].getMonth()]
+      );
+    }
   }
 
   public getNextWeek() {

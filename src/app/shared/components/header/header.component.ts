@@ -14,7 +14,7 @@ export class HeaderComponent {
     public earningService: EarningsService
   ) {}
 
-  onCurrentWeekClick() {
-    this.dateService.updateWeekDays(new Date());
-  }
+  // onCurrentWeekClick() {
+  //   this.dateService.updateWeekDays(new Date());
+  // }
 }

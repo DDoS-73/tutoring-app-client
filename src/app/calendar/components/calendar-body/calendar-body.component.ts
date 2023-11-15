@@ -3,7 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../../../event/components/create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
 import { DateService } from '../../services/DateService/date.service';
-import { CELL_HEIGHT } from '../../../shared/const/cellHeight';
+import {
+  CALENDAR_BODY_HEIGHT,
+  CELL_HEIGHT,
+} from '../../../shared/const/cellHeight';
 import { Observable } from 'rxjs';
 import { Event } from '../../../event/models/Event.model';
 import { EventService } from '../../../event/services/EventService/event.service';
@@ -19,6 +22,7 @@ import { HOURS_AMOUNT } from '../../../shared/const/hoursAmount';
 export class CalendarBodyComponent implements OnInit {
   tiles = new Array(HOURS_AMOUNT * 7);
   cellHeight = CELL_HEIGHT;
+  calendarBodyHeight = CALENDAR_BODY_HEIGHT + 'px';
   events$!: Observable<Event[]>;
 
   constructor(

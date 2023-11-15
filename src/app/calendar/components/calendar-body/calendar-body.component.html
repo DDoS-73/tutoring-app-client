@@ -1,6 +1,7 @@
 <div
   fxLayout="row"
   class="container"
+  [style]="{ height: calendarBodyHeight }"
   (swipeleft)="onSwipeLeft()"
   (swiperight)="onSwipeRight()">
   <app-calendar-body-hour-list></app-calendar-body-hour-list>

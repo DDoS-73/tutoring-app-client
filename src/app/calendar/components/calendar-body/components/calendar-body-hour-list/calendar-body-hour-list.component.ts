@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CELL_HEIGHT } from '../../../../../shared/const/cellHeight';
+import {
+  CALENDAR_BODY_HEIGHT,
+  CELL_HEIGHT,
+} from '../../../../../shared/const/cellHeight';
 import {
   DISPLAYED_HOURS,
   HOURS_AMOUNT,
@@ -15,4 +18,5 @@ export class CalendarBodyHourListComponent {
   hours = new Array(HOURS_AMOUNT);
   cellHeight = CELL_HEIGHT;
   DISPLAYED_HOURS = DISPLAYED_HOURS;
+  calendarBodyHeight = CALENDAR_BODY_HEIGHT + 'px';
 }

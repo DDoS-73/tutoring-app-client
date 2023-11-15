@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEventDialogComponent } from '../../../event/components/create-event-dialog/create-event-dialog.component';
 import { TileData } from '../../models/TileData.model';
@@ -24,6 +30,7 @@ export class CalendarBodyComponent implements OnInit {
   cellHeight = CELL_HEIGHT;
   calendarBodyHeight = CALENDAR_BODY_HEIGHT + 'px';
   events$!: Observable<Event[]>;
+  @ViewChild('container') containerRef!: ElementRef<HTMLDivElement>;
 
   constructor(
     private dialog: MatDialog,
@@ -49,11 +56,31 @@ export class CalendarBodyComponent implements OnInit {
     return Math.floor(index / 7);
   }
 
+  private animationConfig(shift: number) {
+    return [
+      {
+        transform: 'translateX(0)',
+      },
+      {
+        transform: `translateX(${shift}px)`,
+      },
+      {
+        transform: 'translateX(0)',
+      },
+    ];
+  }
+
   onSwipeLeft() {
+    this.containerRef.nativeElement.animate(this.animationConfig(-100), {
+      duration: 500,
+    });
     this.dateService.getNextWeek();
   }
 
   onSwipeRight() {
+    this.containerRef.nativeElement.animate(this.animationConfig(100), {
+      duration: 500,
+    });
     this.dateService.getPrevWeek();
   }
 }

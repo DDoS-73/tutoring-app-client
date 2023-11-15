@@ -39,7 +39,7 @@ export class EventTileComponent implements OnInit {
       height: height + 'px',
       top: this.tileHeight * topOffset + topOffset + 'px',
       '--weekday': this.weekDay,
-      filter: this.event.isPaid ? 'grayscale(80%)' : 'none',
+      backgroundColor: this.event.isPaid ? '#18a200' : '#5b2470bd',
     };
   }
 

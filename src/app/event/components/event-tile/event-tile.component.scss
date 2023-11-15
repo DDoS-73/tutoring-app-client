@@ -3,7 +3,6 @@ $tailWidth: calc((100vw - 15px) / 7);
 .tile {
   position: absolute;
   width: calc($tailWidth - 1px);
-  background-color: #5b2470bd;
   left: calc((100vw - 20px) / 7 * var(--weekday));
   padding: 2px 4px;
 

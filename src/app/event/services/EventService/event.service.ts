@@ -56,6 +56,7 @@ export class EventService {
               .getValue()
               .map(event => (event._id === _id ? updatedEvent : event))
           );
+          this.earningService.updateEarnings();
         })
       );
   }

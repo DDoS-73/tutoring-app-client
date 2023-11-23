@@ -13,6 +13,14 @@
       margin-bottom: 10px;
     }
 
+    .time-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      margin-top: 10px;
+      width: 75%;
+    }
+
     .repeatable_checkbox {
       margin-top: 10px;
       display: flex;

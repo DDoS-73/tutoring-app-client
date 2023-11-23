@@ -1,5 +1,4 @@
 <div
-  fxLayout="row"
   class="container"
   #container
   [style]="{ height: calendarBodyHeight }"
@@ -7,7 +6,7 @@
   (swiperight)="onSwipeRight()">
   <app-calendar-body-hour-list></app-calendar-body-hour-list>
 
-  <div fxFlex="1 1 0" style="position: relative">
+  <div style="position: relative; flex: 1 0 0">
     <mat-grid-list cols="7" [rowHeight]="cellHeight + 'px'">
       <mat-grid-tile
         id="mat-grid-tile"

@@ -11,7 +11,6 @@ import { CreateEventDialogComponent } from './components/create-event-dialog/cre
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EventTileComponent } from './components/event-tile/event-tile.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { EventInfoDialogComponent } from './components/event-info-dialog/event-info-dialog.component';
 import { SharedModule } from '../shared/shared.module';
 
@@ -32,7 +31,6 @@ import { SharedModule } from '../shared/shared.module';
     NgxMaterialTimepickerModule,
     MatIconModule,
     MatDialogModule,
-    FlexLayoutModule,
     SharedModule,
   ],
   exports: [EventFormComponent, CreateEventDialogComponent, EventTileComponent],

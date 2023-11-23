@@ -1,4 +1,4 @@
-<div class="container" fxLayout="row" fxLayoutAlign="space-between stretch">
+<div class="container">
   <p class="mat-headline-5">{{ dateService.currentMonth$ | async }}</p>
   <!--  <button role="button" class="mat-subtitle-1" (click)="onCurrentWeekClick()">-->
   <!--    Поточний тиждень-->
@@ -11,7 +11,7 @@
 
 <mat-divider class="mat-divider"></mat-divider>
 
-<div class="container" fxLayout="row" fxLayoutAlign="space-between stretch">
+<div class="container">
   <p class="mat-subtitle-1">{{ dateService.weekRange$ | async }}</p>
   <p class="mat-subtitle-1">
     {{ earningService.actualWeekEarnings$ | async }}₴ з

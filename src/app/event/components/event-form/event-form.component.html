@@ -7,7 +7,9 @@
     [matAutocomplete]="auto"
     class="custom_input" />
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-    <mat-option *ngFor="let option of clients$ | async" [value]="option">
+    <mat-option
+      *ngFor="let option of filteredClients$ | async"
+      [value]="option">
       {{ option.name }}
     </mat-option>
   </mat-autocomplete>

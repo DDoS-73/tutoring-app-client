@@ -1,5 +1,6 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   Injectable,
   Input,
@@ -11,8 +12,9 @@ import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { Event } from '../../models/Event.model';
 import { EventService } from '../../services/EventService/event.service';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { Client } from '../../../calendar/models/Client.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable()
 export class CustomDateAdapter extends NativeDateAdapter {
@@ -28,16 +30,17 @@ export class CustomDateAdapter extends NativeDateAdapter {
   providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 export class EventFormComponent implements OnInit {
-  clients$!: Observable<Client[]>;
+  clients: Client[] = [];
+  filteredClients$!: Observable<Client[]>;
   @Input({ required: true }) initData!: Event;
   @Output() formSubmit = new EventEmitter();
   constructor(
     private fb: FormBuilder,
-    private eventService: EventService
+    private eventService: EventService,
+    private destroyRef: DestroyRef
   ) {}
 
   eventForm!: FormGroup;
-
   ngOnInit() {
     this.eventForm = this.fb.group({
       client: this.initData.client,
@@ -48,7 +51,23 @@ export class EventFormComponent implements OnInit {
       repeatable: [this.initData.repeatable],
     });
 
-    this.clients$ = this.eventService.getAllClients();
+    this.eventService
+      .getAllClients()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(clients => {
+        this.clients = clients;
+        this.filteredClients$ = this.eventForm.controls[
+          'client'
+        ].valueChanges.pipe(
+          startWith(''),
+          map(value => {
+            const name = typeof value === 'string' ? value : value?.name;
+            return name
+              ? this._filterClients(name as string)
+              : this.clients.slice();
+          })
+        );
+      });
   }
 
   submit() {
@@ -77,4 +96,11 @@ export class EventFormComponent implements OnInit {
       clockFaceTimeInactiveColor: '#fff',
     },
   };
+
+  private _filterClients(name: string) {
+    const filterValue = name.toLowerCase();
+    return this.clients.filter(client =>
+      client.name.toLowerCase().includes(filterValue)
+    );
+  }
 }

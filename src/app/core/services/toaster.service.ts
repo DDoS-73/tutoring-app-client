@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ToasterComponent } from '../../components/toaster/toaster.component';
-import { ToasterData } from '../../models/toaster.model';
+import { ToasterComponent } from '../../shared/components/toaster/toaster.component';
+import { ToasterData } from '../../shared/models/toaster.model';
 
 @Injectable({ providedIn: 'root' })
 export class ToasterService {

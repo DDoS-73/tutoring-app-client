@@ -9,3 +9,7 @@ export enum AuthPages {
     ForgotPassword = 'forgot-password',
     ResetPassword = 'reset-password',
 }
+
+export enum CalendarPages {
+    Calendar = '',
+}

@@ -7,9 +7,9 @@ import {
 } from '@angular/forms';
 import { AuthPages, MainPages } from '../../../../shared/models/pages';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { ToasterService } from '../../../../shared/services/toaster/toaster.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 @Component({
     selector: 'app-sign-in',

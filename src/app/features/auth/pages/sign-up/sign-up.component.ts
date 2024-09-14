@@ -6,11 +6,11 @@ import {
     Validators,
 } from '@angular/forms';
 import { AuthPages, MainPages } from '../../../../shared/models/pages';
-import { AuthService } from '../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { ToasterService } from '../../../../shared/services/toaster/toaster.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 @Component({
     selector: 'app-sign-up',

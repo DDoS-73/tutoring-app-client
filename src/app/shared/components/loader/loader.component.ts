@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Subject } from 'rxjs';
-import { LoaderService } from '../../services/loader/loader.service';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
     selector: 'app-loader',

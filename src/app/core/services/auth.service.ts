@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SignUpRequest } from '../../models/auth/sign-up.request';
+import { SignUpRequest } from '../../shared/models/auth/sign-up.request';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { SignInRequest } from '../../models/auth/sign-in.request';
-import { SignInResponse } from '../../models/auth/sign-in.response';
-import { User } from '../../models/auth/user.model';
+import { environment } from '../../../environments/environment';
+import { SignInRequest } from '../../shared/models/auth/sign-in.request';
+import { SignInResponse } from '../../shared/models/auth/sign-in.response';
+import { User } from '../../shared/models/auth/user.model';
 
 @Injectable({
     providedIn: 'root',

@@ -1,0 +1,28 @@
+<div
+    class="container"
+    #container
+    [style]="{ height: calendarBodyHeight }"
+    (swipeleft)="onSwipeLeft()"
+    (swiperight)="onSwipeRight()"
+>
+    <app-calendar-body-hour-list></app-calendar-body-hour-list>
+
+    <div style="position: relative; flex: 1 0 0">
+        <mat-grid-list cols="7" [rowHeight]="cellHeight + 'px'">
+            <mat-grid-tile
+                id="mat-grid-tile"
+                *ngFor="let tile of tiles; let i = index"
+                appHighlightToday
+                [day]="calculateDay(i)"
+                (click)="openDialog(calculateRow(i), calculateDay(i))"
+            >
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <app-event-tile
+            *ngFor="let event of events$ | async"
+            [tileHeight]="cellHeight"
+            [event]="event"
+        ></app-event-tile>
+    </div>
+</div>

@@ -1,20 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DateService } from '../../../calendar/services/DateService/date.service';
-import { EarningsService } from '../../../calendar/services/EarningsService/earnings.service';
+import { DateService } from '../../../features/calendar/services/DateService/date.service';
+import { EarningsService } from '../../../features/calendar/services/EarningsService/earnings.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  constructor(
-    public dateService: DateService,
-    public earningService: EarningsService
-  ) {}
+    constructor(
+        public dateService: DateService,
+        public earningService: EarningsService
+    ) {}
 
-  // onCurrentWeekClick() {
-  //   this.dateService.updateWeekDays(new Date());
-  // }
+    // onCurrentWeekClick() {
+    //   this.dateService.updateWeekDays(new Date());
+    // }
 }

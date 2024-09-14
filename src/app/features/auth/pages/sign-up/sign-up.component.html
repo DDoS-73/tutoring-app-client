@@ -1,0 +1,46 @@
+<div class="signup-container">
+    <mat-card>
+        <h2>Зареєструватись</h2>
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <app-input
+                [control]="nameControl"
+                label="Ім'я"
+                placeholder="Введіть ваше ім'я"
+                errorMessage="Ім'я є обов'язковим"
+            ></app-input>
+
+            <app-input
+                [control]="surnameControl"
+                label="Прізвище"
+                placeholder="Введіть ваше прізвище"
+                errorMessage="Прізвище є обов'язковим"
+            ></app-input>
+
+            <app-input
+                [control]="emailControl"
+                label="Електронна пошта"
+                placeholder="Введіть вашу електронну пошту"
+                errorMessage="Введення електронної пошти є обов'язковим"
+                type="email"
+            ></app-input>
+
+            <app-input
+                [control]="passwordControl"
+                label="Пароль"
+                placeholder="Введіть ваш пароль"
+                errorMessage="Довжина пароля мінімум 6 символів"
+                type="password"
+            ></app-input>
+
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!signUpForm.valid"
+            >
+                Зареєструватись
+            </button>
+        </form>
+        <button mat-button [routerLink]="signInLink">Увійти</button>
+    </mat-card>
+</div>

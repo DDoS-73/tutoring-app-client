@@ -1,20 +1,20 @@
 <div class="container">
-  <p class="mat-headline-5">{{ dateService.currentMonth$ | async }}</p>
-  <!--  <button role="button" class="mat-subtitle-1" (click)="onCurrentWeekClick()">-->
-  <!--    Поточний тиждень-->
-  <!--  </button>-->
-  <p class="mat-headline-5">
-    {{ earningService.actualMonthEarnings$ | async }}₴ з
-    {{ earningService.predictedMonthEarnings$ | async }}₴
-  </p>
+    <p class="mat-headline-5">{{ dateService.currentMonth$ | async }}</p>
+    <!--  <button role="button" class="mat-subtitle-1" (click)="onCurrentWeekClick()">-->
+    <!--    Поточний тиждень-->
+    <!--  </button>-->
+    <p class="mat-headline-5">
+        {{ earningService.actualMonthEarnings$ | async }}₴ з
+        {{ earningService.predictedMonthEarnings$ | async }}₴
+    </p>
 </div>
 
 <mat-divider class="mat-divider"></mat-divider>
 
 <div class="container">
-  <p class="mat-subtitle-1">{{ dateService.weekRange$ | async }}</p>
-  <p class="mat-subtitle-1">
-    {{ earningService.actualWeekEarnings$ | async }}₴ з
-    {{ earningService.predictedWeekEarnings$ | async }}₴
-  </p>
+    <p class="mat-subtitle-1">{{ dateService.weekRange$ | async }}</p>
+    <p class="mat-subtitle-1">
+        {{ earningService.actualWeekEarnings$ | async }}₴ з
+        {{ earningService.predictedWeekEarnings$ | async }}₴
+    </p>
 </div>

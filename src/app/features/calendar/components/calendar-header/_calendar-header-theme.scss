@@ -1,0 +1,12 @@
+@use '../../../../../../node_modules/@angular/material/index' as mat;
+
+@mixin calendar-header($theme) {
+    $color-config: mat.get-color-config($theme);
+
+    $accent-palette: map-get($color-config, 'accent');
+
+    .week_day {
+        border-bottom: 1px solid
+            mat.get-color-from-palette($accent-palette, 400);
+    }
+}

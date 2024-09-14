@@ -15,24 +15,28 @@ import { EventInfoDialogComponent } from './components/event-info-dialog/event-i
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    EventFormComponent,
-    CreateEventDialogComponent,
-    EventTileComponent,
-    EventInfoDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    NgxMaterialTimepickerModule,
-    MatIconModule,
-    MatDialogModule,
-    SharedModule,
-  ],
-  exports: [EventFormComponent, CreateEventDialogComponent, EventTileComponent],
+    declarations: [
+        EventFormComponent,
+        CreateEventDialogComponent,
+        EventTileComponent,
+        EventInfoDialogComponent,
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgxMaterialTimepickerModule,
+        MatIconModule,
+        MatDialogModule,
+        SharedModule,
+    ],
+    exports: [
+        EventFormComponent,
+        CreateEventDialogComponent,
+        EventTileComponent,
+    ],
 })
 export class EventModule {}

@@ -8,26 +8,32 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    BodyComponent,
-    DialogContainerComponent,
-    LoaderComponent,
-  ],
-  exports: [
-    HeaderComponent,
-    BodyComponent,
-    DialogContainerComponent,
-    LoaderComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatDividerModule,
-    MatDialogModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-  ],
+    declarations: [
+        HeaderComponent,
+        BodyComponent,
+        DialogContainerComponent,
+        LoaderComponent,
+    ],
+    exports: [
+        HeaderComponent,
+        BodyComponent,
+        DialogContainerComponent,
+        LoaderComponent,
+    ],
+    imports: [
+        CommonModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+    ],
 })
 export class SharedModule {}

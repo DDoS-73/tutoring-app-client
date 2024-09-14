@@ -1,7 +1,0 @@
-<div class="container">
-  <div *ngFor="let date of dateService.weekDays$ | async; let i = index" class="week_day" appHighlightToday
-    [day]="i + 1">
-    <p>{{ date.getDate() }}</p>
-    <p>{{ daysOfTheWeek[i] }}</p>
-  </div>
-</div>

@@ -3,24 +3,24 @@
 @include mat.core();
 
 $my-headline-5: mat.define-typography-level(
-  $font-family: Montserrat,
-  $font-weight: 700,
-  $font-size: 0.9rem,
-  $line-height: 1,
-  $letter-spacing: normal,
+    $font-family: Montserrat,
+    $font-weight: 700,
+    $font-size: 0.9rem,
+    $line-height: 1,
+    $letter-spacing: normal,
 );
 
 $my-subtitle-1: mat.define-typography-level(
-  $font-family: Montserrat,
-  $font-weight: 500,
-  $font-size: 0.8rem,
-  $line-height: 1,
-  $letter-spacing: normal,
+    $font-family: Montserrat,
+    $font-weight: 500,
+    $font-size: 0.8rem,
+    $line-height: 1,
+    $letter-spacing: normal,
 );
 
 $my-typography: mat.define-typography-config(
-  $headline-5: $my-headline-5,
-  $subtitle-1: $my-subtitle-1,
+    $headline-5: $my-headline-5,
+    $subtitle-1: $my-subtitle-1,
 );
 
 @include mat.typography-hierarchy($my-typography);

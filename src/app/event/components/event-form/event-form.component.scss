@@ -1,91 +1,91 @@
 :host {
-  display: block;
-  height: 100%;
-
-  form {
+    display: block;
     height: 100%;
 
-    h2 {
-      color: black;
-    }
+    form {
+        height: 100%;
 
-    input[type='number'] {
-      margin-bottom: 10px;
-    }
+        h2 {
+            color: black;
+        }
 
-    .time-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
-      margin-top: 10px;
-      width: 75%;
-    }
+        input[type='number'] {
+            margin-bottom: 10px;
+        }
 
-    .repeatable_checkbox {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
+        .time-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 10px;
+            width: 75%;
+        }
 
-      input {
-        margin: 0 5px 0 0;
-      }
-    }
+        .repeatable_checkbox {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
 
-    .time {
-      margin-right: 20px;
+            input {
+                margin: 0 5px 0 0;
+            }
+        }
+
+        .time {
+            margin-right: 20px;
+        }
     }
-  }
 }
 ::ng-deep {
-  mat-option.mat-mdc-option {
-    min-height: 25px;
-    padding-left: 15px;
-  }
+    mat-option.mat-mdc-option {
+        min-height: 25px;
+        padding-left: 15px;
+    }
 
-  mat-form-field {
-    width: 100%;
-  }
+    mat-form-field {
+        width: 100%;
+    }
 
-  div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-    background-color: #fff;
-  }
+    div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: #fff;
+    }
 
-  div.mat-mdc-text-field-wrapper,
-  div.mat-mdc-form-field-infix {
-    max-height: 30px;
-    padding-left: 0;
-  }
+    div.mat-mdc-text-field-wrapper,
+    div.mat-mdc-form-field-infix {
+        max-height: 30px;
+        padding-left: 0;
+    }
 
-  div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-      .mdc-text-field--textarea
-    )
-    .mat-mdc-form-field-infix {
-    padding: 5px;
-  }
+    div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+            .mdc-text-field--textarea
+        )
+        .mat-mdc-form-field-infix {
+        padding: 5px;
+    }
 
-  div.mat-mdc-form-field-icon-suffix,
-  mat-datepicker-toggle.mat-datepicker-toggle
-    > button.mat-mdc-icon-button.mat-mdc-button-base {
-    position: absolute;
-    width: 100%;
-    max-height: 30px;
-    top: 0;
-    padding: 0;
-  }
+    div.mat-mdc-form-field-icon-suffix,
+    mat-datepicker-toggle.mat-datepicker-toggle
+        > button.mat-mdc-icon-button.mat-mdc-button-base {
+        position: absolute;
+        width: 100%;
+        max-height: 30px;
+        top: 0;
+        padding: 0;
+    }
 
-  button.mat-mdc-icon-button.mat-mdc-button-base > * {
-    display: none;
-  }
+    button.mat-mdc-icon-button.mat-mdc-button-base > * {
+        display: none;
+    }
 
-  div.mat-mdc-form-field-subscript-wrapper {
-    display: none;
-  }
+    div.mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
 
-  div.timepicker-backdrop-overlay {
-    z-index: 1001 !important;
-  }
+    div.timepicker-backdrop-overlay {
+        z-index: 1001 !important;
+    }
 
-  div.timepicker-overlay {
-    z-index: 1003 !important;
-  }
+    div.timepicker-overlay {
+        z-index: 1003 !important;
+    }
 }

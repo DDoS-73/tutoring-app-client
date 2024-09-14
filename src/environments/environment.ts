@@ -1,4 +1,5 @@
 export const environment = {
-  production: false,
-  baseUrl: 'https://tutoring-app-server.vercel.app',
+    production: false,
+    backendApi: 'http://localhost:3000',
+    baseUrl: '',
 };

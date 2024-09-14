@@ -1,16 +1,16 @@
 $tailWidth: calc((100vw - 15px) / 7);
 
 .tile {
-  position: absolute;
-  width: calc($tailWidth - 1px);
-  left: calc((100vw - 20px) / 7 * var(--weekday));
-  padding: 2px 4px;
+    position: absolute;
+    width: calc($tailWidth - 1px);
+    left: calc((100vw - 20px) / 7 * var(--weekday));
+    padding: 2px 4px;
 
-  p {
-    color: #fff;
-    font-weight: 500;
-    font-size: 0.6rem;
-    line-height: 0.8rem;
-    word-wrap: break-word;
-  }
+    p {
+        color: #fff;
+        font-weight: 500;
+        font-size: 0.6rem;
+        line-height: 0.8rem;
+        word-wrap: break-word;
+    }
 }

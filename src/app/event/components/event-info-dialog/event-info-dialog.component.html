@@ -1,43 +1,45 @@
 <app-dialog-container>
-  <span class="title"
-    >Подія <mat-icon (click)="deleteEvent()">delete</mat-icon></span
-  >
-  <div>
-    <h2>Клієнт</h2>
-    <div class="info_item">
-      <p class="label">Ім'я Прізвище</p>
-      <p class="info">{{ event.client.name }}</p>
+    <span class="title"
+        >Подія <mat-icon (click)="deleteEvent()">delete</mat-icon></span
+    >
+    <div>
+        <h2>Клієнт</h2>
+        <div class="info_item">
+            <p class="label">Ім'я Прізвище</p>
+            <p class="info">{{ event.client.name }}</p>
+        </div>
+
+        <div class="info_item">
+            <p class="label">Вартість послуги</p>
+            <p class="info">
+                {{ event.price }} ₴
+                <span *ngIf="event.isPaid">(сплачена)</span>
+                <span *ngIf="!event.isPaid">(не сплачена)</span>
+            </p>
+        </div>
+
+        <h2>Дата</h2>
+        <div class="info_item">
+            <p class="info">{{ event.date | date: 'dd/MM/yy' }}</p>
+        </div>
+
+        <h2>Час</h2>
+        <div class="info_item">
+            <p class="info">{{ event.startTime }} - {{ event.finishTime }}</p>
+        </div>
+
+        <div class="info_item">
+            <p class="info" *ngIf="event.repeatable">
+                Повторюваність - щотижня
+            </p>
+        </div>
     </div>
 
-    <div class="info_item">
-      <p class="label">Вартість послуги</p>
-      <p class="info">
-        {{ event.price }} ₴
-        <span *ngIf="event.isPaid">(сплачена)</span>
-        <span *ngIf="!event.isPaid">(не сплачена)</span>
-      </p>
+    <div class="action_btn_container">
+        <button (click)="changePaidStatus()" class="outline-btn">
+            Відмітити
+            <span *ngIf="!event.isPaid">оплаченою</span>
+            <span *ngIf="event.isPaid">не оплаченою</span>
+        </button>
     </div>
-
-    <h2>Дата</h2>
-    <div class="info_item">
-      <p class="info">{{ event.date | date: 'dd/MM/yy' }}</p>
-    </div>
-
-    <h2>Час</h2>
-    <div class="info_item">
-      <p class="info">{{ event.startTime }} - {{ event.finishTime }}</p>
-    </div>
-
-    <div class="info_item">
-      <p class="info" *ngIf="event.repeatable">Повторюваність - щотижня</p>
-    </div>
-  </div>
-
-  <div class="action_btn_container">
-    <button (click)="changePaidStatus()" class="outline-btn">
-      Відмітити
-      <span *ngIf="!event.isPaid">оплаченою</span>
-      <span *ngIf="event.isPaid">не оплаченою</span>
-    </button>
-  </div>
 </app-dialog-container>

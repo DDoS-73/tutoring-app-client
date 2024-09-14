@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 @use '../app/shared/components/body/body-theme';
-@use '../app/calendar/components/calendar-header/calendar-header-theme' as
-  calendar-header;
+@use '../app/features/calendar/components/calendar-header/calendar-header-theme'
+    as calendar-header;
 @use 'input-theme';
 @use 'typography' as typography;
 
@@ -10,18 +10,18 @@ $accent: mat.define-palette(mat.$grey-palette);
 $warn: mat.define-palette(mat.$red-palette);
 
 $theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $primary,
-      accent: $accent,
-      warnd: $warn,
-    ),
-    typography: typography.$my-typography,
-  )
+    (
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warnd: $warn,
+        ),
+        typography: typography.$my-typography,
+    )
 );
 
 @mixin app-theme {
-  @include body-theme.body-background($theme);
-  @include calendar-header.calendar-header($theme);
-  @include input-theme.input-theme($theme);
+    @include body-theme.body-background($theme);
+    @include calendar-header.calendar-header($theme);
+    @include input-theme.input-theme($theme);
 }

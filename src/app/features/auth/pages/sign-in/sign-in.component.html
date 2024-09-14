@@ -1,0 +1,32 @@
+<div class="login-container">
+    <mat-card>
+        <h2>Увійти в систему</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <app-input
+                [control]="emailControl"
+                label="Електронна пошта"
+                placeholder="Введіть вашу електронну пошту"
+                errorMessage="Введення електронної пошти є обов'язковим"
+                type="email"
+            ></app-input>
+
+            <app-input
+                [control]="passwordControl"
+                label="Пароль"
+                placeholder="Введіть ваш пароль"
+                errorMessage="Довжина пароля мінімум 6 символів"
+                type="password"
+            ></app-input>
+
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!loginForm.valid"
+            >
+                Увійти
+            </button>
+        </form>
+        <button mat-button [routerLink]="signUpLink">Зареєструватись</button>
+    </mat-card>
+</div>

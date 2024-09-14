@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+.snackbar-success {
+    .mdc-snackbar__surface {
+        background-color: mat.get-color-from-palette(
+            mat.$green-palette,
+            400
+        ) !important;
+    }
+
+    .mdc-snackbar__label {
+        color: white !important;
+    }
+}
+
+.snackbar-error {
+    .mdc-snackbar__surface {
+        background-color: mat.get-color-from-palette(
+            mat.$red-palette,
+            400
+        ) !important;
+    }
+
+    .mdc-snackbar__label {
+        color: white !important;
+    }
+}

@@ -4,6 +4,7 @@
     as calendar-header;
 @use 'input-theme';
 @use 'typography' as typography;
+@use 'snackbar';
 
 $primary: mat.define-palette(mat.$indigo-palette);
 $accent: mat.define-palette(mat.$grey-palette);
@@ -14,7 +15,7 @@ $theme: mat.define-light-theme(
         color: (
             primary: $primary,
             accent: $accent,
-            warnd: $warn,
+            warn: $warn,
         ),
         typography: typography.$my-typography,
     )

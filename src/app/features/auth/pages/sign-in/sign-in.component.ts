@@ -9,6 +9,7 @@ import { AuthPages, MainPages } from '../../../../shared/models/pages';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ToasterService } from '../../../../shared/services/toaster/toaster.service';
 
 @Component({
     selector: 'app-sign-in',
@@ -32,7 +33,8 @@ export class SignInComponent {
         private fb: FormBuilder,
         private authService: AuthService,
         private dr: DestroyRef,
-        private router: Router
+        private router: Router,
+        private toasterService: ToasterService
     ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -46,7 +48,10 @@ export class SignInComponent {
             this.authService
                 .signIn(formValue)
                 .pipe(takeUntilDestroyed(this.dr))
-                .subscribe(() => this.router.navigate(['calendar']));
+                .subscribe(() => {
+                    this.toasterService.success('Успішний вхід');
+                    this.router.navigate(['calendar']);
+                });
         }
     }
 }

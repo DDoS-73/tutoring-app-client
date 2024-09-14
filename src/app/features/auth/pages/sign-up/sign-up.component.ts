@@ -10,6 +10,7 @@ import { AuthService } from '../../../../shared/services/auth/auth.service';
 import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { ToasterService } from '../../../../shared/services/toaster/toaster.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -25,7 +26,8 @@ export class SignUpComponent {
         private fb: FormBuilder,
         private authService: AuthService,
         private dr: DestroyRef,
-        private router: Router
+        private router: Router,
+        private toasterService: ToasterService
     ) {
         this.signUpForm = this.fb.group({
             name: ['', Validators.required],
@@ -60,7 +62,10 @@ export class SignUpComponent {
                     switchMap(() => this.authService.signIn(formValue)),
                     takeUntilDestroyed(this.dr)
                 )
-                .subscribe(() => this.router.navigate(['calendar']));
+                .subscribe(() => {
+                    this.toasterService.success('Успішна реєстрація');
+                    this.router.navigate(['calendar']);
+                });
         }
     }
 }

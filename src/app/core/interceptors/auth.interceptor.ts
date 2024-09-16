@@ -15,15 +15,19 @@ export class AuthInterceptor implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        const authReq = this._addHeaders(req);
-        return next.handle(authReq);
+        const token = this.authService.getToken();
+        if (token) {
+            const authReq = this._addHeaders(req, token);
+            return next.handle(authReq);
+        } else {
+            return next.handle(req);
+        }
     }
 
     private _addHeaders(httpRequest: HttpRequest<any>, accessToken?: string) {
-        const authToken = accessToken || this.authService.getToken();
         const headers = httpRequest.headers.set(
             'Authorization',
-            `Bearer ${authToken}`
+            `Bearer ${accessToken}`
         );
 
         return httpRequest.clone({ headers });

@@ -13,11 +13,11 @@ import { CoreModule } from './core/core.module';
 @NgModule({
     declarations: [AppComponent],
     imports: [
+        CoreModule,
         BrowserModule,
         BrowserAnimationsModule,
         SharedModule,
         AppRoutingModule,
-        CoreModule,
     ],
     providers: [
         {

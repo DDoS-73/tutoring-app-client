@@ -10,6 +10,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
+import { switchMap } from 'rxjs';
+import { GoogleAuthService } from '../../../../core/services/google-auth.service';
 
 @Component({
     selector: 'app-sign-in',
@@ -32,6 +34,7 @@ export class SignInComponent {
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
+        private oAuthService: GoogleAuthService,
         private dr: DestroyRef,
         private router: Router,
         private toasterService: ToasterService
@@ -47,11 +50,18 @@ export class SignInComponent {
             const formValue = this.loginForm.value;
             this.authService
                 .signIn(formValue)
-                .pipe(takeUntilDestroyed(this.dr))
+                .pipe(
+                    switchMap(() => this.authService.getProfile()),
+                    takeUntilDestroyed(this.dr)
+                )
                 .subscribe(() => {
                     this.toasterService.success('Успішний вхід');
                     this.router.navigate(['calendar']);
                 });
         }
+    }
+
+    protected signInWithGoogle() {
+        this.oAuthService.signIn();
     }
 }

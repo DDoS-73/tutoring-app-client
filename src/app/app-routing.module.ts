@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainPages } from './shared/models/pages';
+import { LayoutComponent } from './core/components/layout/layout.component';
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
     {
@@ -9,13 +11,20 @@ const routes: Routes = [
             import('./features/auth/auth.module').then(m => m.AuthModule),
     },
     {
-        path: MainPages.Calendar,
-        loadChildren: () =>
-            import('./features/calendar/calendar.module').then(
-                m => m.CalendarModule
-            ),
+        path: '',
+        component: LayoutComponent,
+        children: [
+            { path: '', redirectTo: MainPages.Calendar, pathMatch: 'full' },
+            {
+                path: MainPages.Calendar,
+                loadChildren: () =>
+                    import('./features/calendar/calendar.module').then(
+                        m => m.CalendarModule
+                    ),
+            },
+        ],
+        canActivate: [authGuard],
     },
-    { path: '', redirectTo: MainPages.Calendar, pathMatch: 'full' },
 ];
 
 @NgModule({

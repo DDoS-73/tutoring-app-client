@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { BodyComponent } from './components/body/body.component';
@@ -11,6 +11,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToasterComponent } from './components/toaster/toaster.component';
+import { GoogleBtnComponent } from './components/google-btn/google-btn.component';
 
 @NgModule({
     declarations: [
@@ -18,12 +20,16 @@ import { ReactiveFormsModule } from '@angular/forms';
         BodyComponent,
         DialogContainerComponent,
         LoaderComponent,
+        ToasterComponent,
+        GoogleBtnComponent,
     ],
     exports: [
         HeaderComponent,
         BodyComponent,
         DialogContainerComponent,
         LoaderComponent,
+        ToasterComponent,
+        GoogleBtnComponent,
     ],
     imports: [
         CommonModule,
@@ -34,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
+        NgOptimizedImage,
     ],
 })
 export class SharedModule {}

@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormFieldsModule } from '../../shared/components/form-fields/form-fields.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     declarations: [SignInComponent, SignUpComponent],
@@ -21,6 +22,7 @@ import { FormFieldsModule } from '../../shared/components/form-fields/form-field
         MatButtonModule,
         MatInputModule,
         FormFieldsModule,
+        SharedModule,
     ],
 })
 export class AuthModule {}

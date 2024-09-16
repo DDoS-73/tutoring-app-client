@@ -11,6 +11,7 @@ import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../../../core/services/toaster.service';
+import { GoogleAuthService } from '../../../../core/services/google-auth.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -27,7 +28,8 @@ export class SignUpComponent {
         private authService: AuthService,
         private dr: DestroyRef,
         private router: Router,
-        private toasterService: ToasterService
+        private toasterService: ToasterService,
+        private oAuthService: GoogleAuthService
     ) {
         this.signUpForm = this.fb.group({
             name: ['', Validators.required],
@@ -67,5 +69,9 @@ export class SignUpComponent {
                     this.router.navigate(['calendar']);
                 });
         }
+    }
+
+    protected signInWithGoogle() {
+        this.oAuthService.signIn();
     }
 }

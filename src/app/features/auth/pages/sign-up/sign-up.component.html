@@ -40,6 +40,7 @@
             >
                 Зареєструватись
             </button>
+            <app-google-btn (click)="signInWithGoogle()" />
         </form>
         <button mat-button [routerLink]="signInLink">Увійти</button>
     </mat-card>

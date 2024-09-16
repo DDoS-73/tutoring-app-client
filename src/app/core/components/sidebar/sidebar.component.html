@@ -1,0 +1,22 @@
+<ng-container *ngIf="user$ | async as user">
+    <div class="header">
+        <i class="material-icons-outlined">account_circle</i>
+        <p class="mat-headline-5">Вітаємо, {{ user.name }}</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="sidebar-item" *ngFor="let menu of menuItems">
+        <i class="material-icons-outlined">{{ menu.icon }}</i>
+        <p class="mat-subtitle-1">{{ menu.title }}</p>
+    </div>
+
+    <div class="footer">
+        <mat-divider></mat-divider>
+
+        <div class="sidebar-item" (click)="logout()">
+            <i class="material-icons-outlined">logout</i>
+            <p class="mat-subtitle-1">Вийти з акаунта</p>
+        </div>
+    </div>
+</ng-container>

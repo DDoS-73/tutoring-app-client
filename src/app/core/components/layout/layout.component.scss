@@ -1,0 +1,16 @@
+:host {
+    height: 100vh;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+mat-sidenav {
+    width: fit-content;
+}
+
+mat-sidenav ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    justify-content: center;
+}

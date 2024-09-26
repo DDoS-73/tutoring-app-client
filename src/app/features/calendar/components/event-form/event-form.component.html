@@ -1,0 +1,95 @@
+<form
+    *ngIf="eventForm"
+    [formGroup]="eventForm"
+    (submit)="eventFormSubmit.emit(eventForm.value)"
+>
+    <h2>Об'єкт</h2>
+    <p class="custom_input_label">Об'єкт над яким виконується робота</p>
+    <input
+        type="text"
+        formControlName="workObject"
+        [matAutocomplete]="auto"
+        class="custom_input"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+            *ngFor="let option of filteredWorkObjects$ | async"
+            [value]="option.name"
+        >
+            {{ option.name }}
+        </mat-option>
+    </mat-autocomplete>
+
+    <p class="custom_input_label">Ціна</p>
+    <input type="number" formControlName="price" class="custom_input" />
+
+    <h2>Дата і час</h2>
+    <p class="custom_input_label">Дата</p>
+    <mat-form-field style="width: 75%">
+        <input
+            formControlName="date"
+            class="custom_input"
+            matInput
+            [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="time-container">
+        <ng-container
+            *ngTemplateOutlet="
+                timeField;
+                context: {
+                    label: 'Початок',
+                    formControlName: 'startTime'
+                }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                timeField;
+                context: {
+                    label: 'Кінець',
+                    formControlName: 'finishTime'
+                }
+            "
+        ></ng-container>
+    </div>
+
+    <label class="custom_input_label repeatable_checkbox">
+        <input type="checkbox" formControlName="repeatable" />
+        Повторювати щотижня
+    </label>
+    <label class="custom_input_label repeatable_checkbox">
+        <input type="checkbox" formControlName="isPaid" />
+        Оплачено
+    </label>
+
+    <button mat-raised-button color="primary" type="submit">Підтвердити</button>
+</form>
+
+<ng-template #timeField let-label="label" let-formControlName="formControlName">
+    <div [formGroup]="eventForm">
+        <div class="time">
+            <p class="custom_input_label">{{ label }}</p>
+            <input
+                class="custom_input"
+                [min]="'00:00'"
+                [max]="'23:59'"
+                [format]="24"
+                [ngxTimepicker]="timepicker"
+                [formControlName]="formControlName"
+                readonly
+            />
+        </div>
+    </div>
+    <ngx-material-timepicker
+        #timepicker
+        [theme]="darkTheme"
+        [minutesGap]="5"
+    ></ngx-material-timepicker>
+</ng-template>

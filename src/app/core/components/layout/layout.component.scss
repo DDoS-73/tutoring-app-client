@@ -1,16 +1,18 @@
+@use '@angular/material' as mat;
+@use '../../../../styles/theme' as theme;
+
 :host {
-    height: 100vh;
-}
-
-mat-sidenav-container {
-    height: 100%;
-}
-
-mat-sidenav {
-    width: fit-content;
-}
-
-mat-sidenav ::ng-deep .mat-drawer-inner-container {
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    position: relative;
+}
+
+app-sidebar {
+    position: sticky;
+    top: 0;
+}
+
+main {
+    flex-grow: 1;
+    background-color: mat.get-theme-color(theme.$theme, background, background);
 }

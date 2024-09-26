@@ -1,0 +1,113 @@
+@use '@angular/material' as mat;
+@use '../../../../../styles/theme' as theme;
+
+:host {
+    display: block;
+    height: 100%;
+}
+
+input[type='number'] {
+    margin-bottom: 24px;
+}
+
+.custom_input {
+    border: 1px solid mat.get-theme-color(theme.$theme, foreground, divider);
+    outline: none;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 1rem;
+
+    &::placeholder {
+        color: mat.get-theme-color(theme.$theme, primary, 500);
+    }
+
+    &:focus,
+    &:focus-visible {
+        border: 1px solid mat.get-theme-color(theme.$theme, primary, 700);
+        outline: none;
+    }
+}
+
+.custom_input_label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: mat.get-theme-color(theme.$theme, foreground, text);
+}
+
+.time-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-top: 10px;
+    width: 75%;
+}
+
+.repeatable_checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    input {
+        margin: 0 5px 0 0;
+    }
+}
+
+.time {
+    margin-right: 20px;
+}
+
+::ng-deep {
+    mat-option.mat-mdc-option {
+        min-height: 25px;
+        padding-left: 15px;
+    }
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: #fff;
+    }
+
+    div.mat-mdc-text-field-wrapper,
+    div.mat-mdc-form-field-infix {
+        max-height: 30px;
+        padding-left: 0;
+    }
+
+    div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+            .mdc-text-field--textarea
+        )
+        .mat-mdc-form-field-infix {
+        padding: 5px;
+    }
+
+    div.mat-mdc-form-field-icon-suffix,
+    mat-datepicker-toggle.mat-datepicker-toggle
+        > button.mat-mdc-icon-button.mat-mdc-button-base {
+        position: absolute;
+        width: 100%;
+        max-height: 30px;
+        top: 0;
+        padding: 0;
+    }
+
+    button.mat-mdc-icon-button.mat-mdc-button-base > * {
+        display: none;
+    }
+
+    div.mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    div.timepicker-backdrop-overlay {
+        z-index: 1001 !important;
+    }
+
+    div.timepicker-overlay {
+        z-index: 1003 !important;
+    }
+}

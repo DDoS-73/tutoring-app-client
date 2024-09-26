@@ -1,38 +1,65 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { CalendarBodyComponent } from './components/calendar-body/calendar-body.component';
-import { CalendarBodyHourListComponent } from './components/calendar-body/components/calendar-body-hour-list/calendar-body-hour-list.component';
 import { HighlightTodayDirective } from './directives/highlight-today.directive';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { SharedModule } from '../../shared/shared.module';
-import { HammerModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { EventModule } from '../../event/event.module';
 import { CalendarComponent } from './calendar.component';
 import { CalendarRoutingModule } from './calendar-routing.module';
+import {
+    CALENDAR_CONFIG_TOKEN,
+    CalendarConfig,
+} from './models/calendar.config';
+import { DateService } from './services/date.service';
+import { EarningsService } from './services/earnings.service';
+import { HourPipe } from './pipes/hour.pipe';
+import { EventFormComponent } from './components/event-form/event-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatInputModule } from '@angular/material/input';
+import { FormFieldsModule } from '../../shared/components/form-fields/form-fields.module';
+import { MatButtonModule } from '@angular/material/button';
+import { EventService } from './services/event.service';
+import { EventTileComponent } from './components/event-tile/event-tile.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
     declarations: [
-        CalendarHeaderComponent,
         CalendarBodyComponent,
-        CalendarBodyHourListComponent,
-        HighlightTodayDirective,
         CalendarComponent,
+        EventFormComponent,
+        HourPipe,
+        HighlightTodayDirective,
+        EventTileComponent,
     ],
-    exports: [CalendarHeaderComponent, CalendarBodyComponent],
     imports: [
         CommonModule,
-        MatGridListModule,
         MatDialogModule,
-        MatDividerModule,
         SharedModule,
-        HammerModule,
-        HttpClientModule,
-        EventModule,
         CalendarRoutingModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        NgxMaterialTimepickerModule,
+        MatInputModule,
+        FormFieldsModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatNativeDateModule,
+    ],
+    providers: [
+        {
+            provide: CALENDAR_CONFIG_TOKEN,
+            useValue: new CalendarConfig(),
+        },
+        DateService,
+        EarningsService,
+        EventService,
     ],
 })
 export class CalendarModule {}

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { BodyComponent } from './components/body/body.component';
 import { DialogContainerComponent } from './components/dialog-container/dialog-container.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +16,6 @@ import { GoogleBtnComponent } from './components/google-btn/google-btn.component
 @NgModule({
     declarations: [
         HeaderComponent,
-        BodyComponent,
         DialogContainerComponent,
         LoaderComponent,
         ToasterComponent,
@@ -25,7 +23,6 @@ import { GoogleBtnComponent } from './components/google-btn/google-btn.component
     ],
     exports: [
         HeaderComponent,
-        BodyComponent,
         DialogContainerComponent,
         LoaderComponent,
         ToasterComponent,

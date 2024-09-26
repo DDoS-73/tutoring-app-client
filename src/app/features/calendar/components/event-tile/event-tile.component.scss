@@ -1,0 +1,15 @@
+.tile {
+    position: absolute;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+p {
+    color: white;
+    word-wrap: break-word;
+}

@@ -1,6 +1,7 @@
 export enum MainPages {
     Auth = 'auth',
     Calendar = 'calendar',
+    Statistics = 'statistics',
 }
 
 export enum AuthPages {

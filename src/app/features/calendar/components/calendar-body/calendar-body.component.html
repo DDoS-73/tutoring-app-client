@@ -1,28 +1,75 @@
-<div
-    class="container"
-    #container
-    [style]="{ height: calendarBodyHeight }"
-    (swipeleft)="onSwipeLeft()"
-    (swiperight)="onSwipeRight()"
->
-    <app-calendar-body-hour-list></app-calendar-body-hour-list>
+<ng-container [ngTemplateOutlet]="daysList"></ng-container>
+<mat-divider></mat-divider>
+<div class="calendar-body">
+    <ng-container [ngTemplateOutlet]="hoursList"></ng-container>
 
-    <div style="position: relative; flex: 1 0 0">
-        <mat-grid-list cols="7" [rowHeight]="cellHeight + 'px'">
-            <mat-grid-tile
-                id="mat-grid-tile"
-                *ngFor="let tile of tiles; let i = index"
-                appHighlightToday
-                [day]="calculateDay(i)"
-                (click)="openDialog(calculateRow(i), calculateDay(i))"
-            >
-            </mat-grid-tile>
-        </mat-grid-list>
+    <div class="grid-wrapper">
+        <div
+            #tile
+            *ngFor="let tile of tiles; let i = index"
+            class="empty-tile"
+            appHighlightToday
+            [day]="calculateDay(i)"
+            (click)="openCreateDialog(calculateRow(i), calculateDay(i))"
+        ></div>
 
         <app-event-tile
             *ngFor="let event of events$ | async"
-            [tileHeight]="cellHeight"
+            [height]="cellHeight"
+            [width]="cellWidth"
             [event]="event"
+            (click)="openUpdateDialog(event)"
         ></app-event-tile>
     </div>
 </div>
+
+<ng-template #daysList>
+    <div class="calendar-days">
+        <div
+            *ngFor="let date of dateService.weekDays$ | async; let i = index"
+            class="week_day"
+            appHighlightToday
+            [day]="i + 1"
+        >
+            <p>{{ date.getDate() }}</p>
+            <p>{{ calendarConfig.daysOfTheWeek[i] }}</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #hoursList>
+    <div>
+        <div
+            *ngFor="let hour of hours; let i = index"
+            [style.height.px]="cellHeight + 1"
+            class="hour-item"
+        >
+            {{ i | hour }}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #createEventModal let-data>
+    <app-dialog-container title="Створення події">
+        <app-event-form
+            [event]="data.calendarEvent"
+            (eventFormSubmit)="createEvent($event)"
+        ></app-event-form>
+    </app-dialog-container>
+</ng-template>
+
+<ng-template #updateEventModal let-data>
+    <app-dialog-container title="Оновлення події">
+        <app-event-form
+            [event]="data.calendarEvent"
+            (eventFormSubmit)="updateEvent($event, data.calendarEvent.id)"
+        ></app-event-form>
+        <button
+            mat-stroked-button
+            color="warn"
+            (click)="deleteEvent(data.calendarEvent.id)"
+        >
+            Видалити подію
+        </button>
+    </app-dialog-container>
+</ng-template>

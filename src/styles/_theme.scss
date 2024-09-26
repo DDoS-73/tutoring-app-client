@@ -1,13 +1,9 @@
 @use '@angular/material' as mat;
-@use '../app/shared/components/body/body-theme';
-@use '../app/features/calendar/components/calendar-header/calendar-header-theme'
-    as calendar-header;
-@use 'input-theme';
 @use 'typography' as typography;
 @use 'snackbar';
 
 $primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$grey-palette);
+$accent: mat.define-palette(mat.$green-palette);
 $warn: mat.define-palette(mat.$red-palette);
 
 $theme: mat.define-light-theme(
@@ -20,9 +16,3 @@ $theme: mat.define-light-theme(
         typography: typography.$my-typography,
     )
 );
-
-@mixin app-theme {
-    @include body-theme.body-background($theme);
-    @include calendar-header.calendar-header($theme);
-    @include input-theme.input-theme($theme);
-}

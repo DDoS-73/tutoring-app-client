@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { LayoutComponent } from './components/layout/layout.component';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HttpClientModule } from '@angular/common/http';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { LetDirective } from '../shared/directives/local-let.directive';
 
 @NgModule({
     declarations: [LayoutComponent, SidebarComponent],
@@ -20,6 +21,9 @@ import { OAuthModule } from 'angular-oauth2-oidc';
         MatDividerModule,
         CommonModule,
         OAuthModule.forRoot(),
+        LetDirective,
+        RouterLinkActive,
+        RouterLink,
     ],
 })
 export class CoreModule {}

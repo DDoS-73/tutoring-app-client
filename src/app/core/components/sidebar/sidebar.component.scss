@@ -2,10 +2,12 @@
 @use '../../../../styles/theme' as theme;
 
 :host {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: fit-content;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid
+        mat.get-theme-color(theme.$theme, foreground, divider);
 }
 
 .header {
@@ -24,10 +26,11 @@
     align-items: center;
     gap: 8px;
     padding: 16px;
+    cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &.active {
         background-color: mat.get-theme-color(theme.$theme, primary, 50);
-        cursor: pointer;
     }
 }
 

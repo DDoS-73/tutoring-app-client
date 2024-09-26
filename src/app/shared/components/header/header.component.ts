@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DateService } from '../../../features/calendar/services/DateService/date.service';
-import { EarningsService } from '../../../features/calendar/services/EarningsService/earnings.service';
+// import { DateService } from '../../../features/calendar/services/DateService/date.service';
+// import { EarningsService } from '../../../features/calendar/services/EarningsService/earnings.service';
 
 @Component({
     selector: 'app-header',
@@ -9,10 +9,7 @@ import { EarningsService } from '../../../features/calendar/services/EarningsSer
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-    constructor(
-        public dateService: DateService,
-        public earningService: EarningsService
-    ) {}
+    constructor() {} // public earningService: EarningsService // public dateService: DateService,
 
     // onCurrentWeekClick() {
     //   this.dateService.updateWeekDays(new Date());

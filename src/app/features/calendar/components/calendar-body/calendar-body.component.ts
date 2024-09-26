@@ -1,23 +1,24 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
-    OnInit,
+    Inject,
+    TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { CreateEventDialogComponent } from '../../../../event/components/create-event-dialog/create-event-dialog.component';
-import { Event } from '../../../../event/models/Event.model';
-import { EventService } from '../../../../event/services/EventService/event.service';
-import { CustomMatDialogConfig } from '../../../../shared/const/CustomMatDialogConfig';
+import { CalendarEvent } from '../../models/calendarEvent.model';
+import { EventService } from '../../services/event.service';
+import { DialogConfig } from '../../../../shared/models/dialog.config';
+import { CalendarEventModalData } from '../../models/calendar-event-modal.data';
+import { DateService } from '../../services/date.service';
 import {
-    CALENDAR_BODY_HEIGHT,
-    CELL_HEIGHT,
-} from '../../../../shared/const/cellHeight';
-import { HOURS_AMOUNT } from '../../../../shared/const/hoursAmount';
-import { TileData } from '../../models/TileData.model';
-import { DateService } from '../../services/DateService/date.service';
+    CALENDAR_CONFIG_TOKEN,
+    CalendarConfig,
+} from '../../models/calendar.config';
 
 @Component({
     selector: 'app-calendar-body',
@@ -25,62 +26,92 @@ import { DateService } from '../../services/DateService/date.service';
     styleUrls: ['./calendar-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarBodyComponent implements OnInit {
-    tiles = new Array(HOURS_AMOUNT * 7);
-    cellHeight = CELL_HEIGHT;
-    calendarBodyHeight = CALENDAR_BODY_HEIGHT + 'px';
-    events$!: Observable<Event[]>;
-    @ViewChild('container') containerRef!: ElementRef<HTMLDivElement>;
+export class CalendarBodyComponent implements AfterViewInit {
+    @ViewChild('tile')
+    protected tile!: ElementRef<HTMLElement>;
+
+    @ViewChild('createEventModal')
+    protected createEventModal!: TemplateRef<any>;
+    protected createEventModalRef?: MatDialogRef<any>;
+
+    @ViewChild('updateEventModal')
+    protected updateEventModal!: TemplateRef<any>;
+    protected updateEventModalRef?: MatDialogRef<any>;
+
+    protected tiles = new Array(this.calendarConfig.hoursAmount * 7);
+    protected hours = new Array(this.calendarConfig.hoursAmount);
+    protected events$: Observable<CalendarEvent[]> = this.eventService.events$;
+
+    get cellHeight(): number {
+        return this.calendarConfig.cellHeight;
+    }
+
+    get cellWidth(): number {
+        return this.calendarConfig.cellWidth;
+    }
 
     constructor(
         private dialog: MatDialog,
         private eventService: EventService,
-        private dateService: DateService
+        protected dateService: DateService,
+        @Inject(CALENDAR_CONFIG_TOKEN) protected calendarConfig: CalendarConfig,
+        private cdr: ChangeDetectorRef
     ) {}
 
-    ngOnInit() {
-        this.events$ = this.eventService.events$;
+    ngAfterViewInit() {
+        this.calendarConfig.setCellHeight(this.tile.nativeElement.clientHeight);
+        this.calendarConfig.setCellWidth(
+            this.tile.nativeElement.clientWidth + 0.5
+        );
+        this.cdr.detectChanges();
     }
 
-    openDialog(row: number, col: number) {
-        const dialogConfig = new CustomMatDialogConfig<TileData>();
-        dialogConfig.data = { row, col };
-        this.dialog.open(CreateEventDialogComponent, dialogConfig);
+    protected openCreateDialog(row: number, col: number) {
+        const dialogConfig = new DialogConfig<CalendarEventModalData>();
+        const calendarEvent: Partial<CalendarEvent> = {
+            startTime: row + ':00',
+            finishTime: row + 1 + ':00',
+            date: this.dateService.getWeekDayByIndex(col - 1),
+        };
+        dialogConfig.data = { calendarEvent };
+        this.createEventModalRef = this.dialog.open(
+            this.createEventModal,
+            dialogConfig
+        );
     }
 
-    calculateDay(index: number): number {
+    protected openUpdateDialog(calendarEvent: CalendarEvent) {
+        const dialogConfig = new DialogConfig<CalendarEventModalData>();
+        dialogConfig.data = { calendarEvent };
+        this.updateEventModalRef = this.dialog.open(
+            this.updateEventModal,
+            dialogConfig
+        );
+    }
+
+    protected calculateDay(index: number): number {
         return (index + 1) % 7 ? (index + 1) % 7 : 7;
     }
 
-    calculateRow(index: number): number {
+    protected calculateRow(index: number): number {
         return Math.floor(index / 7);
     }
 
-    private animationConfig(shift: number) {
-        return [
-            {
-                transform: 'translateX(0)',
-            },
-            {
-                transform: `translateX(${shift}px)`,
-            },
-            {
-                transform: 'translateX(0)',
-            },
-        ];
+    protected createEvent(event: CalendarEvent) {
+        this.eventService
+            .createEvent(event)
+            .subscribe(() => this.createEventModalRef?.close());
     }
 
-    onSwipeLeft() {
-        this.containerRef.nativeElement.animate(this.animationConfig(-100), {
-            duration: 500,
-        });
-        this.dateService.getNextWeek();
+    protected updateEvent(event: CalendarEvent, id: number) {
+        this.eventService
+            .updateEvent(event, id)
+            .subscribe(() => this.updateEventModalRef?.close());
     }
 
-    onSwipeRight() {
-        this.containerRef.nativeElement.animate(this.animationConfig(100), {
-            duration: 500,
-        });
-        this.dateService.getPrevWeek();
+    protected deleteEvent(id: number) {
+        this.eventService
+            .deleteEvent(id)
+            .subscribe(() => this.updateEventModalRef?.close());
     }
 }

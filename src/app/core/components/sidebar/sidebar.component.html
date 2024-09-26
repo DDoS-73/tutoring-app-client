@@ -1,4 +1,4 @@
-<ng-container *ngIf="user$ | async as user">
+<ng-container *localLet="user$ | async as user">
     <div class="header">
         <i class="material-icons-outlined">account_circle</i>
         <p class="mat-headline-5">Вітаємо, {{ user.name }}</p>
@@ -6,7 +6,12 @@
 
     <mat-divider></mat-divider>
 
-    <div class="sidebar-item" *ngFor="let menu of menuItems">
+    <div
+        class="sidebar-item"
+        *ngFor="let menu of menuItems"
+        [routerLink]="menu.routerLink"
+        routerLinkActive="active"
+    >
         <i class="material-icons-outlined">{{ menu.icon }}</i>
         <p class="mat-subtitle-1">{{ menu.title }}</p>
     </div>

@@ -1,21 +1,31 @@
+:host {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
+    gap: 16px;
+    padding: 24px 32px;
+    flex-grow: 1;
 
     .dialog-title {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 0;
-        padding: 10px 24px;
+    }
+
+    mat-icon {
+        cursor: pointer;
     }
 
     .dialog-content {
-        padding: 10px 24px;
         flex-grow: 1;
-        display: block;
-        max-height: calc(100vh - 52px);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0;
     }
 }

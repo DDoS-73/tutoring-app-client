@@ -1,8 +1,8 @@
 <div class="container">
-    <h2 class="dialog-title">
-        <ng-content select="span"></ng-content>
+    <div class="dialog-title">
+        <p class="mat-headline-4">{{ title }}</p>
         <mat-icon mat-dialog-close fontIcon="close"></mat-icon>
-    </h2>
+    </div>
 
     <mat-dialog-content class="dialog-content">
         <ng-content></ng-content>

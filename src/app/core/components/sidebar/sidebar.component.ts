@@ -2,10 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { GoogleAuthService } from '../../services/google-auth.service';
+import { MainPages } from '../../../shared/models/pages';
 
 interface MenuItem {
     title: string;
     icon: string;
+    routerLink: string;
 }
 
 @Component({
@@ -19,10 +21,12 @@ export class SidebarComponent {
         {
             title: 'Календар',
             icon: 'calendar_month',
+            routerLink: MainPages.Calendar,
         },
         {
             title: 'Статистика',
             icon: 'query_stats',
+            routerLink: MainPages.Statistics,
         },
     ];
     protected user$ = this.authService.user$;

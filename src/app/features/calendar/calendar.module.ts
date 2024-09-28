@@ -7,12 +7,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SharedModule } from '../../shared/shared.module';
 import { CalendarComponent } from './calendar.component';
 import { CalendarRoutingModule } from './calendar-routing.module';
-import {
-    CALENDAR_CONFIG_TOKEN,
-    CalendarConfig,
-} from './models/calendar.config';
-import { DateService } from './services/date.service';
-import { EarningsService } from './services/earnings.service';
 import { HourPipe } from './pipes/hour.pipe';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +17,6 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatInputModule } from '@angular/material/input';
 import { FormFieldsModule } from '../../shared/components/form-fields/form-fields.module';
 import { MatButtonModule } from '@angular/material/button';
-import { EventService } from './services/event.service';
 import { EventTileComponent } from './components/event-tile/event-tile.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
@@ -55,15 +48,6 @@ import { WeekSelectorComponent } from './components/week-selector/week-selector.
         MatDividerModule,
         MatButtonModule,
         MatNativeDateModule,
-    ],
-    providers: [
-        {
-            provide: CALENDAR_CONFIG_TOKEN,
-            useValue: new CalendarConfig(),
-        },
-        DateService,
-        EarningsService,
-        EventService,
     ],
 })
 export class CalendarModule {}

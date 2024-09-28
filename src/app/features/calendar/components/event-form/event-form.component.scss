@@ -4,6 +4,60 @@
 :host {
     display: block;
     height: 100%;
+
+    ::ng-deep {
+        mat-option.mat-mdc-option {
+            min-height: 25px;
+            padding-left: 15px;
+        }
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+            background-color: #fff;
+        }
+
+        div.mat-mdc-text-field-wrapper,
+        div.mat-mdc-form-field-infix {
+            max-height: 40px;
+            padding-left: 0;
+        }
+
+        div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+                .mdc-text-field--textarea
+            )
+            .mat-mdc-form-field-infix {
+            padding: 5px;
+        }
+
+        div.mat-mdc-form-field-icon-suffix,
+        mat-datepicker-toggle.mat-datepicker-toggle
+            > button.mat-mdc-icon-button.mat-mdc-button-base {
+            position: absolute;
+            width: 100%;
+            max-height: 30px;
+            top: 0;
+            padding: 0;
+        }
+
+        button.mat-mdc-icon-button.mat-mdc-button-base > * {
+            display: none;
+        }
+
+        div.mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
+
+        div.timepicker-backdrop-overlay {
+            z-index: 1001 !important;
+        }
+
+        div.timepicker-overlay {
+            z-index: 1003 !important;
+        }
+    }
 }
 
 input[type='number'] {
@@ -56,58 +110,4 @@ input[type='number'] {
 
 .time {
     margin-right: 20px;
-}
-
-::ng-deep {
-    mat-option.mat-mdc-option {
-        min-height: 25px;
-        padding-left: 15px;
-    }
-
-    mat-form-field {
-        width: 100%;
-    }
-
-    div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-        background-color: #fff;
-    }
-
-    div.mat-mdc-text-field-wrapper,
-    div.mat-mdc-form-field-infix {
-        max-height: 30px;
-        padding-left: 0;
-    }
-
-    div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-            .mdc-text-field--textarea
-        )
-        .mat-mdc-form-field-infix {
-        padding: 5px;
-    }
-
-    div.mat-mdc-form-field-icon-suffix,
-    mat-datepicker-toggle.mat-datepicker-toggle
-        > button.mat-mdc-icon-button.mat-mdc-button-base {
-        position: absolute;
-        width: 100%;
-        max-height: 30px;
-        top: 0;
-        padding: 0;
-    }
-
-    button.mat-mdc-icon-button.mat-mdc-button-base > * {
-        display: none;
-    }
-
-    div.mat-mdc-form-field-subscript-wrapper {
-        display: none;
-    }
-
-    div.timepicker-backdrop-overlay {
-        z-index: 1001 !important;
-    }
-
-    div.timepicker-overlay {
-        z-index: 1003 !important;
-    }
 }

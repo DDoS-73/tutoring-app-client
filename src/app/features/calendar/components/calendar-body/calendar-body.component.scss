@@ -55,6 +55,13 @@ $hour-list-width: 50px;
         min-height: 80px;
         cursor: pointer;
         width: calc(100% / 7 - 1px);
+
+        &:hover {
+            background-color: mat.get-color-from-palette(
+                mat.$grey-palette,
+                200
+            );
+        }
     }
 }
 

@@ -14,8 +14,10 @@ export class AppComponent {
         private authService: AuthService,
         protected googleAuthService: GoogleAuthService
     ) {
-        if (localStorage.getItem('token'))
+        if (localStorage.getItem('token')) {
             this.authService.getProfile().subscribe();
-        this.googleAuthService.getProfile().subscribe();
+        } else {
+            this.googleAuthService.getProfile().subscribe();
+        }
     }
 }

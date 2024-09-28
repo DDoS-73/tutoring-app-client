@@ -2,31 +2,27 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
-    Injectable,
     Input,
     OnInit,
     Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { EventService } from '../../services/event.service';
 import { map, Observable, startWith, withLatestFrom } from 'rxjs';
 import { WorkObject } from '../../models/work-object.model';
 import { CalendarEvent } from '../../models/calendarEvent.model';
-
-@Injectable()
-export class CustomDateAdapter extends NativeDateAdapter {
-    override getFirstDayOfWeek(): number {
-        return 1;
-    }
-}
+import { CustomDateAdapter } from '../../models/week-selector/custom-date.adapter';
 
 @Component({
     selector: 'app-event-form',
     templateUrl: './event-form.component.html',
     styleUrls: ['./event-form.component.scss'],
-    providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
+    providers: [
+        { provide: DateAdapter, useClass: CustomDateAdapter },
+        { provide: MAT_DATE_LOCALE, useValue: 'uk' },
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventFormComponent implements OnInit {

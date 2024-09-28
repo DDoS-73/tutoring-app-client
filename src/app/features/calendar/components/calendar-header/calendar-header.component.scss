@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@use '../../../../../styles/theme' as theme;
+
+:host {
+    padding: 15px 10px;
+    background-color: white;
+    border-bottom: 1px solid
+        mat.get-theme-color(theme.$theme, foreground, divider);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+    gap: 16px;
+}

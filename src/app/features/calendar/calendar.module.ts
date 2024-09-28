@@ -26,6 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { EventService } from './services/event.service';
 import { EventTileComponent } from './components/event-tile/event-tile.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
+import { WeekSelectorComponent } from './components/week-selector/week-selector.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +37,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         HourPipe,
         HighlightTodayDirective,
         EventTileComponent,
+        CalendarHeaderComponent,
+        WeekSelectorComponent,
     ],
     imports: [
         CommonModule,

@@ -24,9 +24,7 @@ export class EventTileComponent implements OnInit {
         this.event.date = new Date(this.event.date);
         this.weekDay =
             this.event.date.getDay() === 0 ? 6 : this.event.date.getDay() - 1;
-        const topOffset =
-            // this.timeToNumber(this.event.startTime) - DISPLAYED_HOURS;
-            this.timeToNumber(this.event.startTime);
+        const topOffset = this.timeToNumber(this.event.startTime);
         const height =
             (this.timeToNumber(this.event.finishTime) -
                 this.timeToNumber(this.event.startTime)) *

@@ -36,7 +36,7 @@ export class EarningsService {
         private dateService: DateService,
         private http: HttpClient
     ) {
-        this.initEarningsUpdate();
+        // this.initEarningsUpdate();
     }
 
     public getMonthEarnings(dayOfMonth: string) {

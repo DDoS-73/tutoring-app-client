@@ -9,10 +9,6 @@ import {
 export class DateService implements OnDestroy {
     private _weekDays$ = new BehaviorSubject<Date[]>([]);
     public weekDays$ = this._weekDays$.asObservable();
-    private _weekRange$ = new BehaviorSubject<string>('');
-    public weekRange$ = this._weekRange$.asObservable();
-    private _currentMonth$ = new BehaviorSubject<string>('');
-    public currentMonth$ = this._currentMonth$.asObservable();
 
     constructor(
         @Inject(CALENDAR_CONFIG_TOKEN) protected calendarConfig: CalendarConfig
@@ -22,8 +18,6 @@ export class DateService implements OnDestroy {
 
     ngOnDestroy() {
         this._weekDays$.complete();
-        this._weekRange$.complete();
-        this._currentMonth$.complete();
     }
 
     public updateWeekDays(weekDay: Date) {
@@ -40,57 +34,6 @@ export class DateService implements OnDestroy {
             mostRecentMonday.setDate(mostRecentMonday.getDate() + 1);
         }
         this._weekDays$.next(current7DaysStartingFromMonday);
-
-        this.updateWeekRange();
-        this.updateCurrentMonth();
-    }
-
-    private updateWeekRange() {
-        const startOfWeek = this._weekDays$.getValue()[0];
-        const endOfWeek = this._weekDays$.getValue()[6];
-        const startMonth =
-            this.calendarConfig.monthNamesInGenitiveCase[
-                startOfWeek.getMonth()
-            ];
-        const endMonth =
-            this.calendarConfig.monthNamesInGenitiveCase[endOfWeek.getMonth()];
-        const startDay = startOfWeek.getDate();
-        const endDay = endOfWeek.getDate();
-
-        const weekRange =
-            startOfWeek.getMonth() === endOfWeek.getMonth()
-                ? `${startDay} - ${endDay} ${startMonth}`
-                : `${startDay} ${startMonth} - ${endDay} ${endMonth}`;
-        this._weekRange$.next(weekRange);
-    }
-
-    private updateCurrentMonth() {
-        if (
-            this._currentMonth$.getValue() !==
-            this.calendarConfig.monthNames[
-                this._weekDays$.getValue()[3].getMonth()
-            ]
-        ) {
-            this._currentMonth$.next(
-                this.calendarConfig.monthNames[
-                    this._weekDays$.getValue()[3].getMonth()
-                ]
-            );
-        }
-    }
-
-    public getNextWeek() {
-        const thisMonday = this._weekDays$.getValue()[0];
-        const nextMonday = new Date(thisMonday);
-        nextMonday.setDate(thisMonday.getDate() + 7);
-        this.updateWeekDays(nextMonday);
-    }
-
-    public getPrevWeek() {
-        const thisMonday = this._weekDays$.getValue()[0];
-        const prevMonday = new Date(thisMonday);
-        prevMonday.setDate(thisMonday.getDate() - 7);
-        this.updateWeekDays(prevMonday);
     }
 
     public getWeekDayByIndex(index: number) {

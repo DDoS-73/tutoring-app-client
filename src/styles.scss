@@ -42,4 +42,12 @@ button {
         accent,
         50
     ) !important;
+
+    &:hover {
+        background-color: mat.get-theme-color(
+            my-theme.$theme,
+            accent,
+            100
+        ) !important;
+    }
 }

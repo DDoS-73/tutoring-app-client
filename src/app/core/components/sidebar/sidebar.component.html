@@ -1,7 +1,7 @@
 <ng-container *localLet="user$ | async as user">
     <div class="header">
         <i class="material-icons-outlined">account_circle</i>
-        <p class="mat-headline-5">Вітаємо, {{ user.name }}</p>
+        <p class="mat-headline-5">Вітаємо, {{ user?.name }}</p>
     </div>
 
     <mat-divider></mat-divider>

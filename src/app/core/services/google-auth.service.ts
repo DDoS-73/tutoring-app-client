@@ -1,15 +1,21 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { AuthService } from './auth.service';
 import { User } from '../../shared/models/auth/user.model';
 import { from, Observable, of, switchMap, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { SignInResponse } from '../../shared/models/auth/sign-in.response';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GoogleAuthService {
-    protected oAuthService: OAuthService = inject(OAuthService);
-    constructor(private authService: AuthService) {
+    constructor(
+        private authService: AuthService,
+        private oAuthService: OAuthService,
+        private http: HttpClient
+    ) {
         this._initConfiguration();
     }
 
@@ -28,10 +34,6 @@ export class GoogleAuthService {
         this.oAuthService.setupAutomaticSilentRefresh();
     }
 
-    private _loadOAuthData(): Observable<boolean> {
-        return from(this.oAuthService.loadDiscoveryDocumentAndTryLogin());
-    }
-
     public signIn() {
         this.oAuthService.initLoginFlow();
     }
@@ -43,15 +45,32 @@ export class GoogleAuthService {
 
     public getProfile(): Observable<any> {
         return this._loadOAuthData().pipe(
+            switchMap(() => this._getJwtForGoogle()),
+            tap(({ token }) => localStorage.setItem('token', token)),
             switchMap(() => {
                 const user = this.oAuthService.getIdentityClaims();
                 return of(user);
             }),
-            tap(user => this.authService.setUser(user as User))
+            tap(data => {
+                const user: User = {
+                    name: data['given_name'],
+                    surname: data['family_name'],
+                    email: data['email'],
+                };
+                this.authService.setUser(user);
+            })
         );
     }
 
-    public hasValidToken() {
-        return this.oAuthService.hasValidAccessToken();
+    private _loadOAuthData(): Observable<boolean> {
+        return from(this.oAuthService.loadDiscoveryDocumentAndTryLogin());
+    }
+
+    private _getJwtForGoogle() {
+        const idToken = this.oAuthService.getIdToken();
+        return this.http.post<SignInResponse>(
+            `${environment.backendApi}/users/google`,
+            { idToken }
+        );
     }
 }

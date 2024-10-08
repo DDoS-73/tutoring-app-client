@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EventService } from '../../services/event.service';
 import { map, Observable } from 'rxjs';
-import { CalendarEvent } from '../../models/calendarEvent.model';
+import { CalendarEvent } from '../../models/calendar-event.model';
 
 @Component({
     selector: 'app-calendar-header',

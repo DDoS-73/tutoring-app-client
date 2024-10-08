@@ -62,6 +62,7 @@ export class SignUpComponent {
                 .signUp(formValue)
                 .pipe(
                     switchMap(() => this.authService.signIn(formValue)),
+                    switchMap(() => this.authService.getProfile()),
                     takeUntilDestroyed(this.dr)
                 )
                 .subscribe(() => {

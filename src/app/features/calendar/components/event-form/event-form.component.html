@@ -60,10 +60,14 @@
         ></ng-container>
     </div>
 
-    <label class="custom_input_label repeatable_checkbox">
-        <input type="checkbox" formControlName="repeatable" />
-        Повторювати щотижня
-    </label>
+    <mat-form-field class="select">
+        <mat-label>Повторювати</mat-label>
+        <mat-select formControlName="repeatable">
+            @for (option of repeatableOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
     <label class="custom_input_label repeatable_checkbox">
         <input type="checkbox" formControlName="isPaid" />
         Оплачено

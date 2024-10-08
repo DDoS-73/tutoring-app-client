@@ -12,8 +12,9 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { EventService } from '../../services/event.service';
 import { map, Observable, startWith, withLatestFrom } from 'rxjs';
 import { WorkObject } from '../../models/work-object.model';
-import { CalendarEvent } from '../../models/calendarEvent.model';
+import { CalendarEvent } from '../../models/calendar-event.model';
 import { CustomDateAdapter } from '../../models/week-selector/custom-date.adapter';
+import { RecurrenceTypes } from '../../models/recurred-pattern.model';
 
 @Component({
     selector: 'app-event-form',
@@ -32,6 +33,25 @@ export class EventFormComponent implements OnInit {
     protected eventForm!: FormGroup;
     protected filteredWorkObjects$!: Observable<WorkObject[]>;
 
+    protected readonly repeatableOptions = [
+        {
+            name: 'Не повторювати',
+            value: '',
+        },
+        {
+            name: 'Щодня',
+            value: RecurrenceTypes.Daily,
+        },
+        {
+            name: 'Щотижня',
+            value: RecurrenceTypes.Weekly,
+        },
+        {
+            name: 'Щомісяця',
+            value: RecurrenceTypes.Monthly,
+        },
+    ];
+
     get workObjectControl() {
         return this.eventForm.controls['workObject'];
     }
@@ -45,7 +65,7 @@ export class EventFormComponent implements OnInit {
             date: new FormControl(this.event?.date ?? new Date()),
             startTime: new FormControl(this.event?.startTime ?? '00:00'),
             finishTime: new FormControl(this.event?.finishTime ?? '01:00'),
-            repeatable: new FormControl(this.event?.repeatable ?? false),
+            repeatable: new FormControl(this.event?.repeatable ?? ''),
             isPaid: new FormControl(this.event?.isPaid ?? false),
         });
 

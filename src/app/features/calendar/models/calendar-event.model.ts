@@ -1,4 +1,5 @@
 import { WorkObject } from './work-object.model';
+import { RecurredPattern } from './recurred-pattern.model';
 
 export class CalendarEvent {
     id?: string | number;
@@ -7,8 +8,9 @@ export class CalendarEvent {
     date: Date;
     startTime: string;
     finishTime: string;
-    repeatable: boolean;
+    repeatable: string;
     isPaid?: boolean;
+    recurredPattern: RecurredPattern | null;
 
     constructor(calendarEvent: CalendarEvent) {
         this.id = calendarEvent.id;
@@ -17,7 +19,8 @@ export class CalendarEvent {
         this.date = calendarEvent.date;
         this.startTime = calendarEvent.startTime.slice(0, 5);
         this.finishTime = calendarEvent.finishTime.slice(0, 5);
-        this.repeatable = calendarEvent.repeatable;
+        this.repeatable = calendarEvent.recurredPattern?.recurrenceType ?? '';
         this.isPaid = calendarEvent.isPaid;
+        this.recurredPattern = calendarEvent.recurredPattern;
     }
 }

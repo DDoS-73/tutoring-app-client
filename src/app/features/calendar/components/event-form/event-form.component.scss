@@ -111,3 +111,14 @@ input[type='number'] {
 .time {
     margin-right: 20px;
 }
+
+.select {
+    margin-top: 8px;
+
+    ::ng-deep {
+        div.mat-mdc-text-field-wrapper,
+        div.mat-mdc-form-field-infix {
+            max-height: initial;
+        }
+    }
+}

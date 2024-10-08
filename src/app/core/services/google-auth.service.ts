@@ -2,7 +2,15 @@ import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { AuthService } from './auth.service';
 import { User } from '../../shared/models/auth/user.model';
-import { from, Observable, of, switchMap, tap } from 'rxjs';
+import {
+    catchError,
+    from,
+    Observable,
+    of,
+    switchMap,
+    tap,
+    throwError,
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { SignInResponse } from '../../shared/models/auth/sign-in.response';
 import { environment } from '../../../environments/environment';
@@ -58,6 +66,10 @@ export class GoogleAuthService {
                     email: data['email'],
                 };
                 this.authService.setUser(user);
+            }),
+            catchError(err => {
+                this.authService.setUser(null);
+                return throwError(err);
             })
         );
     }

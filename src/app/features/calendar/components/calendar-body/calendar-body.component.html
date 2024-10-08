@@ -64,12 +64,22 @@
             [event]="data.calendarEvent"
             (eventFormSubmit)="updateEvent($event, data.calendarEvent.id)"
         ></app-event-form>
-        <button
-            mat-stroked-button
-            color="warn"
-            (click)="deleteEvent(data.calendarEvent.id)"
-        >
-            Видалити подію
-        </button>
+        <div class="delete-container">
+            <button
+                mat-stroked-button
+                color="warn"
+                (click)="deleteEvent(data.calendarEvent.id)"
+            >
+                Видалити подію
+            </button>
+            <button
+                *ngIf="data.calendarEvent.repeatable"
+                mat-stroked-button
+                color="warn"
+                (click)="deleteEvent(data.calendarEvent.id, true)"
+            >
+                Видалити всі події
+            </button>
+        </div>
     </app-dialog-container>
 </ng-template>

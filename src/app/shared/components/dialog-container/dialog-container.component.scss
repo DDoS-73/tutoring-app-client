@@ -30,3 +30,7 @@
         overflow: hidden;
     }
 }
+
+::ng-deep .mat-mdc-dialog-content {
+    max-height: 100vh;
+}

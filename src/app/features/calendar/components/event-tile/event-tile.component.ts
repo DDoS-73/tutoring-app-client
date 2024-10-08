@@ -4,7 +4,7 @@ import {
     Input,
     OnInit,
 } from '@angular/core';
-import { CalendarEvent } from '../../models/calendarEvent.model';
+import { CalendarEvent } from '../../models/calendar-event.model';
 
 @Component({
     selector: 'app-event-tile',
@@ -31,9 +31,9 @@ export class EventTileComponent implements OnInit {
             this.height;
         this.styles = {
             height: height + 'px',
-            width: this.width + 'px',
+            width: this.width - 2 + 'px',
             top: this.height * topOffset + topOffset + 'px',
-            left: this.width * this.weekDay + 'px',
+            left: this.width * this.weekDay + 2 + 'px',
             backgroundColor: this.event.isPaid ? '#388e3c' : '#5b2470bd',
         };
     }

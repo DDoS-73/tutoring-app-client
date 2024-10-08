@@ -21,6 +21,7 @@ import { EventTileComponent } from './components/event-tile/event-tile.component
 import { MatNativeDateModule } from '@angular/material/core';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { WeekSelectorComponent } from './components/week-selector/week-selector.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import { WeekSelectorComponent } from './components/week-selector/week-selector.
         MatDividerModule,
         MatButtonModule,
         MatNativeDateModule,
+        MatSelectModule,
     ],
 })
 export class CalendarModule {}

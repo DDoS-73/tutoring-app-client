@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { CalendarEvent } from '../../models/calendarEvent.model';
+import { CalendarEvent } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
 import { DialogConfig } from '../../../../shared/models/dialog.config';
 import { CalendarEventModalData } from '../../models/calendar-event-modal.data';
@@ -109,9 +109,9 @@ export class CalendarBodyComponent implements AfterViewInit {
             .subscribe(() => this.updateEventModalRef?.close());
     }
 
-    protected deleteEvent(id: number) {
+    protected deleteEvent(id: number, all = false) {
         this.eventService
-            .deleteEvent(id)
+            .deleteEvent(id, all)
             .subscribe(() => this.updateEventModalRef?.close());
     }
 }

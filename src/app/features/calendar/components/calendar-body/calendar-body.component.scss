@@ -70,3 +70,9 @@ $hour-list-width: 50px;
     padding-right: 5px;
     text-align: end;
 }
+
+.delete-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}

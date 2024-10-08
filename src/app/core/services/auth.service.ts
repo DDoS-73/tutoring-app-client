@@ -44,7 +44,7 @@ export class AuthService {
         return localStorage.getItem('token');
     }
 
-    public setUser(user: User) {
+    public setUser(user: User | null) {
         this._user$.next(user);
     }
 }

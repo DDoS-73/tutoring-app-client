@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToasterComponent } from './components/toaster/toaster.component';
 import { GoogleBtnComponent } from './components/google-btn/google-btn.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 @NgModule({
     declarations: [
@@ -18,12 +20,14 @@ import { GoogleBtnComponent } from './components/google-btn/google-btn.component
         LoaderComponent,
         ToasterComponent,
         GoogleBtnComponent,
+        ChartComponent,
     ],
     exports: [
         DialogContainerComponent,
         LoaderComponent,
         ToasterComponent,
         GoogleBtnComponent,
+        ChartComponent,
     ],
     imports: [
         CommonModule,
@@ -35,6 +39,7 @@ import { GoogleBtnComponent } from './components/google-btn/google-btn.component
         MatInputModule,
         ReactiveFormsModule,
         NgOptimizedImage,
+        BaseChartDirective,
     ],
 })
 export class SharedModule {}

@@ -22,6 +22,13 @@ const routes: Routes = [
                         m => m.CalendarModule
                     ),
             },
+            {
+                path: MainPages.Statistics,
+                loadChildren: () =>
+                    import('./features/statistics/statistics.module').then(
+                        m => m.StatisticsModule
+                    ),
+            },
         ],
         canActivate: [authGuard],
     },

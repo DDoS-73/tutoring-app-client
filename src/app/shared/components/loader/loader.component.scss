@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@use '../../../../styles/theme' as theme;
+
 .overlay {
     position: fixed;
     display: block;
@@ -6,7 +9,7 @@
     top: 0;
     left: 0;
     z-index: 99999;
-
+    background-color: mat.get-theme-color(theme.$theme, background, background);
     .spinner {
         position: absolute;
         top: 50%;

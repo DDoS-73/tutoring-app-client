@@ -9,6 +9,7 @@ import { LoaderInterceptor } from './core/interceptors/loader.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { CoreModule } from './core/core.module';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { CoreModule } from './core/core.module';
             useClass: AuthInterceptor,
             multi: true,
         },
+        provideCharts(withDefaultRegisterables()),
     ],
     bootstrap: [AppComponent],
 })

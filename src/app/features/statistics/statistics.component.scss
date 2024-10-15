@@ -1,0 +1,33 @@
+:host {
+    display: flex;
+    padding: 16px 8px;
+    flex-direction: column;
+    gap: 24px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 0 !important;
+}
+
+.charts {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+
+.chart {
+    width: 45%;
+}
+
+.pie-chart {
+    width: 20%;
+}
+
+mat-spinner {
+    margin: 0 auto;
+}
+
+.select {
+    width: 150px;
+}

@@ -1,0 +1,62 @@
+<ng-container *ngIf="statistics">
+    <h1 class="mat-headline-6">
+        Статистика за
+        <app-month-and-year-picker
+            [dateControl]="date"
+        ></app-month-and-year-picker>
+    </h1>
+    <div class="charts" *ngIf="!isLoading; else loader">
+        <div class="chart">
+            <app-chart
+                [datasets]="earningsDatasets"
+                [labels]="statistics.labels"
+            ></app-chart>
+        </div>
+        <div class="chart">
+            <app-chart
+                [datasets]="hoursDatasets"
+                [labels]="statistics.labels"
+            ></app-chart>
+        </div>
+    </div>
+    <app-statistics-table
+        [labels]="statistics.labels"
+        [paidData]="statistics.paidData"
+        [unpaidData]="statistics.unpaidData"
+        [hoursData]="statistics.hoursData"
+        [unpaidAmount]="statistics.unpaidAmount"
+    ></app-statistics-table>
+    <div>
+        <div class="charts" *ngIf="!isLoading; else loader">
+            <div class="chart pie-chart">
+                <h1 class="mat-subtitle-1">
+                    Розподіл суми <b>оплачених</b> подій за об'єктами
+                </h1>
+                <app-chart
+                    [chartType]="'pie'"
+                    [datasets]="
+                        getWorkObjectsDatasets(statistics.workObjects.paid)
+                    "
+                    [labels]="statistics.workObjects.paid.labels"
+                ></app-chart>
+            </div>
+
+            <div class="chart pie-chart">
+                <h1 class="mat-subtitle-1">
+                    Розподіл суми <b>неоплачених</b> подій за об'єктами
+                </h1>
+                <app-chart
+                    [chartType]="'pie'"
+                    [datasets]="
+                        getWorkObjectsDatasets(statistics.workObjects.unpaid)
+                    "
+                    [labels]="statistics.workObjects.unpaid.labels"
+                ></app-chart>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #loader>
+    <mat-spinner [diameter]="50" [strokeWidth]="3"></mat-spinner>
+</ng-template>

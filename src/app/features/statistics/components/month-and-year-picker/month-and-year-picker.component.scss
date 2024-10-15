@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+mat-form-field {
+    width: 110px;
+}
+
+:host ::ng-deep {
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+        .mat-mdc-form-field-infix,
+    .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+            .mdc-text-field--textarea
+        )
+        .mat-mdc-form-field-infix,
+    .mat-mdc-icon-button.mat-mdc-button-base {
+        padding: 6px 0 0 !important;
+    }
+
+    .mdc-text-field {
+        padding-left: 8px;
+    }
+
+    .mat-mdc-icon-button.mat-mdc-button-base {
+        width: 30px;
+    }
+
+    .mat-mdc-form-field-infix {
+        max-height: 32px;
+        min-height: 32px;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper,
+    .mat-mdc-form-field-bottom-align::before {
+        display: none;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    .mdc-text-field--filled.mdc-text-field--disabled {
+        background-color: mat.get-color-from-palette(
+            mat.$grey-palette,
+            200
+        ) !important;
+    }
+
+    .mdc-text-field--filled.mdc-text-field--disabled .mdc-floating-label {
+        color: mat.get-color-from-palette(mat.$grey-palette, 700) !important;
+    }
+
+    .mat-date-range-input-inner[disabled],
+    .mdc-text-field--filled.mdc-text-field--disabled .mdc-text-field__input {
+        color: mat.get-color-from-palette(mat.$grey-palette, 800) !important;
+    }
+
+    .mat-mdc-icon-button .mat-mdc-button-touch-target,
+    .mat-mdc-form-field-flex,
+    .mat-mdc-icon-button.mat-mdc-button-base {
+        height: 32px;
+    }
+}

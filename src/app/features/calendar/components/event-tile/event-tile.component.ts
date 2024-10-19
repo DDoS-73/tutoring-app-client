@@ -34,7 +34,7 @@ export class EventTileComponent implements OnInit {
             width: this.width - 2 + 'px',
             top: this.height * topOffset + topOffset + 'px',
             left: this.width * this.weekDay + 2 + 'px',
-            backgroundColor: this.event.isPaid ? '#388e3c' : '#5b2470bd',
+            backgroundColor: this.event.workObject.color,
         };
     }
 

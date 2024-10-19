@@ -1,8 +1,12 @@
+@use '@angular/material' as mat;
+@use '../../../../../styles/theme' as theme;
+
 .tile {
     position: absolute;
     padding: 2px 4px;
     cursor: pointer;
     transition: 0.3s ease;
+    z-index: 999;
 
     &:hover {
         transform: scale(1.05);
@@ -12,4 +16,15 @@
 p {
     color: white;
     word-wrap: break-word;
+}
+
+i {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: mat.get-color-from-palette(mat.$red-palette, 400);
+
+    &.paid {
+        color: mat.get-color-from-palette(mat.$green-palette, 500);
+    }
 }

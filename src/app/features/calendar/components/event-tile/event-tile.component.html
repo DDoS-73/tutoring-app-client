@@ -1,3 +1,4 @@
 <div class="tile" [ngStyle]="styles">
     <p>{{ event.workObject.name }}</p>
+    <i [class.paid]="event.isPaid" class="material-icons-outlined">paid</i>
 </div>

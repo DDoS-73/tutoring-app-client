@@ -1,7 +1,29 @@
-<div class="container">
+<div class="container" [formGroup]="filtersForm">
     <app-week-selector></app-week-selector>
+
+    <mat-form-field>
+        <mat-label>Статус оплати</mat-label>
+        <mat-select formControlName="isPaid">
+            <mat-option [value]="''">Всі</mat-option>
+            @for (option of paidOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Об'єкти</mat-label>
+        <mat-select formControlName="workObjectId">
+            <mat-option [value]="''">Всі</mat-option>
+            @for (option of workObjectOptions$ | async; track option.value) {
+            <mat-option [value]="option.value">{{ option.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
     <div class="info mat-subtitle-1">
-        <p>Очікуваний заробіток: {{ weekEarnings$ | async }} грн</p>
+        <p>Очікуваний заробіток: {{ expectedWeekEarnings$ | async }} грн</p>
+        <p>Фактичний заробіток: {{ actualWeekEarnings$ | async }} грн</p>
         <p>Запланованих годин: {{ workingHoursAmount$ | async }} год</p>
     </div>
 </div>

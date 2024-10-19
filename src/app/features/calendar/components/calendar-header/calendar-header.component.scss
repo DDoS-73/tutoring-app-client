@@ -6,6 +6,13 @@
     background-color: white;
     border-bottom: 1px solid
         mat.get-theme-color(theme.$theme, foreground, divider);
+
+    ::ng-deep {
+        div.mat-mdc-text-field-wrapper,
+        div.mat-mdc-form-field-infix {
+            max-height: 56px;
+        }
+    }
 }
 
 .container {

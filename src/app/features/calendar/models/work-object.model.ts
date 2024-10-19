@@ -1,4 +1,5 @@
 export interface WorkObject {
-    _id?: string | number;
+    id?: string | number;
     name: string;
+    color: string;
 }

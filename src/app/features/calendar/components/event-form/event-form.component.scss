@@ -49,14 +49,6 @@
         div.mat-mdc-form-field-subscript-wrapper {
             display: none;
         }
-
-        div.timepicker-backdrop-overlay {
-            z-index: 1001 !important;
-        }
-
-        div.timepicker-overlay {
-            z-index: 1003 !important;
-        }
     }
 }
 
@@ -120,5 +112,15 @@ input[type='number'] {
         div.mat-mdc-form-field-infix {
             max-height: initial;
         }
+    }
+}
+
+::ng-deep ngx-material-timepicker-container {
+    .timepicker-backdrop-overlay {
+        z-index: 1001 !important;
+    }
+
+    div.timepicker-overlay {
+        z-index: 1003 !important;
     }
 }

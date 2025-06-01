@@ -81,8 +81,8 @@ export class EventService implements OnDestroy {
                 withLatestFrom(this.dateService.weekDays$),
                 switchMap(([, days]) => {
                     const params = new HttpParams()
-                        .set('from', days[0].toString())
-                        .set('to', days[6].toString())
+                        .set('from', days[0].toISOString())
+                        .set('to', days[6].toISOString())
                         .set('isPaid', this.filters.isPaid ?? '')
                         .set('workObjectId', this.filters.workObjectId ?? '');
                     return this.http.get<CalendarEvent[]>(

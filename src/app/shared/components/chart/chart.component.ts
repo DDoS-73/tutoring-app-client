@@ -47,6 +47,16 @@ export class ChartComponent implements OnInit {
             y: {
                 position: 'left',
                 min: 0,
+                title: {
+                    display: true,
+                    text: 'грн',
+                },
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Дні місяця',
+                },
             },
         },
         maintainAspectRatio: true,
@@ -68,7 +78,7 @@ export class ChartComponent implements OnInit {
     private _createChartDataset(dataset: PartialChartDataset): ChartDataset {
         return {
             data: dataset.data ?? [],
-            label: dataset.label ?? 'Статистика',
+            label: dataset.label ?? 'Грн',
             pointRadius: 3,
             fill: 'origin',
         };

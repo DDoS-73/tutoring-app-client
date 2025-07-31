@@ -4,24 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LoaderInterceptor } from './core/interceptors/loader.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { CoreModule } from './core/core.module';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
-@NgModule({
-    declarations: [AppComponent],
-    imports: [
-        CoreModule,
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [CoreModule,
         BrowserModule,
         BrowserAnimationsModule,
         SharedModule,
-        AppRoutingModule,
-        HttpClientModule,
-    ],
-    providers: [
+        AppRoutingModule], providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: LoaderInterceptor,
@@ -33,7 +28,6 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
             multi: true,
         },
         provideCharts(withDefaultRegisterables()),
-    ],
-    bootstrap: [AppComponent],
-})
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

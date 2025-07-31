@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $my-headline-5: mat.m2-define-typography-level(
     $font-family: Montserrat,

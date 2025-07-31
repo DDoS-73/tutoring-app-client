@@ -8,7 +8,7 @@
     [formControl]="control"
     [type]="type"
     />
-    @if (control?.invalid) {
+    @if (control.invalid) {
       <mat-error>
         {{ errorMessage }}
       </mat-error>

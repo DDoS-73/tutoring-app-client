@@ -7,17 +7,20 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { LetDirective } from '../shared/directives/local-let.directive';
 
-@NgModule({ declarations: [LayoutComponent, SidebarComponent],
-    exports: [LayoutComponent], imports: [RouterOutlet,
+@NgModule({
+    declarations: [LayoutComponent, SidebarComponent],
+    exports: [LayoutComponent],
+    imports: [
+        RouterOutlet,
         MatSidenavModule,
         MatIconModule,
         MatDividerModule,
         CommonModule,
-        OAuthModule.forRoot(),
         LetDirective,
         RouterLinkActive,
-        RouterLink], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        RouterLink,
+    ],
+})
 export class CoreModule {}

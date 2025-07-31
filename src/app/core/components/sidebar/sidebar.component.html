@@ -1,7 +1,6 @@
-<ng-container *localLet="user$ | async as user">
-  <div class="header">
+<div class="header">
     <i class="material-icons-outlined">account_circle</i>
-    <p class="mat-headline-5">Вітаємо, {{ user?.name }}</p>
+    <p class="mat-headline-5">Вітаємо, {{ 'Vlad' }}</p>
   </div>
 
   <mat-divider></mat-divider>
@@ -20,9 +19,8 @@
   <div class="footer">
     <mat-divider></mat-divider>
 
-    <div class="sidebar-item" (click)="logout()">
+    <div class="sidebar-item">
       <i class="material-icons-outlined">logout</i>
       <p class="mat-subtitle-1">Вийти з акаунта</p>
     </div>
   </div>
-</ng-container>

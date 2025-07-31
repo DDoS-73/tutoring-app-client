@@ -4,7 +4,6 @@ import {
     CalendarConfig,
 } from './models/calendar.config';
 import { DateService } from './services/date.service';
-import { StatisticsService } from '../statistics/services/statistics.service';
 import { EventService } from './services/event.service';
 
 @Component({
@@ -18,7 +17,6 @@ import { EventService } from './services/event.service';
             useValue: new CalendarConfig(),
         },
         DateService,
-        StatisticsService,
         EventService,
     ],
     standalone: false

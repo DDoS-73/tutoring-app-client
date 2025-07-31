@@ -1,24 +1,18 @@
 import { Component } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
-import { GoogleAuthService } from './core/services/google-auth.service';
-
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+import { RouterOutlet } from '@angular/router';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [
+        SharedModule,
+        CoreModule,
+        RouterOutlet
+    ]
 })
 export class AppComponent {
     title = 'Tutoring-app';
-
-    constructor(
-        private authService: AuthService,
-        protected googleAuthService: GoogleAuthService
-    ) {
-        if (localStorage.getItem('token')) {
-            this.authService.getProfile().subscribe();
-        } else {
-            this.googleAuthService.getProfile().subscribe();
-        }
-    }
 }

@@ -1,7 +1,15 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import 'hammerjs';
-import { AppModule } from './app/app.module';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AppComponent } from './app/app.component';
+import { LoaderInterceptor } from './app/core/interceptors/loader.interceptor';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app-routes';
 
-platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+    providers: [
+        provideHttpClient(
+            withInterceptors([LoaderInterceptor])
+        ),
+        provideRouter(routes)
+    ]
+}).catch(err => console.error(err));

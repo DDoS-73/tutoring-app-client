@@ -1,46 +1,44 @@
-<form
-    *ngIf="eventForm"
+@if (eventForm) {
+  <form
     [formGroup]="eventForm"
     (submit)="eventFormSubmit.emit(eventForm.value)"
->
+    >
     <h2>Об'єкт</h2>
     <p class="custom_input_label">Об'єкт над яким виконується робота</p>
     <input
-        type="text"
-        formControlName="workObject"
-        [matAutocomplete]="auto"
-        class="custom_input"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-        <mat-option
-            *ngFor="let option of filteredWorkObjects$ | async"
+      type="text"
+      formControlName="workObject"
+      [matAutocomplete]="auto"
+      class="custom_input"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of filteredWorkObjects$ | async; track option) {
+          <mat-option
             [value]="option.name"
-        >
+            >
             {{ option.name }}
-        </mat-option>
-    </mat-autocomplete>
-
-    <p class="custom_input_label">Ціна</p>
-    <input type="number" formControlName="price" class="custom_input" />
-
-    <h2>Дата і час</h2>
-    <p class="custom_input_label">Дата</p>
-    <mat-form-field style="width: 75%">
+          </mat-option>
+        }
+      </mat-autocomplete>
+      <p class="custom_input_label">Ціна</p>
+      <input type="number" formControlName="price" class="custom_input" />
+      <h2>Дата і час</h2>
+      <p class="custom_input_label">Дата</p>
+      <mat-form-field style="width: 75%">
         <input
-            formControlName="date"
-            class="custom_input"
-            matInput
-            [matDatepicker]="picker"
-        />
-        <mat-datepicker-toggle
+          formControlName="date"
+          class="custom_input"
+          matInput
+          [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
             matIconSuffix
             [for]="picker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <div class="time-container">
-        <ng-container
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="time-container">
+          <ng-container
             *ngTemplateOutlet="
                 timeField;
                 context: {
@@ -57,43 +55,42 @@
                     formControlName: 'finishTime'
                 }
             "
-        ></ng-container>
+      ></ng-container>
     </div>
-
     <mat-form-field class="select">
-        <mat-label>Повторювати</mat-label>
-        <mat-select formControlName="repeatable">
-            @for (option of repeatableOptions; track option.value) {
-            <mat-option [value]="option.value">{{ option.name }}</mat-option>
-            }
-        </mat-select>
+      <mat-label>Повторювати</mat-label>
+      <mat-select formControlName="repeatable">
+        @for (option of repeatableOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.name }}</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
     <label class="custom_input_label repeatable_checkbox">
-        <input type="checkbox" formControlName="isPaid" />
-        Оплачено
+      <input type="checkbox" formControlName="isPaid" />
+      Оплачено
     </label>
-
     <button mat-raised-button color="primary" type="submit">Підтвердити</button>
-</form>
+  </form>
+}
 
 <ng-template #timeField let-label="label" let-formControlName="formControlName">
-    <div [formGroup]="eventForm">
-        <div class="time">
-            <p class="custom_input_label">{{ label }}</p>
-            <input
-                class="custom_input"
-                [min]="'00:00'"
-                [max]="'23:59'"
-                [format]="24"
-                [ngxTimepicker]="timepicker"
-                [formControlName]="formControlName"
-                readonly
-            />
-        </div>
+  <div [formGroup]="eventForm">
+    <div class="time">
+      <p class="custom_input_label">{{ label }}</p>
+      <input
+        class="custom_input"
+        [min]="'00:00'"
+        [max]="'23:59'"
+        [format]="24"
+        [ngxTimepicker]="timepicker"
+        [formControlName]="formControlName"
+        readonly
+        />
+      </div>
     </div>
     <ngx-material-timepicker
-        #timepicker
-        [theme]="darkTheme"
-        [minutesGap]="5"
+      #timepicker
+      [theme]="darkTheme"
+      [minutesGap]="5"
     ></ngx-material-timepicker>
-</ng-template>
+  </ng-template>

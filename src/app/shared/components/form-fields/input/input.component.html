@@ -1,12 +1,16 @@
 <mat-form-field appearance="outline" class="full-width" floatLabel="always">
-    <mat-label *ngIf="label">{{ label }}</mat-label>
-    <input
-        matInput
-        [placeholder]="placeholder"
-        [formControl]="control"
-        [type]="type"
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <input
+    matInput
+    [placeholder]="placeholder"
+    [formControl]="control"
+    [type]="type"
     />
-    <mat-error *ngIf="control?.invalid">
+    @if (control?.invalid) {
+      <mat-error>
         {{ errorMessage }}
-    </mat-error>
-</mat-form-field>
+      </mat-error>
+    }
+  </mat-form-field>

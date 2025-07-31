@@ -1,85 +1,90 @@
 <ng-container [ngTemplateOutlet]="daysList"></ng-container>
 <mat-divider></mat-divider>
 <div class="calendar-body">
-    <ng-container [ngTemplateOutlet]="hoursList"></ng-container>
+  <ng-container [ngTemplateOutlet]="hoursList"></ng-container>
 
-    <div class="grid-wrapper">
-        <div
-            #tile
-            *ngFor="let tile of tiles; let i = index"
-            class="empty-tile"
-            appHighlightToday
-            [day]="calculateDay(i)"
-            (click)="openCreateDialog(calculateRow(i), calculateDay(i))"
-        ></div>
+  <div class="grid-wrapper">
+    @for (tile of tiles; track tile; let i = $index) {
+      <div
+        #tile
+        class="empty-tile"
+        appHighlightToday
+        [day]="calculateDay(i)"
+        (click)="openCreateDialog(calculateRow(i), calculateDay(i))"
+      ></div>
+    }
 
-        <app-event-tile
-            *ngFor="let event of events$ | async"
-            [height]="cellHeight"
-            [width]="cellWidth"
-            [event]="event"
-            (click)="openUpdateDialog(event)"
-        ></app-event-tile>
-    </div>
+    @for (event of events$ | async; track event) {
+      <app-event-tile
+        [height]="cellHeight"
+        [width]="cellWidth"
+        [event]="event"
+        (click)="openUpdateDialog(event)"
+      ></app-event-tile>
+    }
+  </div>
 </div>
 
 <ng-template #daysList>
-    <div class="calendar-days">
-        <div
-            *ngFor="let date of dateService.weekDays$ | async; let i = index"
-            class="week_day"
-            appHighlightToday
-            [day]="i + 1"
+  <div class="calendar-days">
+    @for (date of dateService.weekDays$ | async; track date; let i = $index) {
+      <div
+        class="week_day"
+        appHighlightToday
+        [day]="i + 1"
         >
-            <p>{{ date.getDate() }}</p>
-            <p>{{ calendarConfig.daysOfTheWeek[i] }}</p>
-        </div>
-    </div>
+        <p>{{ date.getDate() }}</p>
+        <p>{{ calendarConfig.daysOfTheWeek[i] }}</p>
+      </div>
+    }
+  </div>
 </ng-template>
 
 <ng-template #hoursList>
-    <div>
-        <div
-            *ngFor="let hour of hours; let i = index"
-            [style.height.px]="cellHeight + 1"
-            class="hour-item"
+  <div>
+    @for (hour of hours; track hour; let i = $index) {
+      <div
+        [style.height.px]="cellHeight + 1"
+        class="hour-item"
         >
-            {{ i | hour }}
-        </div>
-    </div>
+        {{ i | hour }}
+      </div>
+    }
+  </div>
 </ng-template>
 
 <ng-template #createEventModal let-data>
-    <app-dialog-container title="Створення події">
-        <app-event-form
-            [event]="data.calendarEvent"
-            (eventFormSubmit)="createEvent($event)"
-        ></app-event-form>
-    </app-dialog-container>
+  <app-dialog-container title="Створення події">
+    <app-event-form
+      [event]="data.calendarEvent"
+      (eventFormSubmit)="createEvent($event)"
+    ></app-event-form>
+  </app-dialog-container>
 </ng-template>
 
 <ng-template #updateEventModal let-data>
-    <app-dialog-container title="Оновлення події">
-        <app-event-form
-            [event]="data.calendarEvent"
-            (eventFormSubmit)="updateEvent($event, data.calendarEvent.id)"
-        ></app-event-form>
-        <div class="delete-container">
-            <button
-                mat-stroked-button
-                color="warn"
-                (click)="deleteEvent(data.calendarEvent.id)"
-            >
-                Видалити подію
-            </button>
-            <button
-                *ngIf="data.calendarEvent.repeatable"
-                mat-stroked-button
-                color="warn"
-                (click)="deleteEvent(data.calendarEvent.id, true)"
-            >
-                Видалити всі події
-            </button>
-        </div>
-    </app-dialog-container>
+  <app-dialog-container title="Оновлення події">
+    <app-event-form
+      [event]="data.calendarEvent"
+      (eventFormSubmit)="updateEvent($event, data.calendarEvent.id)"
+    ></app-event-form>
+    <div class="delete-container">
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="deleteEvent(data.calendarEvent.id)"
+        >
+        Видалити подію
+      </button>
+      @if (data.calendarEvent.repeatable) {
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="deleteEvent(data.calendarEvent.id, true)"
+          >
+          Видалити всі події
+        </button>
+      }
+    </div>
+  </app-dialog-container>
 </ng-template>

@@ -2,11 +2,11 @@
 @use 'typography' as typography;
 @use 'snackbar';
 
-$primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$green-palette);
-$warn: mat.define-palette(mat.$red-palette);
+$primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$accent: mat.m2-define-palette(mat.$m2-green-palette);
+$warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$theme: mat.define-light-theme(
+$theme: mat.m2-define-light-theme(
     (
         color: (
             primary: $primary,

@@ -38,19 +38,19 @@ mat-form-field {
     }
 
     .mdc-text-field--filled.mdc-text-field--disabled {
-        background-color: mat.get-color-from-palette(
-            mat.$grey-palette,
+        background-color: mat.m2-get-color-from-palette(
+            mat.$m2-grey-palette,
             200
         ) !important;
     }
 
     .mdc-text-field--filled.mdc-text-field--disabled .mdc-floating-label {
-        color: mat.get-color-from-palette(mat.$grey-palette, 700) !important;
+        color: mat.m2-get-color-from-palette(mat.$m2-grey-palette, 700) !important;
     }
 
     .mat-date-range-input-inner[disabled],
     .mdc-text-field--filled.mdc-text-field--disabled .mdc-text-field__input {
-        color: mat.get-color-from-palette(mat.$grey-palette, 800) !important;
+        color: mat.m2-get-color-from-palette(mat.$m2-grey-palette, 800) !important;
     }
 
     .mat-mdc-icon-button .mat-mdc-button-touch-target,

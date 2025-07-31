@@ -22,9 +22,9 @@ i {
     position: absolute;
     top: 2px;
     right: 4px;
-    color: mat.get-color-from-palette(mat.$red-palette, 400);
+    color: mat.m2-get-color-from-palette(mat.$m2-red-palette, 400);
 
     &.paid {
-        color: mat.get-color-from-palette(mat.$green-palette, 500);
+        color: mat.m2-get-color-from-palette(mat.$m2-green-palette, 500);
     }
 }

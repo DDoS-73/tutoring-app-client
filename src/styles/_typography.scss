@@ -2,7 +2,7 @@
 
 @include mat.core();
 
-$my-headline-5: mat.define-typography-level(
+$my-headline-5: mat.m2-define-typography-level(
     $font-family: Montserrat,
     $font-weight: 600,
     $font-size: 1rem,
@@ -10,7 +10,7 @@ $my-headline-5: mat.define-typography-level(
     $letter-spacing: normal,
 );
 
-$my-subtitle-1: mat.define-typography-level(
+$my-subtitle-1: mat.m2-define-typography-level(
     $font-family: Montserrat,
     $font-weight: 600,
     $font-size: 0.9rem,
@@ -18,7 +18,7 @@ $my-subtitle-1: mat.define-typography-level(
     $letter-spacing: normal,
 );
 
-$my-typography: mat.define-typography-config(
+$my-typography: mat.m2-define-typography-config(
     $headline-5: $my-headline-5,
     $subtitle-1: $my-subtitle-1,
 );

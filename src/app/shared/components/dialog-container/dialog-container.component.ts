@@ -5,6 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     templateUrl: './dialog-container.component.html',
     styleUrls: ['./dialog-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DialogContainerComponent {
     @Input() title: string = '';

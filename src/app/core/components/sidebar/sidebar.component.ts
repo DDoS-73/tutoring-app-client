@@ -15,6 +15,7 @@ interface MenuItem {
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SidebarComponent {
     protected readonly menuItems: MenuItem[] = [

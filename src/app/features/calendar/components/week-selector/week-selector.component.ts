@@ -27,6 +27,7 @@ import { WeekSelector } from '../../models/week-selector/week-selector.data';
         { provide: DateAdapter, useClass: CustomDateAdapter },
         { provide: MAT_DATE_LOCALE, useValue: 'uk' },
     ],
+    standalone: false
 })
 export class WeekSelectorComponent implements OnInit {
     protected range = new FormGroup({

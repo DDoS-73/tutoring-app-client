@@ -14,6 +14,7 @@ import { PartialChartDataset } from '../../models/chart-dataset.model';
     templateUrl: './chart.component.html',
     styleUrl: './chart.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ChartComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;

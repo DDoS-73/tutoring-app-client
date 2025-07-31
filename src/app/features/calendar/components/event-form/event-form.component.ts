@@ -25,6 +25,7 @@ import { RecurrenceTypes } from '../../models/recurred-pattern.model';
         { provide: MAT_DATE_LOCALE, useValue: 'uk' },
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventFormComponent implements OnInit {
     @Input({ required: true }) event!: Partial<CalendarEvent>;

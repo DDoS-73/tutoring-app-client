@@ -7,6 +7,7 @@ import { LoaderService } from '../../../core/services/loader.service';
     templateUrl: './loader.component.html',
     styleUrls: ['./loader.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LoaderComponent {
     isLoading: Subject<boolean> = this.loaderService.isLoading;

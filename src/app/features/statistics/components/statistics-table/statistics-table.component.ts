@@ -5,6 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     templateUrl: './statistics-table.component.html',
     styleUrl: './statistics-table.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class StatisticsTableComponent {
     @Input() labels: string[] = [];

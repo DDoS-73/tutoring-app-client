@@ -7,6 +7,7 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
     templateUrl: './toaster.component.html',
     styleUrl: './toaster.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ToasterComponent {
     constructor(@Inject(MAT_SNACK_BAR_DATA) protected data: ToasterData) {}

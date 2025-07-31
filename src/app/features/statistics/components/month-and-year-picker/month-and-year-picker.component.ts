@@ -42,6 +42,7 @@ const MY_FORMATS = {
         { provide: MAT_DATE_LOCALE, useValue: 'uk' },
         { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     ],
+    standalone: false
 })
 export class MonthAndYearPickerComponent {
     @Input() dateControl!: FormControl;

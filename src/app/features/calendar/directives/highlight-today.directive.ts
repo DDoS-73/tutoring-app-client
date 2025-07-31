@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Directive({
     selector: '[appHighlightToday]',
+    standalone: false
 })
 export class HighlightTodayDirective implements OnInit {
     @Input({ required: true }) day!: number;

@@ -18,6 +18,7 @@ import { PartialChartDataset } from '../../shared/models/chart-dataset.model';
     templateUrl: './statistics.component.html',
     styleUrl: './statistics.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class StatisticsComponent implements OnInit {
     protected statistics: Statistics | null = null;

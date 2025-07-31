@@ -18,6 +18,7 @@ import { GoogleAuthService } from '../../../../core/services/google-auth.service
     templateUrl: './sign-up.component.html',
     styleUrl: './sign-up.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SignUpComponent {
     protected signUpForm: FormGroup;

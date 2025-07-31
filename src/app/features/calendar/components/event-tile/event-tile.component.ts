@@ -11,6 +11,7 @@ import { CalendarEvent } from '../../models/calendar-event.model';
     templateUrl: './event-tile.component.html',
     styleUrls: ['./event-tile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventTileComponent implements OnInit {
     @Input({ required: true }) height!: number;

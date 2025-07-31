@@ -21,5 +21,6 @@ import { EventService } from './services/event.service';
         StatisticsService,
         EventService,
     ],
+    standalone: false
 })
 export class CalendarComponent {}

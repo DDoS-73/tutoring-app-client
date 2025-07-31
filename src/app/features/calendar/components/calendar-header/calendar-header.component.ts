@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     templateUrl: './calendar-header.component.html',
     styleUrls: ['./calendar-header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CalendarHeaderComponent implements OnInit {
     protected filtersForm = new FormGroup({

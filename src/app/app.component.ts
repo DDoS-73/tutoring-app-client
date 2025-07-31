@@ -6,6 +6,7 @@ import { GoogleAuthService } from './core/services/google-auth.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
     title = 'Tutoring-app';

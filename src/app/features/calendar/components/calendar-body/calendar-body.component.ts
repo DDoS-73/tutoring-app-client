@@ -25,6 +25,7 @@ import {
     templateUrl: './calendar-body.component.html',
     styleUrls: ['./calendar-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CalendarBodyComponent implements AfterViewInit {
     @ViewChild('tile')

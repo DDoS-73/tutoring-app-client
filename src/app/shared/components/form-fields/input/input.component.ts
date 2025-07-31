@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
     templateUrl: './input.component.html',
     styleUrl: './input.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InputComponent {
     @Input({ required: true }) control!: FormControl;

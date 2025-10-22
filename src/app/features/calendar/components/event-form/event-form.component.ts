@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerComponent } from 'ng-zorro-antd/time-picker';
+import { TimePickerComponent } from 'src/app/shared/components/time-picker/time-picker.component';
 import { CalendarEvent } from '../../models/calendar-event.model';
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls } from '../../models/event-form.model';
@@ -28,10 +28,10 @@ import { Participant } from '../../models/participant.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NzDatePickerComponent,
-    NzTimePickerComponent,
     NzAutocompleteModule,
     ReactiveFormsModule,
     FormsModule,
+    TimePickerComponent,
   ],
 })
 export class EventFormComponent implements OnInit {

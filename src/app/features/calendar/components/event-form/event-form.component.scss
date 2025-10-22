@@ -18,27 +18,11 @@ form {
   color: #000;
 }
 
-.time-container {
-  display: flex;
-  gap: 10px;
-}
-
 .time-wrapper {
   display: flex;
-  gap: 48px;
-}
-
-.time-control {
-  width: 120px;
+  gap: 16px;
 }
 
 button[type='submit'] {
   margin-top: auto;
-}
-
-@media (max-width: 680px) {
-  .time-wrapper {
-    flex-direction: column;
-    gap: 0px;
-  }
 }

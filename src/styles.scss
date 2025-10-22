@@ -3,7 +3,6 @@
 html,
 body {
   min-height: 100vh;
-  //overflow-x: hidden;
 }
 body {
   margin: 0;
@@ -18,19 +17,6 @@ h2 {
   margin: 0 !important;
 }
 
-.action_btn_container {
-  position: absolute;
-  bottom: 0;
-  padding: 0 20px 30px;
-  background-color: #fff;
-  width: 100%;
-  left: 0;
-
-  button {
-    width: 100%;
-  }
-}
-
 .highlight_today {
   background-color: #eff9ef !important;
 
@@ -42,4 +28,9 @@ h2 {
 .divider {
   height: 1px;
   background-color: #e0e0e0;
+}
+
+.timepicker-overlay,
+.timepicker-backdrop-overlay {
+  z-index: 1001 !important;
 }

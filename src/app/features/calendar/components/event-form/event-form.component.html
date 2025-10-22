@@ -23,24 +23,12 @@
   <div class="time-wrapper">
     <div class="form-control">
       <p class="custom_input_label">Час початку</p>
-      <nz-time-picker
-        nzFormat="HH:mm"
-        [nzDisabledHours]="CalendarConfig.disabledHours"
-        nzHideDisabledOptions
-        [nzMinuteStep]="15"
-        formControlName="startTime"
-      ></nz-time-picker>
+      <app-time-picker formControlName="startTime" />
     </div>
 
     <div class="form-control">
       <p class="custom_input_label">Час закінчення</p>
-      <nz-time-picker
-        nzFormat="HH:mm"
-        [nzDisabledHours]="CalendarConfig.disabledHours"
-        nzHideDisabledOptions
-        [nzMinuteStep]="15"
-        formControlName="endTime"
-      ></nz-time-picker>
+      <app-time-picker formControlName="endTime" />
     </div>
   </div>
 </form>

@@ -14,10 +14,10 @@ import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
 import { EventService } from '../../services/event.service';
 import { CreateEventModalComponent } from '../create-event-modal/create-event-modal.component';
+import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
 import { HighlightTodayDirective } from './../../directives/highlight-today.directive';
 import { CalendarConfig } from './../../models/calendar.config';
 import { HourPipe } from './../../pipes/hour.pipe';
-import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
 
 @Component({
   selector: 'app-calendar-body',
@@ -63,7 +63,7 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
-      nzWidth: '50vw',
+      nzWidth: '60vw',
     });
   }
 
@@ -76,7 +76,7 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
-      nzWidth: '50vw',
+      nzWidth: '60vw',
     });
   }
 

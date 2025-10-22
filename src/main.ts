@@ -6,19 +6,22 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { provideTanStackQuery } from '@tanstack/angular-query-experimental';
 import { QueryClient } from '@tanstack/query-core';
+import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideNzI18n, uk_UA } from 'ng-zorro-antd/i18n';
 import { routes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
-import { LoaderInterceptor } from './app/core/interceptors/loader.interceptor';
+import { nzConfig } from './app/core/interceptors/config/nz-config';
+import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
 
 registerLocaleData(uk);
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        provideHttpClient(withInterceptors([LoaderInterceptor])),
-        provideRouter(routes),
-        provideNzI18n(uk_UA),
-        provideAnimationsAsync(),
-        provideTanStackQuery(new QueryClient()),
-    ],
+  providers: [
+    provideHttpClient(withInterceptors([ErrorInterceptor])),
+    provideRouter(routes),
+    provideNzI18n(uk_UA),
+    provideAnimationsAsync(),
+    provideTanStackQuery(new QueryClient()),
+    provideNzConfig(nzConfig),
+  ],
 }).catch(err => console.error(err));

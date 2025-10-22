@@ -1,78 +1,82 @@
-@use '@angular/material' as mat;
-@use '../../../../../styles/theme' as theme;
-
-$hour-list-width: 50px;
+$hour-list-width: 25px;
 
 :host {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .calendar-days {
+  display: flex;
+  gap: 1px;
+  padding-left: $hour-list-width;
+
+  .week_day {
+    padding: 5px 0;
     display: flex;
-    gap: 1px;
-    padding-left: $hour-list-width;
+    flex-direction: column;
+    flex: 1 2 0;
+    justify-content: center;
+    align-items: center;
 
-    .week_day {
-        padding: 5px 0;
-        display: flex;
-        flex-direction: column;
-        flex: 1 2 0;
-        justify-content: center;
-        align-items: center;
-
-        p {
-            line-height: 0.9rem;
-            font-size: 0.8rem;
-        }
+    p {
+      line-height: 0.9rem;
+      font-size: 0.8rem;
     }
+  }
 }
 
 .calendar-body {
-    display: flex;
+  display: flex;
+  flex-grow: 1;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid-wrapper {
+    position: relative;
     flex-grow: 1;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+  }
 
-    &::-webkit-scrollbar {
-        display: none;
+  .empty-tile {
+    background-color: white;
+    min-height: 80px;
+    cursor: pointer;
+    width: calc(100% / 7 - 1px);
+
+    &:hover {
+      background-color: #e0e0e0;
     }
+  }
 
-    .grid-wrapper {
-        position: relative;
-        flex-grow: 1;
-        background-color: mat.get-theme-color(
-            theme.$theme,
-            foreground,
-            divider
-        );
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1px;
+  .tile {
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    height: 100%;
+    width: 100%;
+    background-color: #c18dff;
+
+    &:hover {
+      transform: scale(1.05);
     }
-
-    .empty-tile {
-        background-color: white;
-        min-height: 80px;
-        cursor: pointer;
-        width: calc(100% / 7 - 1px);
-
-        &:hover {
-            background-color: mat.m2-get-color-from-palette(
-                mat.$m2-grey-palette,
-                200
-            );
-        }
-    }
+  }
 }
 
 .hour-item {
-    width: $hour-list-width;
-    padding-right: 5px;
-    text-align: end;
+  width: $hour-list-width;
+  padding-right: 5px;
+  text-align: end;
+  min-height: 80px;
 }
 
 .delete-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
 }

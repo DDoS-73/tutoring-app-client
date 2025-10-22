@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.buttons-wrapper {
+  display: flex;
+  gap: 16px;
+
+  button {
+    flex-grow: 1;
+  }
+}

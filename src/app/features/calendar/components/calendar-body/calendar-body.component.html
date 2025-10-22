@@ -1,90 +1,61 @@
-<ng-container [ngTemplateOutlet]="daysList"></ng-container>
-<mat-divider></mat-divider>
+<div class="calendar-days">
+  @for (date of dateService.weekDays(); track date; let i = $index) {
+  <div class="week_day" appHighlightToday [dayIndex]="i">
+    <p>{{ date.getDate() }}</p>
+    <p>{{ CalendarConfig.daysOfTheWeek[i] }}</p>
+  </div>
+  }
+</div>
+
+<div class="divider"></div>
+
 <div class="calendar-body">
   <ng-container [ngTemplateOutlet]="hoursList"></ng-container>
 
   <div class="grid-wrapper">
-    @for (tile of tiles; track tile; let i = $index) {
+    @for (tile of tiles(); track $index; let i = $index) {
+    <div
+      #tile
+      class="empty-tile"
+      appHighlightToday
+      [dayIndex]="i % 7"
+      (click)="openCreateDialog(tile)"
+    >
+      @if (tile?.events?.length) {
       <div
-        #tile
-        class="empty-tile"
-        appHighlightToday
-        [day]="calculateDay(i)"
-        (click)="openCreateDialog(calculateRow(i), calculateDay(i))"
-      ></div>
-    }
-
-    @for (event of events$ | async; track event) {
-      <app-event-tile
-        [height]="cellHeight"
-        [width]="cellWidth"
-        [event]="event"
-        (click)="openUpdateDialog(event)"
-      ></app-event-tile>
+        class="tile"
+        (click)="openUpdateDialog(tile.events[0]); $event.stopPropagation()"
+      >
+        <p>{{ tile.events[0].participant.name }}</p>
+      </div>
+      }
+    </div>
     }
   </div>
 </div>
 
-<ng-template #daysList>
-  <div class="calendar-days">
-    @for (date of dateService.weekDays$ | async; track date; let i = $index) {
-      <div
-        class="week_day"
-        appHighlightToday
-        [day]="i + 1"
-        >
-        <p>{{ date.getDate() }}</p>
-        <p>{{ calendarConfig.daysOfTheWeek[i] }}</p>
-      </div>
-    }
-  </div>
-</ng-template>
-
 <ng-template #hoursList>
   <div>
-    @for (hour of hours; track hour; let i = $index) {
-      <div
-        [style.height.px]="cellHeight + 1"
-        class="hour-item"
-        >
-        {{ i | hour }}
-      </div>
+    @for (hour of CalendarConfig.hours; track $index;) {
+    <div class="hour-item">
+      {{ hour | hour }}
+    </div>
     }
   </div>
 </ng-template>
 
 <ng-template #createEventModal let-data>
-  <app-dialog-container title="Створення події">
-    <app-event-form
-      [event]="data.calendarEvent"
-      (eventFormSubmit)="createEvent($event)"
-    ></app-event-form>
-  </app-dialog-container>
+  <app-create-event-modal
+    [event]="data.calendarEvent"
+    (eventCreated)="createEventModalRef?.close()"
+  >
+  </app-create-event-modal>
 </ng-template>
 
 <ng-template #updateEventModal let-data>
-  <app-dialog-container title="Оновлення події">
-    <app-event-form
-      [event]="data.calendarEvent"
-      (eventFormSubmit)="updateEvent($event, data.calendarEvent.id)"
-    ></app-event-form>
-    <div class="delete-container">
-      <button
-        mat-stroked-button
-        color="warn"
-        (click)="deleteEvent(data.calendarEvent.id)"
-        >
-        Видалити подію
-      </button>
-      @if (data.calendarEvent.repeatable) {
-        <button
-          mat-stroked-button
-          color="warn"
-          (click)="deleteEvent(data.calendarEvent.id, true)"
-          >
-          Видалити всі події
-        </button>
-      }
-    </div>
-  </app-dialog-container>
+  <app-update-event-modal
+    [event]="data.calendarEvent"
+    (eventChanged)="updateEventModalRef?.close()"
+  >
+  </app-update-event-modal>
 </ng-template>

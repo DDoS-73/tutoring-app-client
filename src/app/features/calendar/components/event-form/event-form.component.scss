@@ -1,126 +1,44 @@
-@use '@angular/material' as mat;
-@use '../../../../../styles/theme' as theme;
-
-:host {
-    display: block;
-    height: 100%;
-
-    ::ng-deep {
-        mat-option.mat-mdc-option {
-            min-height: 25px;
-            padding-left: 15px;
-        }
-
-        mat-form-field {
-            width: 100%;
-        }
-
-        div.mdc-text-field--filled:not(.mdc-text-field--disabled) {
-            background-color: #fff;
-        }
-
-        div.mat-mdc-text-field-wrapper,
-        div.mat-mdc-form-field-infix {
-            max-height: 40px;
-            padding-left: 0;
-        }
-
-        div.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-                .mdc-text-field--textarea
-            )
-            .mat-mdc-form-field-infix {
-            padding: 5px;
-        }
-
-        div.mat-mdc-form-field-icon-suffix,
-        mat-datepicker-toggle.mat-datepicker-toggle
-            > button.mat-mdc-icon-button.mat-mdc-button-base {
-            position: absolute;
-            width: 100%;
-            max-height: 30px;
-            top: 0;
-            padding: 0;
-        }
-
-        button.mat-mdc-icon-button.mat-mdc-button-base > * {
-            display: none;
-        }
-
-        div.mat-mdc-form-field-subscript-wrapper {
-            display: none;
-        }
-    }
+:host,
+form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 16px;
 }
 
-input[type='number'] {
-    margin-bottom: 24px;
-}
-
-.custom_input {
-    border: 1px solid mat.get-theme-color(theme.$theme, foreground, divider);
-    outline: none;
-    width: 100%;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 1rem;
-
-    &::placeholder {
-        color: mat.get-theme-color(theme.$theme, primary, 500);
-    }
-
-    &:focus,
-    &:focus-visible {
-        border: 1px solid mat.get-theme-color(theme.$theme, primary, 700);
-        outline: none;
-    }
+.form-control {
+  display: flex;
+  flex-direction: column;
 }
 
 .custom_input_label {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    color: mat.get-theme-color(theme.$theme, foreground, text);
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #000;
 }
 
 .time-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    margin-top: 10px;
-    width: 75%;
+  display: flex;
+  gap: 10px;
 }
 
-.repeatable_checkbox {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-
-    input {
-        margin: 0 5px 0 0;
-    }
+.time-wrapper {
+  display: flex;
+  gap: 48px;
 }
 
-.time {
-    margin-right: 20px;
+.time-control {
+  width: 120px;
 }
 
-.select {
-    margin-top: 8px;
-
-    ::ng-deep {
-        div.mat-mdc-text-field-wrapper,
-        div.mat-mdc-form-field-infix {
-            max-height: initial;
-        }
-    }
+button[type='submit'] {
+  margin-top: auto;
 }
 
-::ng-deep ngx-material-timepicker-container {
-    .timepicker-backdrop-overlay {
-        z-index: 1001 !important;
-    }
-
-    div.timepicker-overlay {
-        z-index: 1003 !important;
-    }
+@media (max-width: 680px) {
+  .time-wrapper {
+    flex-direction: column;
+    gap: 0px;
+  }
 }

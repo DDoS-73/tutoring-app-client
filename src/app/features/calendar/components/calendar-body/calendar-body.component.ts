@@ -1,118 +1,114 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    Inject,
-    TemplateRef,
-    ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Signal,
+  TemplateRef,
+  viewChild,
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CalendarEvent } from '../../models/calendar-event.model';
-import { EventService } from '../../services/event.service';
-import { DialogConfig } from '../../../../shared/models/dialog.config';
-import { CalendarEventModalData } from '../../models/calendar-event-modal.data';
+import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
-import {
-    CALENDAR_CONFIG_TOKEN,
-    CalendarConfig,
-} from '../../models/calendar.config';
+import { EventService } from '../../services/event.service';
+import { CreateEventModalComponent } from '../create-event-modal/create-event-modal.component';
+import { HighlightTodayDirective } from './../../directives/highlight-today.directive';
+import { CalendarConfig } from './../../models/calendar.config';
+import { HourPipe } from './../../pipes/hour.pipe';
+import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
 
 @Component({
-    selector: 'app-calendar-body',
-    templateUrl: './calendar-body.component.html',
-    styleUrls: ['./calendar-body.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-calendar-body',
+  templateUrl: './calendar-body.component.html',
+  styleUrls: ['./calendar-body.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    HighlightTodayDirective,
+    HourPipe,
+    NgTemplateOutlet,
+    CreateEventModalComponent,
+    NzModalModule,
+    UpdateEventModalComponent,
+  ],
 })
-export class CalendarBodyComponent implements AfterViewInit {
-    @ViewChild('tile')
-    protected tile!: ElementRef<HTMLElement>;
+export class CalendarBodyComponent {
+  private createEventModal =
+    viewChild.required<TemplateRef<never>>('createEventModal');
+  protected createEventModalRef?: NzModalRef<any>;
 
-    @ViewChild('createEventModal')
-    protected createEventModal!: TemplateRef<any>;
-    protected createEventModalRef?: MatDialogRef<any>;
+  private updateEventModal =
+    viewChild.required<TemplateRef<never>>('updateEventModal');
+  protected updateEventModalRef?: NzModalRef<any>;
 
-    @ViewChild('updateEventModal')
-    protected updateEventModal!: TemplateRef<any>;
-    protected updateEventModalRef?: MatDialogRef<any>;
+  private readonly dialog = inject(NzModalService);
+  private readonly eventService = inject(EventService);
+  protected readonly dateService = inject(DateService);
 
-    protected tiles = new Array(this.calendarConfig.hoursAmount * 7);
-    protected hours = new Array(this.calendarConfig.hoursAmount);
-    protected events$: Observable<CalendarEvent[]> = this.eventService.events$;
+  protected events = this.eventService.eventsQuery.data;
+  protected tiles: Signal<Tile[]> = this._getTiles();
+  protected readonly CalendarConfig = CalendarConfig;
 
-    get cellHeight(): number {
-        return this.calendarConfig.cellHeight;
-    }
+  protected openCreateDialog(tile: Tile) {
+    const calendarEvent: Partial<CalendarEvent> = {
+      startTime: tile.startTime,
+      endTime: tile.endTime,
+    };
+    this.createEventModalRef = this.dialog.create({
+      nzTitle: 'Створення події',
+      nzContent: this.createEventModal(),
+      nzFooter: null,
+      nzData: {
+        calendarEvent,
+      },
+      nzCentered: true,
+      nzWidth: '50vw',
+    });
+  }
 
-    get cellWidth(): number {
-        return this.calendarConfig.cellWidth;
-    }
+  protected openUpdateDialog(calendarEvent: CalendarEvent) {
+    this.updateEventModalRef = this.dialog.create({
+      nzTitle: 'Редагування події',
+      nzContent: this.updateEventModal(),
+      nzFooter: null,
+      nzData: {
+        calendarEvent,
+      },
+      nzCentered: true,
+      nzWidth: '50vw',
+    });
+  }
 
-    constructor(
-        private dialog: MatDialog,
-        private eventService: EventService,
-        protected dateService: DateService,
-        @Inject(CALENDAR_CONFIG_TOKEN) protected calendarConfig: CalendarConfig,
-        private cdr: ChangeDetectorRef
-    ) {}
+  private _getTiles(): Signal<Tile[]> {
+    return computed(() => {
+      const events = this.events() ?? [];
+      const weekDays = this.dateService.weekDays();
+      const totalTiles = weekDays.length * CalendarConfig.hoursAmount;
 
-    ngAfterViewInit() {
-        this.calendarConfig.setCellHeight(this.tile.nativeElement.clientHeight);
-        this.calendarConfig.setCellWidth(
-            this.tile.nativeElement.clientWidth + 0.5
-        );
-        this.cdr.detectChanges();
-    }
+      return new Array(totalTiles).fill(null).map((_, i) => {
+        const dayIndex = i % 7;
+        const hourIndex = Math.floor(i / 7) + 8;
 
-    protected openCreateDialog(row: number, col: number) {
-        const dialogConfig = new DialogConfig<CalendarEventModalData>();
-        const calendarEvent: Partial<CalendarEvent> = {
-            startTime: row + ':00',
-            finishTime: row + 1 + ':00',
-            date: this.dateService.getWeekDayByIndex(col - 1),
+        const dayDate = weekDays[dayIndex];
+
+        const startTime = new Date(dayDate);
+        startTime.setHours(hourIndex, 0, 0, 0);
+
+        const endTime = new Date(dayDate);
+        endTime.setHours(hourIndex + 1, 0, 0, 0);
+
+        const tileEvents = events.filter(event => {
+          const eventStart = event.startTime;
+          return eventStart >= startTime && eventStart < endTime;
+        });
+
+        return {
+          startTime,
+          endTime,
+          events: tileEvents,
         };
-        dialogConfig.data = { calendarEvent };
-        this.createEventModalRef = this.dialog.open(
-            this.createEventModal,
-            dialogConfig
-        );
-    }
-
-    protected openUpdateDialog(calendarEvent: CalendarEvent) {
-        const dialogConfig = new DialogConfig<CalendarEventModalData>();
-        dialogConfig.data = { calendarEvent };
-        this.updateEventModalRef = this.dialog.open(
-            this.updateEventModal,
-            dialogConfig
-        );
-    }
-
-    protected calculateDay(index: number): number {
-        return (index + 1) % 7 ? (index + 1) % 7 : 7;
-    }
-
-    protected calculateRow(index: number): number {
-        return Math.floor(index / 7);
-    }
-
-    protected createEvent(event: CalendarEvent) {
-        this.eventService
-            .createEvent(event)
-            .subscribe(() => this.createEventModalRef?.close());
-    }
-
-    protected updateEvent(event: CalendarEvent, id: number) {
-        this.eventService
-            .updateEvent(event, id)
-            .subscribe(() => this.updateEventModalRef?.close());
-    }
-
-    protected deleteEvent(id: number, all = false) {
-        this.eventService
-            .deleteEvent(id, all)
-            .subscribe(() => this.updateEventModalRef?.close());
-    }
+      });
+    });
+  }
 }

@@ -1,0 +1,13 @@
+<app-event-form
+  [event]="event()"
+  [participants]="participants() ?? []"
+></app-event-form>
+
+<button
+  nz-button
+  nzType="primary"
+  [nzLoading]="isCreating()"
+  (click)="createEvent()"
+>
+  Підтвердити
+</button>

@@ -1,30 +1,28 @@
-import { InjectionToken } from '@angular/core';
-
 export class CalendarConfig {
-    public readonly daysOfTheWeek: string[] = [
-        'пн',
-        'вт',
-        'ср',
-        'чт',
-        'пт',
-        'сб',
-        'нд',
-    ];
+    static daysOfTheWeek: string[] = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд'];
 
-    public cellHeight: number = 0;
-    public cellWidth: number = 0;
+    static hoursAmount = 15;
+    static hoursOffset = 8;
 
-    public readonly hoursAmount = 24;
+    static hours = new Array(CalendarConfig.hoursAmount)
+        .fill(0)
+        .map((_, i) => i + CalendarConfig.hoursOffset);
 
-    public setCellHeight(height: number) {
-        this.cellHeight = height;
-    }
-
-    public setCellWidth(width: number) {
-        this.cellWidth = width;
-    }
+    static disabledHours = (): number[] => {
+        return Array.from(
+            { length: CalendarConfig.hoursOffset },
+            (_, i) => i
+        ).concat(
+            Array.from(
+                {
+                    length:
+                        24 -
+                        (CalendarConfig.hoursOffset +
+                            CalendarConfig.hoursAmount),
+                },
+                (_, i) =>
+                    i + CalendarConfig.hoursOffset + CalendarConfig.hoursAmount
+            )
+        );
+    };
 }
-
-export const CALENDAR_CONFIG_TOKEN = new InjectionToken<CalendarConfig>(
-    'calendarConfig'
-);

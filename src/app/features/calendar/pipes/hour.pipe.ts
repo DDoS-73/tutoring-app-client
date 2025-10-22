@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
-    name: 'hour',
-    standalone: false
+  name: 'hour',
 })
 export class HourPipe implements PipeTransform {
-    transform(value: number): string {
-        return value < 10 ? `0${value}:00` : `${value}:00`;
-    }
+  transform(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
 }

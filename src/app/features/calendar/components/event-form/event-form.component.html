@@ -1,96 +1,47 @@
 @if (eventForm) {
-  <form
-    [formGroup]="eventForm"
-    (submit)="eventFormSubmit.emit(eventForm.value)"
-    >
-    <h2>Об'єкт</h2>
-    <p class="custom_input_label">Об'єкт над яким виконується робота</p>
-    <input
-      type="text"
-      formControlName="workObject"
-      [matAutocomplete]="auto"
-      class="custom_input"
-      />
-      <mat-autocomplete #auto="matAutocomplete">
-        @for (option of filteredWorkObjects$ | async; track option) {
-          <mat-option
-            [value]="option.name"
-            >
-            {{ option.name }}
-          </mat-option>
-        }
-      </mat-autocomplete>
-      <p class="custom_input_label">Ціна</p>
-      <input type="number" formControlName="price" class="custom_input" />
-      <h2>Дата і час</h2>
-      <p class="custom_input_label">Дата</p>
-      <mat-form-field style="width: 75%">
-        <input
-          formControlName="date"
-          class="custom_input"
-          matInput
-          [matDatepicker]="picker"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <div class="time-container">
-          <ng-container
-            *ngTemplateOutlet="
-                timeField;
-                context: {
-                    label: 'Початок',
-                    formControlName: 'startTime'
-                }
-            "
-        ></ng-container>
-        <ng-container
-            *ngTemplateOutlet="
-                timeField;
-                context: {
-                    label: 'Кінець',
-                    formControlName: 'finishTime'
-                }
-            "
-      ></ng-container>
-    </div>
-    <mat-form-field class="select">
-      <mat-label>Повторювати</mat-label>
-      <mat-select formControlName="repeatable">
-        @for (option of repeatableOptions; track option.value) {
-          <mat-option [value]="option.value">{{ option.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <label class="custom_input_label repeatable_checkbox">
-      <input type="checkbox" formControlName="isPaid" />
-      Оплачено
-    </label>
-    <button mat-raised-button color="primary" type="submit">Підтвердити</button>
-  </form>
-}
+<form [formGroup]="eventForm">
+  <div class="form-control">
+    <p class="custom_input_label">Учень</p>
+    <input nz-input [nzAutocomplete]="auto" formControlName="participant" />
+    <nz-autocomplete
+      [nzDataSource]="options()"
+      nzBackfill
+      #auto
+    ></nz-autocomplete>
+  </div>
 
-<ng-template #timeField let-label="label" let-formControlName="formControlName">
-  <div [formGroup]="eventForm">
-    <div class="time">
-      <p class="custom_input_label">{{ label }}</p>
-      <input
-        class="custom_input"
-        [min]="'00:00'"
-        [max]="'23:59'"
-        [format]="24"
-        [ngxTimepicker]="timepicker"
-        [formControlName]="formControlName"
-        readonly
-        />
-      </div>
+  <div class="form-control">
+    <h2>Дата і час</h2>
+    <p class="custom_input_label">Дата</p>
+    <nz-date-picker
+      [ngModel]="event().startTime"
+      [ngModelOptions]="{ standalone: true }"
+      nzDisabled
+    ></nz-date-picker>
+  </div>
+
+  <div class="time-wrapper">
+    <div class="form-control">
+      <p class="custom_input_label">Час початку</p>
+      <nz-time-picker
+        nzFormat="HH:mm"
+        [nzDisabledHours]="CalendarConfig.disabledHours"
+        nzHideDisabledOptions
+        [nzMinuteStep]="15"
+        formControlName="startTime"
+      ></nz-time-picker>
     </div>
-    <ngx-material-timepicker
-      #timepicker
-      [theme]="darkTheme"
-      [minutesGap]="5"
-    ></ngx-material-timepicker>
-  </ng-template>
+
+    <div class="form-control">
+      <p class="custom_input_label">Час закінчення</p>
+      <nz-time-picker
+        nzFormat="HH:mm"
+        [nzDisabledHours]="CalendarConfig.disabledHours"
+        nzHideDisabledOptions
+        [nzMinuteStep]="15"
+        formControlName="endTime"
+      ></nz-time-picker>
+    </div>
+  </div>
+</form>
+}

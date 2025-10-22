@@ -1,108 +1,99 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { CalendarEvent } from '../models/calendar-event.model';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import {
+  injectMutation,
+  injectQuery,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
+import { lastValueFrom, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { CalendarEvent } from '../models/calendar-event.model';
+import { Participant } from '../models/participant.model';
 import { DateService } from './date.service';
-import { BehaviorSubject, of, switchMap, tap, withLatestFrom } from 'rxjs';
-import { WorkObject } from '../models/work-object.model';
-import { CalendarFilters } from '../models/calendar-filters.model';
 
 @Injectable()
-export class EventService implements OnDestroy {
-    private _events$ = new BehaviorSubject<CalendarEvent[]>([]);
-    public events$ = this._events$.asObservable();
-    private _workObjects$ = new BehaviorSubject<WorkObject[]>([]);
-    public workObjects$ = this._workObjects$.asObservable();
+export class EventService {
+  private readonly queryClient = inject(QueryClient);
+  private readonly http = inject(HttpClient);
+  private readonly dateService = inject(DateService);
 
-    private filters: CalendarFilters = {
-        isPaid: undefined,
-        workObjectId: undefined,
+  public eventsQuery = injectQuery(() => ({
+    queryKey: ['events'],
+    queryFn: this._getEvents.bind(this),
+    ...this._getQueryOptions(),
+  }));
+
+  public participantsQuery = injectQuery(() => ({
+    queryKey: ['participants'],
+    queryFn: this._getParticipants.bind(this),
+    ...this._getQueryOptions(),
+    refetchOnMount: true,
+  }));
+
+  public createEventMutation = injectMutation(() => ({
+    mutationFn: this._createEvent.bind(this),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['events'] });
+      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+    },
+  }));
+
+  public deleteEventMutation = injectMutation(() => ({
+    mutationFn: this._deleteEvent.bind(this),
+    onSuccess: () =>
+      this.queryClient.invalidateQueries({ queryKey: ['events'] }),
+  }));
+
+  public updateEventMutation = injectMutation(() => ({
+    mutationFn: this._updateEvent.bind(this),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['events'] });
+      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+    },
+  }));
+
+  private _getEvents() {
+    return lastValueFrom(
+      this.http
+        .get<CalendarEvent[]>(`${environment.backendApi}/events`)
+        .pipe(map(events => events.map(event => new CalendarEvent(event))))
+    );
+  }
+
+  private _getParticipants() {
+    return lastValueFrom(
+      this.http.get<Participant[]>(`${environment.backendApi}/participants`)
+    );
+  }
+
+  private _createEvent(event: CalendarEvent) {
+    return lastValueFrom(
+      this.http.post<CalendarEvent>(`${environment.backendApi}/events`, event)
+    );
+  }
+
+  private _deleteEvent(id: string | number) {
+    return lastValueFrom(
+      this.http.delete<void>(`${environment.backendApi}/events/${id}`)
+    );
+  }
+
+  private _updateEvent(variables: { calendarEvent: CalendarEvent }) {
+    return lastValueFrom(
+      this.http.patch<CalendarEvent>(
+        `${environment.backendApi}/events/${variables.calendarEvent.id}`,
+        variables.calendarEvent
+      )
+    );
+  }
+
+  private _getQueryOptions() {
+    return {
+      staleTime: Infinity, // Data never becomes stale
+      gcTime: Infinity, // Data never gets garbage collected
+      refetchOnWindowFocus: false, // Don't refetch when window regains focus
+      refetchOnReconnect: false, // Don't refetch when reconnecting to network
+      refetchOnMount: false, // Don't refetch when component mounts
     };
-
-    constructor(
-        private http: HttpClient,
-        private dateService: DateService
-    ) {
-        this._initEventsAndClients();
-    }
-
-    ngOnDestroy() {
-        this._events$.complete();
-        this._workObjects$.complete();
-    }
-
-    public createEvent(event: CalendarEvent) {
-        return this.http
-            .post<CalendarEvent>(`${environment.backendApi}/events`, event)
-            .pipe(
-                tap(() => {
-                    this._getAllClients();
-                    this._getEvents();
-                })
-            );
-    }
-
-    public updateEvent(event: CalendarEvent, id: number) {
-        return this.http
-            .put<CalendarEvent>(`${environment.backendApi}/events/${id}`, event)
-            .pipe(
-                tap(() => {
-                    this._getAllClients();
-                    this._getEvents();
-                })
-            );
-    }
-
-    public deleteEvent(id: string | number | undefined, all: boolean) {
-        const options = { body: { all } };
-        return this.http
-            .delete(`${environment.backendApi}/events/${id}`, options)
-            .pipe(
-                tap(() => {
-                    this._getEvents();
-                })
-            );
-    }
-
-    public setFilters(filters: CalendarFilters) {
-        this.filters = filters;
-        this._getEvents();
-    }
-
-    private _initEventsAndClients() {
-        this.dateService.weekDays$.subscribe(() => this._getEvents());
-        this._getAllClients();
-    }
-
-    private _getEvents() {
-        this._events$.next([]);
-        of(null)
-            .pipe(
-                withLatestFrom(this.dateService.weekDays$),
-                switchMap(([, days]) => {
-                    const params = new HttpParams()
-                        .set('from', days[0].toISOString())
-                        .set('to', days[6].toISOString())
-                        .set('isPaid', this.filters.isPaid ?? '')
-                        .set('workObjectId', this.filters.workObjectId ?? '');
-                    return this.http.get<CalendarEvent[]>(
-                        `${environment.backendApi}/events`,
-                        {
-                            params,
-                        }
-                    );
-                })
-            )
-            .subscribe(events => {
-                this._events$.next(
-                    events.map(event => new CalendarEvent(event))
-                );
-            });
-    }
-
-    private _getAllClients() {
-        this.http
-            .get<WorkObject[]>(`${environment.backendApi}/clients`)
-            .subscribe(clients => this._workObjects$.next(clients));
-    }
+  }
 }

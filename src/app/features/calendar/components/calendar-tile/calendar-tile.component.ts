@@ -34,8 +34,7 @@ export class CalendarTileComponent implements AfterViewInit {
     const tileHeight = this.tileHeight();
     if (!tileHeight) return 0;
 
-    const eventDurationInMilliseconds =
-      event.endTime.getTime() - event.startTime.getTime();
+    const eventDurationInMilliseconds = event.endTime.getTime() - event.startTime.getTime();
 
     return tileHeight * (eventDurationInMilliseconds / 1000 / 60 / 60);
   }

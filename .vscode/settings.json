@@ -1,6 +1,38 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "prettier.configPath": ".prettierrc.json",
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "style": "scss"
+    }
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-        "source.organizeImports": "explicit"
+      "source.fixAll.eslint": "explicit"
     },
-    "prettier.configPath": ".prettierrc.json"
+    "editor.formatOnSave": false
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.tslint": "explicit",
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.formatOnSave": true
+  },
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.inlineSuggest.enabled": true
 }

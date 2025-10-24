@@ -23,6 +23,7 @@
     "@angular/service-worker": "^20.1.4",
     "@tanstack/angular-query-experimental": "^5.85.5",
     "@tanstack/query-core": "^5.83.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
     "ng-zorro-antd": "^20.1.2",
     "ngx-material-timepicker": "^13.1.1",
     "rxjs": "~7.8.0",
@@ -37,13 +38,19 @@
     "@angular/compiler-cli": "^20.1.4",
     "@schematics/angular": "^20.1.6",
     "@types/jasmine": "~4.3.0",
+    "angular-eslint": "^20.4.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "prettier": "^3.0.3",
-    "typescript": "~5.8.3"
+    "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.46.2"
   }
 }

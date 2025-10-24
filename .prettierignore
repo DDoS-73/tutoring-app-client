@@ -1,4 +1,4 @@
-**/.git
-**/.svn
-**/.hg
-**/node_modules
+build
+coverage
+e2e
+node_modules

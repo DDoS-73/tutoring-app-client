@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   injectMutation,
   injectQuery,
   QueryClient,
+  QueryFunctionContext,
 } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -17,11 +18,16 @@ export class EventService {
   private readonly http = inject(HttpClient);
   private readonly dateService = inject(DateService);
 
-  public eventsQuery = injectQuery(() => ({
-    queryKey: ['events'],
-    queryFn: this._getEvents.bind(this),
-    ...this._getQueryOptions(),
-  }));
+  public eventsQuery = injectQuery(() => {
+    const weekDays = this.dateService.weekDays();
+    const from = weekDays[0].toISOString();
+    const to = weekDays[weekDays.length - 1].toISOString();
+    return {
+      queryKey: ['events', from, to],
+      queryFn: this._getEvents.bind(this),
+      ...this._getQueryOptions(),
+    };
+  });
 
   public participantsQuery = injectQuery(() => ({
     queryKey: ['participants'],
@@ -52,10 +58,15 @@ export class EventService {
     },
   }));
 
-  private _getEvents() {
+  private _getEvents(context: QueryFunctionContext) {
+    const [_, from, to] = context.queryKey;
+    const params = new HttpParams()
+      .set('from', String(from))
+      .set('to', String(to));
+
     return lastValueFrom(
       this.http
-        .get<CalendarEvent[]>(`${environment.backendApi}/events`)
+        .get<CalendarEvent[]>(`${environment.backendApi}/events`, { params })
         .pipe(map(events => events.map(event => new CalendarEvent(event))))
     );
   }

@@ -10,7 +10,13 @@
 <div class="divider"></div>
 
 <div class="calendar-body">
-  <ng-container [ngTemplateOutlet]="hoursList"></ng-container>
+  <div>
+    @for (hour of CalendarConfig.hours; track $index;) {
+    <div class="hour-item">
+      {{ hour | hour }}
+    </div>
+    }
+  </div>
 
   <div class="grid-wrapper">
     @for (tile of tiles(); track $index; let i = $index) {
@@ -34,15 +40,7 @@
   </div>
 </div>
 
-<ng-template #hoursList>
-  <div>
-    @for (hour of CalendarConfig.hours; track $index;) {
-    <div class="hour-item">
-      {{ hour | hour }}
-    </div>
-    }
-  </div>
-</ng-template>
+<app-calendar-week-selector />
 
 <ng-template #createEventModal let-data>
   <app-create-event-modal

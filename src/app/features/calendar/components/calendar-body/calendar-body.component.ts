@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,6 +12,7 @@ import { CalendarEvent } from '../../models/calendar-event.model';
 import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
 import { EventService } from '../../services/event.service';
+import { CalendarWeekSelectorComponent } from '../calendar-week-selector/calendar-week-selector.component';
 import { CreateEventModalComponent } from '../create-event-modal/create-event-modal.component';
 import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
 import { HighlightTodayDirective } from './../../directives/highlight-today.directive';
@@ -27,10 +27,10 @@ import { HourPipe } from './../../pipes/hour.pipe';
   imports: [
     HighlightTodayDirective,
     HourPipe,
-    NgTemplateOutlet,
     CreateEventModalComponent,
     NzModalModule,
     UpdateEventModalComponent,
+    CalendarWeekSelectorComponent,
   ],
 })
 export class CalendarBodyComponent {
@@ -83,6 +83,7 @@ export class CalendarBodyComponent {
   private _getTiles(): Signal<Tile[]> {
     return computed(() => {
       const events = this.events() ?? [];
+
       const weekDays = this.dateService.weekDays();
       const totalTiles = weekDays.length * CalendarConfig.hoursAmount;
 

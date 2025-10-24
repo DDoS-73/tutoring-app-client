@@ -14,12 +14,14 @@ export class DateService {
     const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
     const mostRecentMonday = new Date(weekDay);
     mostRecentMonday.setDate(weekDay.getDate() - daysSinceMonday);
+    mostRecentMonday.setHours(0, 0, 0, 0);
 
     const current7DaysStartingFromMonday = [];
     for (let i = 0; i < 7; i++) {
       current7DaysStartingFromMonday.push(new Date(mostRecentMonday));
       mostRecentMonday.setDate(mostRecentMonday.getDate() + 1);
     }
+    current7DaysStartingFromMonday[6].setHours(23, 59, 59, 999);
     this.weekDays.set(current7DaysStartingFromMonday);
   }
 

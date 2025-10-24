@@ -1,0 +1,22 @@
+<div class="custom-date-picker" (click)="picker.open()">
+  {{ weekDays()[0] | date: 'dd MMMM' }} -
+  {{ weekDays()[6] | date: 'dd MMMM' }}
+</div>
+
+<nz-date-picker
+  #picker
+  [(ngModel)]="selectedDate"
+  [nzDateRender]="dateRenderTpl"
+  (ngModelChange)="onDateSelect($event)"
+>
+  >
+</nz-date-picker>
+
+<ng-template #dateRenderTpl let-date>
+  <div
+    class="ant-picker-cell-inner"
+    [class.highlighted]="isInSelectedWeek(date)"
+  >
+    {{ date.getDate() }}
+  </div>
+</ng-template>

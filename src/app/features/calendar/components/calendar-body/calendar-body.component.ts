@@ -12,6 +12,7 @@ import { CalendarEvent } from '../../models/calendar-event.model';
 import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
 import { EventService } from '../../services/event.service';
+import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
 import { CalendarWeekSelectorComponent } from '../calendar-week-selector/calendar-week-selector.component';
 import { CreateEventModalComponent } from '../create-event-modal/create-event-modal.component';
 import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
@@ -31,6 +32,7 @@ import { HourPipe } from './../../pipes/hour.pipe';
     NzModalModule,
     UpdateEventModalComponent,
     CalendarWeekSelectorComponent,
+    CalendarTileComponent,
   ],
 })
 export class CalendarBodyComponent {
@@ -82,16 +84,16 @@ export class CalendarBodyComponent {
 
   private _getTiles(): Signal<Tile[]> {
     return computed(() => {
-      const events = this.events() ?? [];
+      const events: CalendarEvent[] = this.events() ?? [];
 
-      const weekDays = this.dateService.weekDays();
-      const totalTiles = weekDays.length * CalendarConfig.hoursAmount;
+      const weekDays: Date[] = this.dateService.weekDays();
+      const totalTiles: number = weekDays.length * CalendarConfig.hoursAmount;
 
       return new Array(totalTiles).fill(null).map((_, i) => {
-        const dayIndex = i % 7;
-        const hourIndex = Math.floor(i / 7) + 8;
+        const dayIndex: number = i % 7;
+        const hourIndex: number = Math.floor(i / 7) + 8;
 
-        const dayDate = weekDays[dayIndex];
+        const dayDate: Date = weekDays[dayIndex];
 
         const startTime = new Date(dayDate);
         startTime.setHours(hourIndex, 0, 0, 0);

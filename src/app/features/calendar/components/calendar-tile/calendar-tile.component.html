@@ -1,0 +1,12 @@
+@for (event of tile().events; track $index) { @let topOffset =
+getEventTopOffset(event);
+<div
+  class="tile"
+  [class.border-top]="topOffset"
+  [style.height.px]="getEventHeight(event)"
+  [style.top.px]="topOffset"
+  (click)="updateEvent.emit(event); $event.stopPropagation()"
+>
+  <p>{{ event.participant.name }}</p>
+</div>
+}

@@ -33,46 +33,29 @@ $hour-list-width: 25px;
   &::-webkit-scrollbar {
     display: none;
   }
+}
 
-  .grid-wrapper {
-    position: relative;
+.hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  .hour-item {
+    width: $hour-list-width;
+    padding-right: 5px;
+    text-align: end;
+    min-height: 60px;
     flex-grow: 1;
-    background-color: #e0e0e0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1px;
-  }
-
-  .empty-tile {
-    background-color: white;
-    min-height: 80px;
-    cursor: pointer;
-    width: calc(100% / 7 - 1px);
-
-    &:hover {
-      background-color: #e0e0e0;
-    }
-  }
-
-  .tile {
-    padding: 2px 4px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    height: 100%;
-    width: 100%;
-    background-color: #c18dff;
-
-    &:hover {
-      transform: scale(1.05);
-    }
   }
 }
 
-.hour-item {
-  width: $hour-list-width;
-  padding-right: 5px;
-  text-align: end;
-  min-height: 80px;
+.grid-wrapper {
+  position: relative;
+  flex-grow: 1;
+  background-color: #e0e0e0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
 }
 
 .delete-container {

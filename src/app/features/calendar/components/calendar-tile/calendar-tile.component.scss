@@ -1,0 +1,33 @@
+:host {
+  background-color: white;
+  min-height: 60px;
+  cursor: pointer;
+  width: calc(100% / 7 - 1px);
+  position: relative;
+  display: block;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px 4px;
+  height: 100%;
+  width: 100%;
+  background-color: #c18dff;
+  transition: 0.3s ease;
+  cursor: pointer;
+  z-index: 2;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.border-top {
+    border-top: 1px solid #e0e0e0;
+  }
+}

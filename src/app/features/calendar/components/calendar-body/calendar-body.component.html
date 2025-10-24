@@ -10,7 +10,7 @@
 <div class="divider"></div>
 
 <div class="calendar-body">
-  <div>
+  <div class="hours-list">
     @for (hour of CalendarConfig.hours; track $index;) {
     <div class="hour-item">
       {{ hour | hour }}
@@ -20,22 +20,13 @@
 
   <div class="grid-wrapper">
     @for (tile of tiles(); track $index; let i = $index) {
-    <div
-      #tile
-      class="empty-tile"
+    <app-calendar-tile
       appHighlightToday
       [dayIndex]="i % 7"
       (click)="openCreateDialog(tile)"
-    >
-      @if (tile?.events?.length) {
-      <div
-        class="tile"
-        (click)="openUpdateDialog(tile.events[0]); $event.stopPropagation()"
-      >
-        <p>{{ tile.events[0].participant.name }}</p>
-      </div>
-      }
-    </div>
+      [tile]="tile"
+      (updateEvent)="openUpdateDialog($event)"
+    />
     }
   </div>
 </div>

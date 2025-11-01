@@ -1,6 +1,6 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { CalendarEvent } from '../../models/calendar-event.model';
+import { CalendarEvent, Recurrence } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
 import { EventFormComponent } from '../event-form/event-form.component';
 
@@ -11,8 +11,7 @@ import { EventFormComponent } from '../event-form/event-form.component';
   imports: [EventFormComponent, NzButtonModule],
 })
 export class CreateEventModalComponent {
-  private eventForm =
-    viewChild.required<EventFormComponent>(EventFormComponent);
+  private eventForm = viewChild.required<EventFormComponent>(EventFormComponent);
 
   public event = input.required<CalendarEvent>();
   public eventCreated = output<void>();
@@ -28,9 +27,13 @@ export class CreateEventModalComponent {
 
     const formValue = eventForm.value;
     const participants = this.participants() ?? [];
-    const participant = participants.find(
-      participant => participant.name === formValue.participant
-    );
+    const participant = participants.find((participant) => participant.name === formValue.participant);
+
+    const recurrence = new Recurrence({
+      frequency: formValue.recurrence!.frequency!,
+      interval: formValue.recurrence!.interval!,
+      endDate: formValue.recurrence!.endDate!,
+    });
 
     const calendarEvent = new CalendarEvent({
       startTime: formValue.startTime!,
@@ -38,6 +41,7 @@ export class CreateEventModalComponent {
       participant: participant ?? {
         name: formValue.participant!,
       },
+      recurrence,
     });
 
     this.eventService.createEventMutation.mutate(calendarEvent, {

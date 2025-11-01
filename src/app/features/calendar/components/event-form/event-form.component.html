@@ -1,35 +1,36 @@
 @if (eventForm) {
-<form [formGroup]="eventForm">
-  <div class="form-control">
-    <p class="custom_input_label">Учень</p>
-    <input nz-input [nzAutocomplete]="auto" formControlName="participant" />
-    <nz-autocomplete
-      [nzDataSource]="options()"
-      nzBackfill
-      #auto
-    ></nz-autocomplete>
-  </div>
-
-  <div class="form-control">
-    <h2>Дата і час</h2>
-    <p class="custom_input_label">Дата</p>
-    <nz-date-picker
-      [ngModel]="event().startTime"
-      [ngModelOptions]="{ standalone: true }"
-      nzDisabled
-    ></nz-date-picker>
-  </div>
-
-  <div class="time-wrapper">
+  <form [formGroup]="eventForm">
     <div class="form-control">
-      <p class="custom_input_label">Час початку</p>
-      <app-time-picker formControlName="startTime" />
+      <p class="custom_input_label">Учень</p>
+      <input nz-input [nzAutocomplete]="auto" formControlName="participant" />
+      <nz-autocomplete [nzDataSource]="options()" nzBackfill #auto></nz-autocomplete>
     </div>
 
     <div class="form-control">
-      <p class="custom_input_label">Час закінчення</p>
-      <app-time-picker formControlName="endTime" />
+      <h2>Дата і час</h2>
+      <p class="custom_input_label">Дата</p>
+      <nz-date-picker [ngModel]="event().startTime" [ngModelOptions]="{ standalone: true }" nzDisabled></nz-date-picker>
     </div>
-  </div>
-</form>
+
+    <div class="time-wrapper">
+      <div class="form-control">
+        <p class="custom_input_label">Час початку</p>
+        <app-time-picker formControlName="startTime" />
+      </div>
+
+      <div class="form-control">
+        <p class="custom_input_label">Час закінчення</p>
+        <app-time-picker formControlName="endTime" />
+      </div>
+    </div>
+
+    <div class="form-control" formGroupName="recurrence">
+      <p class="custom_input_label">Повторювати</p>
+      <nz-radio-group formControlName="frequency">
+        @for (option of RECURRENCE_OPTIONS; track option.value) {
+          <label nz-radio [nzValue]="option.value">{{ option.label }}</label>
+        }
+      </nz-radio-group>
+    </div>
+  </form>
 }

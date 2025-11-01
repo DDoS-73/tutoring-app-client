@@ -3,10 +3,11 @@
 html,
 body {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 * {
   box-sizing: border-box;

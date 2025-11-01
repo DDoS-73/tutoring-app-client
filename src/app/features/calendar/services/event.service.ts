@@ -1,15 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  injectMutation,
-  injectQuery,
-  QueryClient,
-  QueryFunctionContext,
-} from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery, QueryClient, QueryFunctionContext } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Participant } from '../models/participant.model';
+import { DeleteEventRequest } from '../models/requests/delete-event.request';
 import { DateService } from './date.service';
 
 @Injectable()
@@ -46,8 +42,7 @@ export class EventService {
 
   public deleteEventMutation = injectMutation(() => ({
     mutationFn: this._deleteEvent.bind(this),
-    onSuccess: () =>
-      this.queryClient.invalidateQueries({ queryKey: ['events'] }),
+    onSuccess: () => this.queryClient.invalidateQueries({ queryKey: ['events'] }),
   }));
 
   public updateEventMutation = injectMutation(() => ({
@@ -60,33 +55,26 @@ export class EventService {
 
   private _getEvents(context: QueryFunctionContext) {
     const [_, from, to] = context.queryKey;
-    const params = new HttpParams()
-      .set('from', String(from))
-      .set('to', String(to));
+    const params = new HttpParams().set('from', String(from)).set('to', String(to));
 
     return lastValueFrom(
       this.http
         .get<CalendarEvent[]>(`${environment.backendApi}/events`, { params })
-        .pipe(map(events => events.map(event => new CalendarEvent(event))))
+        .pipe(map((events) => events.map((event) => new CalendarEvent(event))))
     );
   }
 
   private _getParticipants() {
-    return lastValueFrom(
-      this.http.get<Participant[]>(`${environment.backendApi}/participants`)
-    );
+    return lastValueFrom(this.http.get<Participant[]>(`${environment.backendApi}/participants`));
   }
 
   private _createEvent(event: CalendarEvent) {
-    return lastValueFrom(
-      this.http.post<CalendarEvent>(`${environment.backendApi}/events`, event)
-    );
+    return lastValueFrom(this.http.post<CalendarEvent>(`${environment.backendApi}/events`, event));
   }
 
-  private _deleteEvent(id: string | number) {
-    return lastValueFrom(
-      this.http.delete<void>(`${environment.backendApi}/events/${id}`)
-    );
+  private _deleteEvent({ id, mode, date }: DeleteEventRequest) {
+    const params = new HttpParams().set('mode', mode).set('date', date.toISOString());
+    return lastValueFrom(this.http.delete<void>(`${environment.backendApi}/events/${id}`, { params }));
   }
 
   private _updateEvent(variables: { calendarEvent: CalendarEvent }) {

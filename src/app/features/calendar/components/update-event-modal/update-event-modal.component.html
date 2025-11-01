@@ -1,25 +1,7 @@
-<app-event-form
-  [event]="event()"
-  [participants]="participants() ?? []"
-></app-event-form>
+<app-event-form [event]="event()" [participants]="participants() ?? []"></app-event-form>
 
 @let isLoading = isUpdating() || isDeleting();
 <div class="buttons-wrapper">
-  <button
-    nz-button
-    nzDanger
-    nzType="primary"
-    [nzLoading]="isLoading"
-    (click)="deleteEvent()"
-  >
-    Видалити
-  </button>
-  <button
-    nz-button
-    nzType="primary"
-    [nzLoading]="isLoading"
-    (click)="updateEvent()"
-  >
-    Змінити
-  </button>
+  <button nz-button nzDanger nzType="primary" [nzLoading]="isLoading" (click)="deleteEvent()">Видалити</button>
+  <button nz-button nzType="primary" [nzLoading]="isLoading" (click)="updateEvent()">Змінити</button>
 </div>

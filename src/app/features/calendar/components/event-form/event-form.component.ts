@@ -64,6 +64,9 @@ export class EventFormComponent implements OnInit {
       participant: this.event().participant?.name,
       startTime: this.event().startTime,
       endTime: this.event().endTime,
+      recurrence: {
+        frequency: this.event().recurrence?.frequency ?? RecurrenceFrequency.NONE,
+      },
     });
   }
 }

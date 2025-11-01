@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Participant } from '../models/participant.model';
 import { DeleteEventRequest } from '../models/requests/delete-event.request';
+import { UpdateEventRequest } from '../models/requests/update-event.request';
 import { DateService } from './date.service';
 
 @Injectable()
@@ -77,12 +78,10 @@ export class EventService {
     return lastValueFrom(this.http.delete<void>(`${environment.backendApi}/events/${id}`, { params }));
   }
 
-  private _updateEvent(variables: { calendarEvent: CalendarEvent }) {
+  private _updateEvent({ calendarEvent, mode, date }: UpdateEventRequest) {
+    const params = new HttpParams().set('mode', mode).set('date', date.toISOString());
     return lastValueFrom(
-      this.http.patch<CalendarEvent>(
-        `${environment.backendApi}/events/${variables.calendarEvent.id}`,
-        variables.calendarEvent
-      )
+      this.http.patch<CalendarEvent>(`${environment.backendApi}/events/${calendarEvent.id}`, calendarEvent, { params })
     );
   }
 

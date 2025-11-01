@@ -1,7 +1,7 @@
-import { DeleteMode } from '../../const/delete-mode';
+import { ChangeEventMode } from '../../const/change-event-mode';
 
 export interface DeleteEventRequest {
   id: string | number;
-  mode: DeleteMode;
+  mode: ChangeEventMode;
   date: Date;
 }

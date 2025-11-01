@@ -2,10 +2,10 @@ import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { take } from 'rxjs';
-import { DeleteMode } from '../../const/delete-mode';
+import { ChangeEventMode } from '../../const/change-event-mode';
 import { CalendarEvent, Recurrence, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
-import { DeleteModeModalComponent } from '../delete-mode-modal/delete-mode-modal.component';
+import { ChangeEventModeModalComponent } from '../change-event-mode-modal/change-event-mode-modal.component';
 import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
@@ -53,7 +53,22 @@ export class UpdateEventModalComponent {
       recurrence,
     });
 
-    this.eventService.updateEventMutation.mutate({ calendarEvent }, { onSuccess: () => this.eventChanged.emit() });
+    if (event.recurrence.frequency === RecurrenceFrequency.NONE) {
+      this._updateEventMutation(calendarEvent, ChangeEventMode.ALL);
+      return;
+    }
+
+    const modalRef: NzModalRef<ChangeEventModeModalComponent, ChangeEventMode> = this.dialog.create({
+      nzTitle: 'Оновлення події',
+      nzContent: ChangeEventModeModalComponent,
+      nzFooter: null,
+      nzCentered: true,
+      nzWidth: '30vw',
+    });
+    modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
+      if (!mode || !event.id) return;
+      this._updateEventMutation(calendarEvent, mode);
+    });
   }
 
   protected deleteEvent() {
@@ -61,13 +76,13 @@ export class UpdateEventModalComponent {
     if (!event.id) return;
 
     if (event.recurrence.frequency === RecurrenceFrequency.NONE) {
-      this._deleteEventMutation(event, DeleteMode.ALL);
+      this._deleteEventMutation(event, ChangeEventMode.ALL);
       return;
     }
 
-    const modalRef: NzModalRef<DeleteModeModalComponent, DeleteMode> = this.dialog.create({
+    const modalRef: NzModalRef<ChangeEventModeModalComponent, ChangeEventMode> = this.dialog.create({
       nzTitle: 'Видалення події',
-      nzContent: DeleteModeModalComponent,
+      nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
@@ -78,7 +93,7 @@ export class UpdateEventModalComponent {
     });
   }
 
-  private _deleteEventMutation(event: CalendarEvent, mode: DeleteMode) {
+  private _deleteEventMutation(event: CalendarEvent, mode: ChangeEventMode) {
     if (!event.id) return;
 
     this.eventService.deleteEventMutation.mutate(
@@ -90,6 +105,15 @@ export class UpdateEventModalComponent {
       {
         onSuccess: () => this.eventChanged.emit(),
       }
+    );
+  }
+
+  private _updateEventMutation(calendarEvent: CalendarEvent, mode: ChangeEventMode) {
+    if (!calendarEvent.id) return;
+
+    this.eventService.updateEventMutation.mutate(
+      { calendarEvent, mode, date: calendarEvent.startTime },
+      { onSuccess: () => this.eventChanged.emit() }
     );
   }
 }

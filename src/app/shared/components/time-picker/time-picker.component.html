@@ -6,8 +6,4 @@
   [value]="value"
   [disabled]="disabled"
 />
-<ngx-material-timepicker
-  #picker
-  [minutesGap]="15"
-  (timeChanged)="onTimeChange($event)"
-></ngx-material-timepicker>
+<ngx-material-timepicker #picker (timeChanged)="onTimeChange($event)" />

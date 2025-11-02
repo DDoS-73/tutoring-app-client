@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
+import { Option } from 'src/app/shared/models/option';
 import { ChangeEventMode } from '../../const/change-event-mode';
 
 @Component({
@@ -11,15 +12,6 @@ import { ChangeEventMode } from '../../const/change-event-mode';
   imports: [NzButtonModule],
 })
 export class ChangeEventModeModalComponent {
-  private readonly modalRef = inject(NzModalRef);
-
-  public changeAll() {
-    this.modalRef.close(ChangeEventMode.ALL);
-  }
-  public changeSingle() {
-    this.modalRef.close(ChangeEventMode.SINGLE);
-  }
-  public changeFuture() {
-    this.modalRef.close(ChangeEventMode.FUTURE);
-  }
+  protected readonly modalRef = inject(NzModalRef);
+  protected readonly data = inject<Option<ChangeEventMode>[]>(NZ_MODAL_DATA);
 }

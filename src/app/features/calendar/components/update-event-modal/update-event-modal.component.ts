@@ -1,8 +1,11 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { take } from 'rxjs';
+import { Option } from 'src/app/shared/models/option';
 import { ChangeEventMode } from '../../const/change-event-mode';
+import { DELETE_EVENT_MODE_OPTIONS } from '../../const/delete-event-mode-options';
+import { UPDATE_EVENT_MODE_OPTIONS } from '../../const/update-event-mode-options';
 import { CalendarEvent, Recurrence, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
 import { ChangeEventModeModalComponent } from '../change-event-mode-modal/change-event-mode-modal.component';
@@ -58,12 +61,13 @@ export class UpdateEventModalComponent {
       return;
     }
 
-    const modalRef: NzModalRef<ChangeEventModeModalComponent, ChangeEventMode> = this.dialog.create({
+    const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
       nzTitle: 'Оновлення події',
       nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
+      nzData: UPDATE_EVENT_MODE_OPTIONS,
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;
@@ -80,12 +84,13 @@ export class UpdateEventModalComponent {
       return;
     }
 
-    const modalRef: NzModalRef<ChangeEventModeModalComponent, ChangeEventMode> = this.dialog.create({
+    const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
       nzTitle: 'Видалення події',
       nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
+      nzData: DELETE_EVENT_MODE_OPTIONS,
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;

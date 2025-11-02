@@ -1,13 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  Signal,
-  TemplateRef,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal, TemplateRef, viewChild } from '@angular/core';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { CalendarEvent } from '../../models/calendar-event.model';
 import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
@@ -33,15 +26,14 @@ import { HourPipe } from './../../pipes/hour.pipe';
     UpdateEventModalComponent,
     CalendarWeekSelectorComponent,
     CalendarTileComponent,
+    NzSpinModule,
   ],
 })
 export class CalendarBodyComponent {
-  private createEventModal =
-    viewChild.required<TemplateRef<never>>('createEventModal');
+  private createEventModal = viewChild.required<TemplateRef<never>>('createEventModal');
   protected createEventModalRef?: NzModalRef<any>;
 
-  private updateEventModal =
-    viewChild.required<TemplateRef<never>>('updateEventModal');
+  private updateEventModal = viewChild.required<TemplateRef<never>>('updateEventModal');
   protected updateEventModalRef?: NzModalRef<any>;
 
   private readonly dialog = inject(NzModalService);
@@ -50,6 +42,7 @@ export class CalendarBodyComponent {
 
   protected events = this.eventService.eventsQuery.data;
   protected tiles: Signal<Tile[]> = this._getTiles();
+  protected isDataLoading = this._getIsDataLoading();
   protected readonly CalendarConfig = CalendarConfig;
 
   protected openCreateDialog(tile: Tile) {
@@ -82,6 +75,12 @@ export class CalendarBodyComponent {
     });
   }
 
+  private _getIsDataLoading(): Signal<boolean> {
+    return computed(
+      () => this.eventService.eventsQuery.isFetching() || this.eventService.participantsQuery.isFetching()
+    );
+  }
+
   private _getTiles(): Signal<Tile[]> {
     return computed(() => {
       const events: CalendarEvent[] = this.events() ?? [];
@@ -101,7 +100,7 @@ export class CalendarBodyComponent {
         const endTime = new Date(dayDate);
         endTime.setHours(hourIndex + 1, 0, 0, 0);
 
-        const tileEvents = events.filter(event => {
+        const tileEvents = events.filter((event) => {
           const eventStart = event.startTime;
           return eventStart >= startTime && eventStart < endTime;
         });

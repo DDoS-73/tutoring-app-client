@@ -63,3 +63,20 @@ $hour-list-width: 25px;
   justify-content: space-between;
   gap: 16px;
 }
+
+nz-spin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+}
+
+:host ::ng-deep {
+  .ant-spin-nested-loading > div > .ant-spin {
+    max-height: 100%;
+  }
+}

@@ -1,3 +1,7 @@
+@if (isDataLoading()) {
+  <nz-spin [nzSpinning]="true" />
+}
+
 <div class="calendar-days">
   @for (date of dateService.weekDays(); track date; let i = $index) {
     <div class="week_day" appHighlightToday [dayIndex]="i">
@@ -23,9 +27,9 @@
       <app-calendar-tile
         appHighlightToday
         [dayIndex]="i % 7"
-        (click)="openCreateDialog(tile)"
         [tile]="tile"
         (updateEvent)="openUpdateDialog($event)"
+        (click)="openCreateDialog(tile)"
       />
     }
   </div>

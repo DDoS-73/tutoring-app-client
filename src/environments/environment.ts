@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  backendApi: 'http://localhost:3000',
+  backendApi: 'https://nestjs-server-fbaz.onrender.com',
   baseUrl: '',
 };

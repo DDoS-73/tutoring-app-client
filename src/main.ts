@@ -10,7 +10,7 @@ import { QueryClient } from '@tanstack/query-core';
 import { provideNzI18n, uk_UA } from 'ng-zorro-antd/i18n';
 import { routes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
-import nzConfig from './app/core/interceptors/config/nz-config';
+import nzConfig from './app/core/config/nz-config';
 import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
 
 registerLocaleData(uk);
@@ -25,4 +25,4 @@ bootstrapApplication(AppComponent, {
     { provide: LOCALE_ID, useValue: 'uk' },
     ...nzConfig,
   ],
-}).catch(err => console.error(err));
+}).catch((err) => console.error(err));

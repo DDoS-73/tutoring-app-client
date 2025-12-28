@@ -1,16 +1,14 @@
 export enum MainPages {
-    Auth = 'auth',
-    Calendar = 'calendar',
-    Statistics = 'statistics',
+  Auth = 'auth',
+  Calendar = 'calendar',
+  Statistics = 'statistics',
 }
 
 export enum AuthPages {
-    SignIn = 'sign-in',
-    SignUp = 'sign-up',
-    ForgotPassword = 'forgot-password',
-    ResetPassword = 'reset-password',
+  Login = 'login',
+  SignUp = 'sign-up',
 }
 
 export enum CalendarPages {
-    Calendar = '',
+  Calendar = '',
 }

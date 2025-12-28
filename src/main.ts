@@ -12,12 +12,13 @@ import { routes } from './app/app-routes';
 import { AppComponent } from './app/app.component';
 import nzConfig from './app/core/config/nz-config';
 import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
+import { refreshTokenInterceptor } from './app/core/interceptors/refresh-token.interceptor';
 
 registerLocaleData(uk);
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptors([ErrorInterceptor])),
+    provideHttpClient(withInterceptors([ErrorInterceptor, refreshTokenInterceptor])),
     provideRouter(routes),
     provideNzI18n(uk_UA),
     provideAnimationsAsync(),

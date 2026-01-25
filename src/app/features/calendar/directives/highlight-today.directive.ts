@@ -1,4 +1,4 @@
-import { Directive, ElementRef, input, OnInit } from '@angular/core';
+import { Directive, effect, ElementRef, inject, Injector, input, OnInit } from '@angular/core';
 import { DateService } from '../services/date.service';
 
 @Directive({
@@ -7,23 +7,25 @@ import { DateService } from '../services/date.service';
 export class HighlightTodayDirective implements OnInit {
   public dayIndex = input.required<number>();
 
-  constructor(
-    private el: ElementRef,
-    private dateService: DateService
-  ) {}
+  private readonly _el = inject(ElementRef);
+  private readonly _dateService = inject(DateService);
+  private readonly _injector = inject(Injector);
 
   ngOnInit() {
-    const days = this.dateService.weekDays();
+    this._highlightTodayEffect();
+  }
 
-    const date = days[this.dayIndex()];
-    const today = new Date();
-    if (
-      today.getDate() === date.getDate() &&
-      today.getMonth() === date.getMonth()
-    ) {
-      this.el.nativeElement.classList.add('highlight_today');
-    } else {
-      this.el.nativeElement.classList.remove('highlight_today');
-    }
+  private _highlightTodayEffect() {
+    effect(
+      () => {
+        const days = this._dateService.weekDays();
+        const dayIndex = this.dayIndex();
+        const date = days[dayIndex];
+        const today = new Date();
+        const isHighlighted = today.getDate() === date.getDate() && today.getMonth() === date.getMonth();
+        this._el.nativeElement.classList.toggle('highlight_today', isHighlighted);
+      },
+      { injector: this._injector }
+    );
   }
 }

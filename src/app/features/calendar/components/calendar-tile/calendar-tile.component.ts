@@ -19,6 +19,7 @@ interface EventStyles {
   zIndex: number;
   left: string;
   width: string;
+  backgroundColor: string;
 }
 
 @Component({
@@ -52,6 +53,7 @@ export class CalendarTileComponent implements AfterViewInit {
       zIndex: this._getEventZIndex(event),
       left: leftOffset + 'px',
       width: leftOffset ? this.tileWidth() - leftOffset + 'px' : '100%',
+      backgroundColor: event.color,
     };
   }
 
@@ -96,7 +98,7 @@ export class CalendarTileComponent implements AfterViewInit {
         event.startTime.getTime() <= startTime.getTime() + 15 * 60 * 1000;
 
       const isEventTimeCollision =
-        event.startTime.getTime() >= startTime.getTime() && event.startTime.getTime() <= endTime.getTime();
+        event.startTime.getTime() > startTime.getTime() && event.startTime.getTime() < endTime.getTime();
       return event.id !== id && (isStartTimeCollision || isEventTimeCollision);
     });
   }

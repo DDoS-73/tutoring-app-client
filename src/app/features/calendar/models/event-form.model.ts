@@ -12,4 +12,5 @@ export interface EventFormControls {
   startTime: FormControl<Date | null>;
   endTime: FormControl<Date | null>;
   recurrence: FormGroup<RecurrenceControls>;
+  color: FormControl<string | null>;
 }

@@ -7,6 +7,20 @@
     </div>
 
     <div class="form-control">
+      <p class="custom_input_label">Колір</p>
+      <nz-select formControlName="color" [nzCustomTemplate]="customColorSelectTemplate">
+        @for (option of TILE_COLORS_OPTIONS; track option.value) {
+          <nz-option nzCustomContent [nzValue]="option.value" [nzLabel]="option.label">
+            <div class="custom-color-option">
+              <div [style.background-color]="option.value"></div>
+              {{ option.label }}
+            </div>
+          </nz-option>
+        }
+      </nz-select>
+    </div>
+
+    <div class="form-control">
       <h2>Дата і час</h2>
       <p class="custom_input_label">Дата</p>
       <nz-date-picker [ngModel]="event().startTime" [ngModelOptions]="{ standalone: true }" nzDisabled></nz-date-picker>
@@ -34,3 +48,10 @@
     </div>
   </form>
 }
+
+<ng-template #customColorSelectTemplate let-selected>
+  <div class="custom-color-option">
+    <div [style.background-color]="selected.nzValue"></div>
+    {{ selected.nzLabel }}
+  </div>
+</ng-template>

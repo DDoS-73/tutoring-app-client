@@ -23,6 +23,19 @@ form {
   gap: 16px;
 }
 
-button[type='submit'] {
+button[type="submit"] {
   margin-top: auto;
+}
+
+.custom-color-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+  }
 }

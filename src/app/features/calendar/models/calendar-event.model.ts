@@ -6,11 +6,10 @@ export class CalendarEvent {
   startTime: Date;
   endTime: Date;
   recurrence: Recurrence;
+  color: string;
 
   // price: number;
-  // repeatable: string;
   // isPaid?: boolean;
-  // recurredPattern: RecurredPattern | null;
 
   constructor(calendarEvent: CalendarEvent) {
     this.id = calendarEvent.id;
@@ -18,10 +17,9 @@ export class CalendarEvent {
     this.startTime = new Date(calendarEvent.startTime);
     this.endTime = new Date(calendarEvent.endTime);
     this.recurrence = new Recurrence(calendarEvent.recurrence);
+    this.color = calendarEvent.color;
     // this.price = calendarEvent.price;
-    // this.repeatable = calendarEvent.recurredPattern?.recurrenceType ?? '';
     // this.isPaid = calendarEvent.isPaid;
-    // this.recurredPattern = calendarEvent.recurredPattern;
   }
 }
 

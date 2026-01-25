@@ -3,8 +3,10 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { TimePickerComponent } from 'src/app/shared/components/time-picker/time-picker.component';
 import { RECURRENCE_OPTIONS } from '../../const/recurrence.options';
+import { TILE_COLORS_OPTIONS } from '../../const/tile-colors.options';
 import { CalendarEvent, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls, RecurrenceControls } from '../../models/event-form.model';
@@ -22,6 +24,7 @@ import { Participant } from '../../models/participant.model';
     FormsModule,
     TimePickerComponent,
     NzRadioModule,
+    NzSelectModule,
   ],
 })
 export class EventFormComponent implements OnInit {
@@ -37,6 +40,7 @@ export class EventFormComponent implements OnInit {
       interval: new FormControl<number>(1, [Validators.required]),
       endDate: new FormControl<string | null>(null),
     }),
+    color: new FormControl<string | null>(null, [Validators.required]),
   });
 
   protected participantsInputValue = signal('');
@@ -51,6 +55,7 @@ export class EventFormComponent implements OnInit {
 
   protected readonly CalendarConfig = CalendarConfig;
   protected readonly RECURRENCE_OPTIONS = RECURRENCE_OPTIONS;
+  protected readonly TILE_COLORS_OPTIONS = TILE_COLORS_OPTIONS;
 
   get participantControl() {
     return this.eventForm.controls['participant'];
@@ -76,6 +81,7 @@ export class EventFormComponent implements OnInit {
       recurrence: {
         frequency: event.recurrence?.frequency ?? RecurrenceFrequency.NONE,
       },
+      color: event.color,
     });
   }
 }

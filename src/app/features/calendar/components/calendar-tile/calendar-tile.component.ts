@@ -20,6 +20,7 @@ interface EventStyles {
   left: string;
   width: string;
   backgroundColor: string;
+  boxShadow: string;
 }
 
 @Component({
@@ -54,6 +55,7 @@ export class CalendarTileComponent implements AfterViewInit {
       left: leftOffset + 'px',
       width: leftOffset ? this.tileWidth() - leftOffset + 'px' : '100%',
       backgroundColor: event.color,
+      boxShadow: leftOffset ? '0 0 10px 0 rgba(0, 0, 0, 0.3)' : 'none',
     };
   }
 
@@ -90,16 +92,20 @@ export class CalendarTileComponent implements AfterViewInit {
     return eventDurationInMilliseconds / 1000 / 60;
   }
 
-  private _isEventTimeCollision(event: CalendarEvent): boolean {
+  private _isEventTimeCollision(tileEvent: CalendarEvent): boolean {
     const events: CalendarEvent[] = this.events() ?? [];
-    return events.some(({ id, startTime, endTime }) => {
+    const tileEventDurationInMinutes = this._getEventDurationInMinutes(tileEvent);
+    return events.some((event) => {
+      const eventDurationInMinutes = this._getEventDurationInMinutes(event);
       const isStartTimeCollision =
-        event.startTime.getTime() >= startTime.getTime() &&
-        event.startTime.getTime() <= startTime.getTime() + 15 * 60 * 1000;
+        tileEvent.startTime.getTime() >= event.startTime.getTime() &&
+        tileEvent.startTime.getTime() <= event.startTime.getTime() + 15 * 60 * 1000 &&
+        tileEventDurationInMinutes < eventDurationInMinutes;
 
       const isEventTimeCollision =
-        event.startTime.getTime() > startTime.getTime() && event.startTime.getTime() < endTime.getTime();
-      return event.id !== id && (isStartTimeCollision || isEventTimeCollision);
+        tileEvent.startTime.getTime() > event.startTime.getTime() &&
+        tileEvent.startTime.getTime() < event.endTime.getTime();
+      return tileEvent.id !== event.id && (isStartTimeCollision || isEventTimeCollision);
     });
   }
 }

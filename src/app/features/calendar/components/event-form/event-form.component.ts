@@ -65,12 +65,16 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const event = this.event();
+
+    this.participantsInputValue.set(event.participant?.name ?? '');
+
     this.eventForm.patchValue({
-      participant: this.event().participant?.name,
-      startTime: this.event().startTime,
-      endTime: this.event().endTime,
+      participant: event.participant?.name,
+      startTime: event.startTime,
+      endTime: event.endTime,
       recurrence: {
-        frequency: this.event().recurrence?.frequency ?? RecurrenceFrequency.NONE,
+        frequency: event.recurrence?.frequency ?? RecurrenceFrequency.NONE,
       },
     });
   }

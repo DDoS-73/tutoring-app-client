@@ -9,7 +9,17 @@ import {
   signal,
 } from '@angular/core';
 import { CalendarEvent } from '../../models/calendar-event.model';
+import { CalendarConfig } from '../../models/calendar.config';
 import { Tile } from '../../models/tile.model';
+import { EventService } from '../../services/event.service';
+
+interface EventStyles {
+  height: string;
+  top: string;
+  zIndex: number;
+  left: string;
+  width: string;
+}
 
 @Component({
   selector: 'app-calendar-tile',
@@ -19,32 +29,75 @@ import { Tile } from '../../models/tile.model';
 })
 export class CalendarTileComponent implements AfterViewInit {
   public tile = input.required<Tile>();
-  public dayIndex = input.required<number>();
   public updateEvent = output<CalendarEvent>();
 
-  private elRef = inject(ElementRef);
+  private readonly _elRef = inject(ElementRef);
+  private readonly _eventService = inject(EventService);
+
+  protected events = this._eventService.eventsQuery.data;
 
   private tileHeight = signal<number>(0);
+  private tileWidth = signal<number>(0);
 
   ngAfterViewInit(): void {
-    this.tileHeight.set(this.elRef.nativeElement.offsetHeight);
+    this.tileHeight.set(this._elRef.nativeElement.offsetHeight);
+    this.tileWidth.set(this._elRef.nativeElement.offsetWidth);
   }
 
-  protected getEventHeight(event: CalendarEvent): number {
+  protected getEventStyles(event: CalendarEvent): EventStyles {
+    const leftOffset = this._getEventLeftOffset(event);
+    return {
+      height: this._getEventHeight(event) + 'px',
+      top: this._getEventTopOffset(event) + 'px',
+      zIndex: this._getEventZIndex(event),
+      left: leftOffset + 'px',
+      width: leftOffset ? this.tileWidth() - leftOffset + 'px' : '100%',
+    };
+  }
+
+  private _getEventHeight(event: CalendarEvent): number {
     const tileHeight = this.tileHeight();
     if (!tileHeight) return 0;
 
-    const eventDurationInMilliseconds = event.endTime.getTime() - event.startTime.getTime();
+    const eventDurationInMinutes = this._getEventDurationInMinutes(event);
 
-    return tileHeight * (eventDurationInMilliseconds / 1000 / 60 / 60);
+    return tileHeight * (eventDurationInMinutes / 60);
   }
 
-  protected getEventTopOffset(event: CalendarEvent): number {
+  private _getEventTopOffset(event: CalendarEvent): number {
     const tileHeight = this.tileHeight();
     if (!tileHeight) return 0;
 
     const eventStartTimeMinutes = event.startTime.getMinutes();
 
     return tileHeight * (eventStartTimeMinutes / 60);
+  }
+
+  private _getEventZIndex(event: CalendarEvent): number {
+    const eventDurationInMinutes = this._getEventDurationInMinutes(event);
+    const totalMinutesOnCalendarGrid = CalendarConfig.hoursAmount * 60;
+    return totalMinutesOnCalendarGrid - eventDurationInMinutes;
+  }
+
+  private _getEventLeftOffset(event: CalendarEvent): number {
+    return this._isEventTimeCollision(event) ? this.tileWidth() / 4 : 0;
+  }
+
+  private _getEventDurationInMinutes(event: CalendarEvent): number {
+    const eventDurationInMilliseconds = event.endTime.getTime() - event.startTime.getTime();
+    return eventDurationInMilliseconds / 1000 / 60;
+  }
+
+  private _isEventTimeCollision(event: CalendarEvent): boolean {
+    const events: CalendarEvent[] = this.events() ?? [];
+    return events.some(({ id, startTime, endTime }) => {
+      const isStartTimeCollision =
+        event.startTime.getTime() >= startTime.getTime() &&
+        event.startTime.getTime() <= startTime.getTime() + 15 * 60 * 1000;
+
+      const isEventTimeCollision =
+        event.startTime.getTime() >= startTime.getTime() && event.startTime.getTime() <= endTime.getTime();
+      return event.id !== id && (isStartTimeCollision || isEventTimeCollision);
+    });
   }
 }

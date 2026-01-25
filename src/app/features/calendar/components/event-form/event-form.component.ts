@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal, Signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
@@ -39,13 +39,18 @@ export class EventFormComponent implements OnInit {
     }),
   });
 
-  protected readonly RECURRENCE_OPTIONS = RECURRENCE_OPTIONS;
-
+  protected participantsInputValue = signal('');
   protected options: Signal<string[]> = computed(() => {
     return this.participants()?.map((participant) => participant.name) ?? [];
   });
+  protected filteredOptions: Signal<string[]> = computed(() => {
+    const inputValue = this.participantsInputValue();
+    const options = this.options();
+    return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
+  });
 
   protected readonly CalendarConfig = CalendarConfig;
+  protected readonly RECURRENCE_OPTIONS = RECURRENCE_OPTIONS;
 
   get participantControl() {
     return this.eventForm.controls['participant'];

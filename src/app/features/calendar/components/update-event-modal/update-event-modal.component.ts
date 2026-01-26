@@ -58,7 +58,7 @@ export class UpdateEventModalComponent {
     });
 
     if (event.recurrence.frequency === RecurrenceFrequency.NONE) {
-      this._updateEventMutation(calendarEvent, ChangeEventMode.ALL);
+      this._updateEventMutation(calendarEvent, ChangeEventMode.ALL, event.startTime);
       return;
     }
 
@@ -72,7 +72,7 @@ export class UpdateEventModalComponent {
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;
-      this._updateEventMutation(calendarEvent, mode);
+      this._updateEventMutation(calendarEvent, mode, event.startTime);
     });
   }
 
@@ -103,22 +103,16 @@ export class UpdateEventModalComponent {
     if (!event.id) return;
 
     this.eventService.deleteEventMutation.mutate(
-      {
-        id: event.id,
-        mode,
-        date: event.startTime,
-      },
-      {
-        onSuccess: () => this.eventChanged.emit(),
-      }
+      { id: event.id, mode, date: event.startTime },
+      { onSuccess: () => this.eventChanged.emit() }
     );
   }
 
-  private _updateEventMutation(calendarEvent: CalendarEvent, mode: ChangeEventMode) {
+  private _updateEventMutation(calendarEvent: CalendarEvent, mode: ChangeEventMode, date: Date) {
     if (!calendarEvent.id) return;
 
     this.eventService.updateEventMutation.mutate(
-      { calendarEvent, mode, date: calendarEvent.startTime },
+      { calendarEvent, mode, date },
       { onSuccess: () => this.eventChanged.emit() }
     );
   }

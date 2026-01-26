@@ -10,7 +10,7 @@ export const authGuard: CanMatchFn = () => {
   const http = inject(HttpClient);
   const router = inject(Router);
 
-  return http.get(`${environment.backendApi}${ApiEndpoints.User.me}`, { withCredentials: true }).pipe(
+  return http.get(`${environment.backendApi}${ApiEndpoints.User.me}`).pipe(
     map(() => true),
     catchError(() => {
       router.navigate([MainPages.Auth, AuthPages.Login]);

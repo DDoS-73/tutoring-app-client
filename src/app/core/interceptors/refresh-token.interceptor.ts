@@ -14,7 +14,7 @@ export function refreshTokenInterceptor(
 ): Observable<HttpEvent<unknown>> {
   const authService = inject(AuthService);
 
-  const requestWithCredentials = request.clone({ withCredentials: true });
+  const requestWithCredentials = request.clone();
 
   return next(requestWithCredentials).pipe(
     catchError((error: HttpErrorResponse) => {

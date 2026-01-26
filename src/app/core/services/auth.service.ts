@@ -56,7 +56,10 @@ export class AuthService {
 
   public logout(): void {
     this._http.post(`${environment.backendApi}${ApiEndpoints.Auth.logout}`, {}).subscribe({
-      complete: () => this._router.navigate([MainPages.Auth]),
+      complete: () => {
+        this._removeTokens();
+        this._router.navigate([MainPages.Auth]);
+      },
       error: () => this._router.navigate([MainPages.Auth]),
     });
   }
@@ -64,5 +67,10 @@ export class AuthService {
   private _setTokens(tokens: TokensResponse): void {
     localStorage.setItem(StorageKeys.AccessToken, tokens.accessToken);
     localStorage.setItem(StorageKeys.RefreshToken, tokens.refreshToken);
+  }
+
+  private _removeTokens(): void {
+    localStorage.removeItem(StorageKeys.AccessToken);
+    localStorage.removeItem(StorageKeys.RefreshToken);
   }
 }

@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { StorageKeys } from 'src/app/shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
 import { AuthService } from '../services/auth.service';
 
@@ -14,12 +15,10 @@ export function refreshTokenInterceptor(
 ): Observable<HttpEvent<unknown>> {
   const authService = inject(AuthService);
 
-  const requestWithCredentials = request.clone();
-
-  return next(requestWithCredentials).pipe(
+  return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && !isAuthEndpoint(request.url)) {
-        return handle401Error(requestWithCredentials, next, authService);
+        return handle401Error(request, next, authService);
       }
       return throwError(() => error);
     })
@@ -32,7 +31,11 @@ function handle401Error(
   authService: AuthService
 ): Observable<HttpEvent<unknown>> {
   return authService.refreshToken().pipe(
-    switchMap(() => next(request)),
+    switchMap(() => {
+      const token = localStorage.getItem(StorageKeys.AccessToken);
+      const clonedRequest = request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+      return token ? next(clonedRequest) : next(request);
+    }),
     catchError((refreshError) => {
       authService.logout();
       return throwError(() => refreshError);

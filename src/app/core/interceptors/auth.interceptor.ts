@@ -4,7 +4,9 @@ import { StorageKeys } from 'src/app/shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
 
 function isAuthEndpoint(url: string): boolean {
-  return Object.values(ApiEndpoints.Auth).some((endpoint) => url.includes(endpoint));
+  return Object.values(ApiEndpoints.Auth).some(
+    (endpoint) => endpoint !== ApiEndpoints.Auth.refresh && url.includes(endpoint)
+  );
 }
 
 export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
@@ -12,15 +14,19 @@ export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandler
     return next(request);
   }
 
-  const accessToken = localStorage.getItem(StorageKeys.AccessToken);
+  let token = localStorage.getItem(StorageKeys.AccessToken);
 
-  if (!accessToken) {
+  if (request.url.includes(ApiEndpoints.Auth.refresh)) {
+    token = localStorage.getItem(StorageKeys.RefreshToken);
+  }
+
+  if (!token) {
     return next(request);
   }
 
   const authRequest = request.clone({
     setHeaders: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 

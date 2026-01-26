@@ -10,6 +10,11 @@ $hour-list-width: 25px;
   display: flex;
   gap: 1px;
   padding-left: $hour-list-width;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
 
   .week_day {
     padding: 5px 0;

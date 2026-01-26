@@ -13,10 +13,7 @@
 </nz-date-picker>
 
 <ng-template #dateRenderTpl let-date>
-  <div
-    class="ant-picker-cell-inner"
-    [class.highlighted]="isInSelectedWeek(date)"
-  >
+  <div class="ant-picker-cell-inner" [class.highlighted]="isInSelectedWeek(date)">
     {{ date.getDate() }}
   </div>
 </ng-template>

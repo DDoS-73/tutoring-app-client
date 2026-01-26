@@ -1,17 +1,7 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-  Signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  NzDatePickerComponent,
-  NzDatePickerModule,
-} from 'ng-zorro-antd/date-picker';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { DateService } from '../../services/date.service';
 
 @Component({

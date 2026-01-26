@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  HostListener,
   inject,
   input,
   output,
@@ -40,6 +41,12 @@ export class CalendarTileComponent implements AfterViewInit {
 
   private tileHeight = signal<number>(0);
   private tileWidth = signal<number>(0);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.tileHeight.set(this._elRef.nativeElement.offsetHeight);
+    this.tileWidth.set(this._elRef.nativeElement.offsetWidth);
+  }
 
   ngAfterViewInit(): void {
     this.tileHeight.set(this._elRef.nativeElement.offsetHeight);

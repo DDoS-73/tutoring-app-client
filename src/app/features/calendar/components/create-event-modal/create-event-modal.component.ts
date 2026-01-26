@@ -23,7 +23,10 @@ export class CreateEventModalComponent {
 
   protected createEvent() {
     const { eventForm } = this.eventForm();
-    if (eventForm.invalid) return;
+    if (eventForm.invalid) {
+      this.eventForm().validateForm();
+      return;
+    }
 
     const formValue = eventForm.value;
     const participants = this.participants() ?? [];

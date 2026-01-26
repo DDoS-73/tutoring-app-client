@@ -35,7 +35,10 @@ export class UpdateEventModalComponent {
     const { eventForm } = this.eventForm();
     const event = this.event();
 
-    if (eventForm.invalid || !event.id) return;
+    if (eventForm.invalid || !event.id) {
+      this.eventForm().validateForm();
+      return;
+    }
 
     const formValue = eventForm.value;
     const participants = this.participants() ?? [];

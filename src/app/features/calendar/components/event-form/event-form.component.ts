@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal, Signal } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal, Signal } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { TimePickerComponent } from 'src/app/shared/components/time-picker/time-picker.component';
@@ -11,6 +20,17 @@ import { CalendarEvent, RecurrenceFrequency } from '../../models/calendar-event.
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls, RecurrenceControls } from '../../models/event-form.model';
 import { Participant } from '../../models/participant.model';
+
+function timeRangeValidator(control: AbstractControl): ValidationErrors | null {
+  const startTime = control.get('startTime')?.value;
+  const endTime = control.get('endTime')?.value;
+
+  if (!startTime || !endTime) {
+    return null;
+  }
+
+  return new Date(startTime) >= new Date(endTime) ? { invalidTimeRange: true } : null;
+}
 
 @Component({
   selector: 'app-event-form',
@@ -31,17 +51,22 @@ export class EventFormComponent implements OnInit {
   public event = input.required<Partial<CalendarEvent>>();
   public participants = input.required<Participant[]>();
 
-  public eventForm: FormGroup<EventFormControls> = new FormGroup({
-    participant: new FormControl<string | null>(null, [Validators.required]),
-    startTime: new FormControl<Date | null>(null, [Validators.required]),
-    endTime: new FormControl<Date | null>(null, [Validators.required]),
-    recurrence: new FormGroup<RecurrenceControls>({
-      frequency: new FormControl<RecurrenceFrequency>(RecurrenceFrequency.NONE, [Validators.required]),
-      interval: new FormControl<number>(1, [Validators.required]),
-      endDate: new FormControl<string | null>(null),
-    }),
-    color: new FormControl<string | null>(null, [Validators.required]),
-  });
+  private readonly notificationService = inject(NzNotificationService);
+
+  public eventForm: FormGroup<EventFormControls> = new FormGroup(
+    {
+      participant: new FormControl<string | null>(null, [Validators.required]),
+      startTime: new FormControl<Date | null>(null, [Validators.required]),
+      endTime: new FormControl<Date | null>(null, [Validators.required]),
+      recurrence: new FormGroup<RecurrenceControls>({
+        frequency: new FormControl<RecurrenceFrequency>(RecurrenceFrequency.NONE, [Validators.required]),
+        interval: new FormControl<number>(1, [Validators.required]),
+        endDate: new FormControl<string | null>(null),
+      }),
+      color: new FormControl<string | null>(null, [Validators.required]),
+    },
+    { validators: timeRangeValidator }
+  );
 
   protected participantsInputValue = signal('');
   protected options: Signal<string[]> = computed(() => {
@@ -83,6 +108,15 @@ export class EventFormComponent implements OnInit {
       },
       color: event.color,
     });
+  }
+
+  public validateForm(): void {
+    if (this.eventForm.errors?.['invalidTimeRange']) {
+      this.notificationService.error('Помилка', 'Час закінчення повинен бути пізніше часу початку');
+      return;
+    }
+
+    this.notificationService.error('Помилка', 'Заповніть всі поля');
   }
 
   protected onDateChange(date: Date): void {

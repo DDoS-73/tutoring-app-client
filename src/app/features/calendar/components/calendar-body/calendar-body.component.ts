@@ -90,7 +90,7 @@ export class CalendarBodyComponent {
 
       return new Array(totalTiles).fill(null).map((_, i) => {
         const dayIndex: number = i % 7;
-        const hourIndex: number = Math.floor(i / 7) + 8;
+        const hourIndex: number = Math.floor(i / 7) + CalendarConfig.startHour;
 
         const dayDate: Date = weekDays[dayIndex];
 

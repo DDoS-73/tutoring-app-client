@@ -52,10 +52,10 @@ export class CalendarTileComponent implements AfterViewInit {
       height: this._getEventHeight(event) + 'px',
       top: this._getEventTopOffset(event) + 'px',
       zIndex: this._getEventZIndex(event),
-      left: leftOffset + 'px',
-      width: leftOffset ? this.tileWidth() - leftOffset + 'px' : '100%',
+      left: leftOffset ? `calc(${leftOffset}px - 1%)` : '1%',
+      width: leftOffset ? this.tileWidth() - leftOffset + 'px' : '98%',
       backgroundColor: event.color,
-      boxShadow: leftOffset ? '0 0 10px 0 rgba(0, 0, 0, 0.3)' : 'none',
+      boxShadow: leftOffset ? '-2px 0 10px 0 rgba(0, 0, 0, 0.3)' : 'none',
     };
   }
 

@@ -3,6 +3,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { take } from 'rxjs';
 import { Option } from 'src/app/shared/models/option';
+import { isSameDate } from 'src/app/shared/utils';
 import { ChangeEventMode } from '../../const/change-event-mode';
 import { DELETE_EVENT_MODE_OPTIONS } from '../../const/delete-event-mode-options';
 import { UPDATE_EVENT_MODE_OPTIONS } from '../../const/update-event-mode-options';
@@ -62,13 +63,18 @@ export class UpdateEventModalComponent {
       return;
     }
 
+    const isSameEventDate = isSameDate(event.startTime, formValue.startTime!);
+    const updateEventModeOptions = isSameEventDate
+      ? UPDATE_EVENT_MODE_OPTIONS
+      : UPDATE_EVENT_MODE_OPTIONS.filter((option) => option.value !== ChangeEventMode.ALL);
+
     const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
       nzTitle: 'Оновлення події',
       nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
-      nzData: UPDATE_EVENT_MODE_OPTIONS,
+      nzData: updateEventModeOptions,
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;

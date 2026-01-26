@@ -23,7 +23,12 @@
     <div class="form-control">
       <h2>Дата і час</h2>
       <p class="custom_input_label">Дата</p>
-      <nz-date-picker [ngModel]="event().startTime" [ngModelOptions]="{ standalone: true }" nzDisabled></nz-date-picker>
+      <nz-date-picker
+        [nzAllowClear]="false"
+        [ngModel]="event().startTime"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onDateChange($event)"
+      ></nz-date-picker>
     </div>
 
     <div class="time-wrapper">

@@ -84,4 +84,22 @@ export class EventFormComponent implements OnInit {
       color: event.color,
     });
   }
+
+  protected onDateChange(date: Date): void {
+    if (!this.startTimeControl.value || !this.endTimeControl.value) return;
+    const newStartTimeDate = new Date(this.startTimeControl.value);
+
+    newStartTimeDate.setDate(date.getDate());
+    newStartTimeDate.setMonth(date.getMonth());
+    newStartTimeDate.setFullYear(date.getFullYear());
+
+    this.startTimeControl.setValue(newStartTimeDate);
+
+    const newEndTimeDate = new Date(this.endTimeControl.value);
+    newEndTimeDate.setDate(date.getDate());
+    newEndTimeDate.setMonth(date.getMonth());
+    newEndTimeDate.setFullYear(date.getFullYear());
+
+    this.endTimeControl.setValue(newEndTimeDate);
+  }
 }

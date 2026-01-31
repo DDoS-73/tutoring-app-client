@@ -1,10 +1,11 @@
-<div class="custom-date-picker" (click)="picker.open()">
+<div class="custom-date-picker" (click)="togglePicker(picker)">
   {{ weekDays()[0] | date: 'dd MMMM' }} -
   {{ weekDays()[6] | date: 'dd MMMM' }}
 </div>
 
 <nz-date-picker
   #picker
+  nzInputReadOnly
   [(ngModel)]="selectedDate"
   [nzDateRender]="dateRenderTpl"
   (ngModelChange)="onDateSelect($event)"

@@ -67,7 +67,11 @@ export class EventService {
   }
 
   private _getParticipants() {
-    return lastValueFrom(this.http.get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`));
+    return lastValueFrom(
+      this.http
+        .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`)
+        .pipe(map((participants) => participants.sort((a, b) => a.name.localeCompare(b.name))))
+    );
   }
 
   private _createEvent(event: CalendarEvent) {

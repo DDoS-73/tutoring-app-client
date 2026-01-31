@@ -21,6 +21,15 @@ form {
 .time-wrapper {
   display: flex;
   gap: 16px;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+    align-items: center;
+
+    .form-control {
+      width: 100%;
+    }
+  }
 }
 
 button[type="submit"] {

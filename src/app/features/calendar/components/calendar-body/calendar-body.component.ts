@@ -58,7 +58,6 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
-      nzWidth: '60vw',
     });
   }
 
@@ -71,7 +70,6 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
-      nzWidth: '60vw',
     });
   }
 

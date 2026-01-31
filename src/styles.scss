@@ -44,3 +44,17 @@ select {
 .ant-select-dropdown .cdk-virtual-scroll-viewport {
   max-height: 320px !important;
 }
+
+.ant-modal {
+    width: 60vw !important;
+
+    @media screen and (max-width: 790px) {
+        width: 95vw !important;
+    }
+
+    @media screen and (max-width: 500px) {
+        .ant-modal-header,.ant-modal-body {
+            padding: 16px;
+        }
+    }
+}

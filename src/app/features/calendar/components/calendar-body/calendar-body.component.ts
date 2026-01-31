@@ -58,6 +58,7 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
+      nzAutofocus: null,
     });
   }
 
@@ -70,6 +71,7 @@ export class CalendarBodyComponent {
         calendarEvent,
       },
       nzCentered: true,
+      nzAutofocus: null,
     });
   }
 

@@ -15,7 +15,7 @@ export class CalendarWeekSelectorComponent {
   private readonly dateService = inject(DateService);
   private readonly elementRef = inject(ElementRef);
 
-  protected weekDays: Signal<Date[]> = this.dateService.weekDays;
+  protected weekDays: Signal<Date[]> = this.dateService.currentWeekDays;
   protected selectedDate: Date = new Date();
 
   protected isPickerOpen = false;
@@ -31,7 +31,7 @@ export class CalendarWeekSelectorComponent {
   }
 
   protected onDateSelect(date: Date) {
-    this.dateService.updateWeekDays(date);
+    this.dateService.updateAllWeeksDays(date);
     this.isPickerOpen = false;
   }
 

@@ -2,13 +2,26 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class DateService {
-  public weekDays = signal<Date[]>([]);
+  public previousWeekDays = signal<Date[]>([]);
+  public currentWeekDays = signal<Date[]>([]);
+  public nextWeekDays = signal<Date[]>([]);
 
   constructor() {
-    this.updateWeekDays(new Date());
+    this.updateAllWeeksDays(new Date());
   }
 
-  public updateWeekDays(weekDay: Date) {
+  public updateAllWeeksDays(weekDay: Date) {
+    const previousWeekDay = new Date(weekDay);
+    previousWeekDay.setDate(weekDay.getDate() - 7);
+    const nextWeekDay = new Date(weekDay);
+    nextWeekDay.setDate(weekDay.getDate() + 7);
+
+    this.previousWeekDays.set(this._calculateWeekDays(previousWeekDay));
+    this.currentWeekDays.set(this._calculateWeekDays(weekDay));
+    this.nextWeekDays.set(this._calculateWeekDays(nextWeekDay));
+  }
+
+  private _calculateWeekDays(weekDay: Date) {
     const currentDayOfWeek = weekDay.getDay();
 
     const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
@@ -22,10 +35,10 @@ export class DateService {
       mostRecentMonday.setDate(mostRecentMonday.getDate() + 1);
     }
     current7DaysStartingFromMonday[6].setHours(23, 59, 59, 999);
-    this.weekDays.set(current7DaysStartingFromMonday);
+    return current7DaysStartingFromMonday;
   }
 
   public getWeekDayByIndex(index: number) {
-    return this.weekDays()[index];
+    return this.currentWeekDays()[index];
   }
 }

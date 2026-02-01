@@ -29,4 +29,8 @@
     transform: scale(1.05);
     z-index: 999 !important;
   }
+
+  @media screen and (max-width: 450px) {
+    font-size: 10px;
+  }
 }

@@ -17,7 +17,7 @@ export class EventService {
   private readonly dateService = inject(DateService);
 
   public eventsQuery = injectQuery(() => {
-    const weekDays = this.dateService.weekDays();
+    const weekDays = this.dateService.currentWeekDays();
     const from = weekDays[0].toISOString();
     const to = weekDays[weekDays.length - 1].toISOString();
     return {

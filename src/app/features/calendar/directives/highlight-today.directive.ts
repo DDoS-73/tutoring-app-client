@@ -18,7 +18,7 @@ export class HighlightTodayDirective implements OnInit {
   private _highlightTodayEffect() {
     effect(
       () => {
-        const days = this._dateService.weekDays();
+        const days = this._dateService.currentWeekDays();
         const dayIndex = this.dayIndex();
         const date = days[dayIndex];
         const today = new Date();

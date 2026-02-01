@@ -1,9 +1,6 @@
-@if (isDataLoading()) {
-  <nz-spin [nzSpinning]="true" />
-}
-
 <div class="calendar-days">
-  @for (date of dateService.weekDays(); track date; let i = $index) {
+  <ng-container [ngTemplateOutlet]="loader"></ng-container>
+  @for (date of week(); track date.toISOString(); let i = $index) {
     <div class="week_day" appHighlightToday [dayIndex]="i">
       <p>{{ date.getDate() }}</p>
       <p>{{ CalendarConfig.daysOfTheWeek[i] }}</p>
@@ -35,8 +32,6 @@
   </div>
 </div>
 
-<app-calendar-week-selector />
-
 <ng-template #createEventModal let-data>
   <app-create-event-modal [event]="data.calendarEvent" (eventCreated)="createEventModalRef?.close()">
   </app-create-event-modal>
@@ -45,4 +40,12 @@
 <ng-template #updateEventModal let-data>
   <app-update-event-modal [event]="data.calendarEvent" (eventChanged)="updateEventModalRef?.close()">
   </app-update-event-modal>
+</ng-template>
+
+<ng-template #loader>
+  <div class="loader-container">
+    @if (isDataLoading()) {
+      <nz-icon nzType="loading" />
+    }
+  </div>
 </ng-template>

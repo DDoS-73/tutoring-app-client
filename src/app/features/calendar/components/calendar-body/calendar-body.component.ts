@@ -1,17 +1,26 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  Signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { CalendarEvent } from '../../models/calendar-event.model';
 import { Tile } from '../../models/tile.model';
 import { DateService } from '../../services/date.service';
 import { EventService } from '../../services/event.service';
 import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
-import { CalendarWeekSelectorComponent } from '../calendar-week-selector/calendar-week-selector.component';
 import { CreateEventModalComponent } from '../create-event-modal/create-event-modal.component';
 import { UpdateEventModalComponent } from '../update-event-modal/update-event-modal.component';
 import { HighlightTodayDirective } from './../../directives/highlight-today.directive';
 import { CalendarConfig } from './../../models/calendar.config';
 import { HourPipe } from './../../pipes/hour.pipe';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-calendar-body',
@@ -24,9 +33,9 @@ import { HourPipe } from './../../pipes/hour.pipe';
     CreateEventModalComponent,
     NzModalModule,
     UpdateEventModalComponent,
-    CalendarWeekSelectorComponent,
     CalendarTileComponent,
-    NzSpinModule,
+    NzIconModule,
+    NgTemplateOutlet,
   ],
 })
 export class CalendarBodyComponent {
@@ -36,11 +45,13 @@ export class CalendarBodyComponent {
   private updateEventModal = viewChild.required<TemplateRef<never>>('updateEventModal');
   protected updateEventModalRef?: NzModalRef<any>;
 
+  public week = input.required<Date[]>();
+  public events = input.required<CalendarEvent[]>();
+
   private readonly dialog = inject(NzModalService);
   private readonly eventService = inject(EventService);
   protected readonly dateService = inject(DateService);
 
-  protected events = this.eventService.eventsQuery.data;
   protected tiles: Signal<Tile[]> = this._getTiles();
   protected isDataLoading = this._getIsDataLoading();
   protected readonly CalendarConfig = CalendarConfig;
@@ -85,7 +96,7 @@ export class CalendarBodyComponent {
     return computed(() => {
       const events: CalendarEvent[] = this.events() ?? [];
 
-      const weekDays: Date[] = this.dateService.weekDays();
+      const weekDays: Date[] = this.dateService.currentWeekDays();
       const totalTiles: number = weekDays.length * CalendarConfig.hoursAmount;
 
       return new Array(totalTiles).fill(null).map((_, i) => {

@@ -1,3 +1,4 @@
+<span class="touch-target"></span>
 @for (event of tile().events; track $index) {
   <div class="tile" [style]="getEventStyles(event)" (click)="updateEvent.emit(event); $event.stopPropagation()">
     <p>

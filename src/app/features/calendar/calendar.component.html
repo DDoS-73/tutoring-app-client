@@ -1,5 +1,7 @@
-@for (week of weeks(); track week[0].toISOString(); let i = $index) {
-  <app-calendar-body [week]="week" [events]="i === 1 ? (events() ?? []) : []" />
-}
+<div class="container" #container>
+  @for (week of weeks(); track week[0].toISOString(); let i = $index) {
+    <app-calendar-body [week]="week" [events]="i === 1 ? (events() ?? []) : []" />
+  }
+</div>
 
 <app-calendar-week-selector />

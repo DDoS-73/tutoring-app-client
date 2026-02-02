@@ -1,20 +1,12 @@
 :host {
-  display: flex;
   min-height: 100vh;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: auto;
-  touch-action: pan-y;
+}
 
-  /* Firefox */
-  scrollbar-width: none;
-
-  /* IE and Edge */
-  -ms-overflow-style: none;
-
-  /* Chrome, Safari, Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
+.container {
+  display: flex;
+  height: 100%;
 }
 
 app-calendar-body {

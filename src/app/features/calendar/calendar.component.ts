@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { CalendarBodyComponent } from './components/calendar-body/calendar-body.component';
 import { CalendarWeekSelectorComponent } from './components/calendar-week-selector/calendar-week-selector.component';
+import { CurrentHourLineComponent } from './components/current-hour-line/current-hour-line.component';
 import { DateService } from './services/date.service';
 import { EventService } from './services/event.service';
 
@@ -25,7 +26,7 @@ const SWIPE_THRESHOLD = 0.25;
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DateService, EventService],
-  imports: [CalendarBodyComponent, CalendarWeekSelectorComponent],
+  imports: [CalendarBodyComponent, CalendarWeekSelectorComponent, CurrentHourLineComponent],
 })
 export class CalendarComponent implements AfterViewInit {
   private readonly container = viewChild.required<ElementRef>('container');

@@ -1,0 +1,19 @@
+:host {
+  position: absolute;
+  display: block;
+  height: 1px;
+  width: 100vw;
+  background-color: red;
+  top: 10px;
+  z-index: 100000;
+
+  &::before {
+    content: "";
+    display: block;
+    height: 7px;
+    width: 7px;
+    border-radius: 50px;
+    background-color: red;
+    transform: translateY(-50%);
+  }
+}

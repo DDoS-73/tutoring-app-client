@@ -1,5 +1,7 @@
+import { LoadingOutline } from '@ant-design/icons-angular/icons';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n';
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
 const nzConfig: NzConfig = {
   notification: {
@@ -19,4 +21,5 @@ export default [
       firstDayOfWeek: 1, // Monday
     },
   },
+  { provide: NZ_ICONS, useValue: [LoadingOutline] },
 ];

@@ -37,7 +37,7 @@ jobs:
       - name: Copy files to wwwroot
         run: |
           rm -rf aspnet-repo/wwwroot/*
-          cp -r dist/tutoring-app/browser* aspnet-repo/wwwroot/
+          cp -r dist/tutoring-app/browser/* aspnet-repo/wwwroot/
 
       # 6. Commit & push
       - name: Commit and push

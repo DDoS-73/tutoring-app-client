@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
 
 jobs:
   build-and-sync:
@@ -36,7 +37,7 @@ jobs:
       - name: Copy files to wwwroot
         run: |
           rm -rf aspnet-repo/wwwroot/*
-          cp -r dist/tutoring-app/* aspnet-repo/wwwroot/
+          cp -r dist/tutoring-app/browser* aspnet-repo/wwwroot/
 
       # 6. Commit & push
       - name: Commit and push

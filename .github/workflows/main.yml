@@ -1,0 +1,49 @@
+name: Build Angular and Deploy to ASP.NET
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Angular repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build -- --configuration production
+
+      - name: Checkout ASP.NET repo
+        uses: actions/checkout@v4
+        with:
+          repository: DDoS-73/aspnet
+          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          path: aspnet-repo
+
+      # 5. Copy build files
+      - name: Copy files to wwwroot
+        run: |
+          rm -rf aspnet-repo/wwwroot/*
+          cp -r dist/tutoring-app/* aspnet-repo/wwwroot/
+
+      # 6. Commit & push
+      - name: Commit and push
+        run: |
+          cd aspnet-repo
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "${{ github.event.head_commit.message }}"
+          git push

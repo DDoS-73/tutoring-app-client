@@ -8,10 +8,16 @@ import { CalendarConfig } from '../../models/calendar.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   host: {
-    '[style.top.px]': 'topOffset',
+    '[style.top.px]': '40 + topOffset',
+    '[style.display]': 'isHidden ? "none" : "block"',
   },
 })
 export class CurrentHourLineComponent {
   private oneHourHeight = (window.innerHeight - 40) / CalendarConfig.hoursAmount;
-  protected topOffset = (new Date().getHours() - CalendarConfig.startHour) * this.oneHourHeight;
+
+  private now = new Date();
+
+  protected isHidden = this.now.getHours() > CalendarConfig.endHour || this.now.getHours() < CalendarConfig.startHour;
+  protected topOffset =
+    (this.now.getHours() - CalendarConfig.startHour + this.now.getMinutes() / 60) * this.oneHourHeight;
 }

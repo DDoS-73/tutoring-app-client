@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+  Signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   FormControl,
@@ -52,6 +63,7 @@ export class EventFormComponent implements OnInit {
   public participants = input.required<Participant[]>();
 
   private readonly notificationService = inject(NzNotificationService);
+  private readonly destroyRef = inject(DestroyRef);
 
   public eventForm: FormGroup<EventFormControls> = new FormGroup(
     {
@@ -107,6 +119,14 @@ export class EventFormComponent implements OnInit {
         frequency: event.recurrence?.frequency ?? RecurrenceFrequency.NONE,
       },
       color: event.color,
+    });
+
+    this.startTimeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((startTime) => {
+      if (!startTime) return;
+      const endTime = new Date(startTime);
+      endTime.setMinutes(endTime.getMinutes() + 50);
+      this.endTimeControl.setValue(endTime);
+      this.notificationService.info('Увага', 'Час закінчення встановлено на 50 хвилин після початку');
     });
   }
 

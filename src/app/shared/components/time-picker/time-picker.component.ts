@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { CalendarConfig } from 'src/app/features/calendar/models/calendar.config';
@@ -18,6 +18,8 @@ import { CalendarConfig } from 'src/app/features/calendar/models/calendar.config
   ],
 })
 export class TimePickerComponent implements ControlValueAccessor {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   protected readonly CalendarConfig = CalendarConfig;
 
   protected value: string = '';
@@ -29,6 +31,7 @@ export class TimePickerComponent implements ControlValueAccessor {
   writeValue(value: Date | null): void {
     this.dateValue = value;
     this.value = value ? this._formatTimeFromDate(value) : '';
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (value: Date | null) => void): void {
@@ -44,6 +47,10 @@ export class TimePickerComponent implements ControlValueAccessor {
   }
 
   onTimeChange(time: string): void {
+    this.value = time;
+  }
+
+  onTimeSet(time: string): void {
     this.value = time;
     this._updateDateValue(time);
   }

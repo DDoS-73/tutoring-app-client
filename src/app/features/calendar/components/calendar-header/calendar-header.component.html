@@ -24,6 +24,7 @@
       #picker
       class="hidden-picker"
       nzInputReadOnly
+      [nzShowToday]="false"
       [(ngModel)]="selectedDate"
       [nzDateRender]="dateRenderTpl"
       (ngModelChange)="onDateSelect($event)"

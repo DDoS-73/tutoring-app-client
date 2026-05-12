@@ -6,4 +6,4 @@
   [value]="value"
   [disabled]="disabled"
 />
-<ngx-material-timepicker #picker (timeChanged)="onTimeChange($event)" />
+<ngx-material-timepicker #picker (timeChanged)="onTimeChange($event)" (timeSet)="onTimeSet($event)" />

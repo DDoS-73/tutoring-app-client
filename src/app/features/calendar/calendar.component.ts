@@ -9,11 +9,12 @@ import {
   inject,
   Signal,
   viewChild,
+  viewChildren,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { CalendarBodyComponent } from './components/calendar-body/calendar-body.component';
-import { CalendarWeekSelectorComponent } from './components/calendar-week-selector/calendar-week-selector.component';
+import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { CurrentHourLineComponent } from './components/current-hour-line/current-hour-line.component';
 import { DateService } from './services/date.service';
 import { EventService } from './services/event.service';
@@ -26,10 +27,11 @@ const SWIPE_THRESHOLD = 0.25;
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DateService, EventService],
-  imports: [CalendarBodyComponent, CalendarWeekSelectorComponent, CurrentHourLineComponent],
+  imports: [CalendarBodyComponent, CalendarHeaderComponent, CurrentHourLineComponent],
 })
 export class CalendarComponent implements AfterViewInit {
   private readonly container = viewChild.required<ElementRef>('container');
+  private readonly calendarBodies = viewChildren(CalendarBodyComponent);
 
   private readonly _dateService = inject(DateService);
   private readonly _eventService = inject(EventService);
@@ -51,6 +53,10 @@ export class CalendarComponent implements AfterViewInit {
   @HostListener('window:resize')
   onResize() {
     this._moveCalendarOnStartPosition();
+  }
+
+  protected openCreateDialog(): void {
+    this.calendarBodies()[1]?.openCreateDialog();
   }
 
   private _moveCalendarOnStartPosition(): void {

@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CalendarConfig } from '../../models/calendar.config';
 
+const HEADER_HEIGHT = 64;
+
 @Component({
   selector: 'app-current-hour-line',
   templateUrl: './current-hour-line.component.html',
@@ -13,7 +15,7 @@ import { CalendarConfig } from '../../models/calendar.config';
   },
 })
 export class CurrentHourLineComponent {
-  private oneHourHeight = (window.innerHeight - 40) / CalendarConfig.hoursAmount;
+  private oneHourHeight = (window.innerHeight - 40 - HEADER_HEIGHT) / CalendarConfig.hoursAmount;
 
   private now = new Date();
 

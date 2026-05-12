@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,7 +21,6 @@ import { UpdateEventModalComponent } from '../update-event-modal/update-event-mo
 import { HighlightTodayDirective } from './../../directives/highlight-today.directive';
 import { CalendarConfig } from './../../models/calendar.config';
 import { HourPipe } from './../../pipes/hour.pipe';
-import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-calendar-body',
@@ -56,18 +56,30 @@ export class CalendarBodyComponent {
   protected isDataLoading = this._getIsDataLoading();
   protected readonly CalendarConfig = CalendarConfig;
 
-  protected openCreateDialog(tile: Tile) {
-    const calendarEvent: Partial<CalendarEvent> = {
-      startTime: tile.startTime,
-      endTime: tile.endTime,
-    };
+  public openCreateDialog(tile?: Tile) {
+    let startTime: Date;
+    let endTime: Date;
+
+    if (tile) {
+      startTime = tile.startTime;
+      endTime = tile.endTime;
+    } else {
+      const start = new Date();
+      start.setMinutes(0, 0, 0);
+      const nextHour = start.getHours() + 1;
+      start.setHours(Math.min(Math.max(nextHour, CalendarConfig.startHour), CalendarConfig.endHour));
+      startTime = start;
+      const end = new Date(start);
+      end.setHours(end.getHours() + 1);
+      endTime = end;
+    }
+
+    const calendarEvent: Partial<CalendarEvent> = { startTime, endTime };
     this.createEventModalRef = this.dialog.create({
       nzTitle: 'Створення події',
       nzContent: this.createEventModal(),
       nzFooter: null,
-      nzData: {
-        calendarEvent,
-      },
+      nzData: { calendarEvent },
       nzCentered: true,
       nzAutofocus: null,
     });

@@ -63,3 +63,13 @@ select {
 .ant-select-dropdown {
   position: absolute !important;
 }
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: none;
+}
+.ant-picker-cell-inner.highlighted {
+  background: #1890ff33;
+  border-radius: 50%;
+  color: #1890ff;
+  font-weight: 500;
+}

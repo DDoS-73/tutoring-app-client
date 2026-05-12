@@ -1,12 +1,21 @@
 :host {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.calendar-area {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
 }
 
 .container {
   display: flex;
   height: 100%;
+  flex-grow: 1;
 }
 
 app-calendar-body {

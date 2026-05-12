@@ -1,0 +1,55 @@
+<div class="brand">
+  <span class="brand-mark">T</span>
+  <span class="brand-name">TeachUp</span>
+</div>
+
+<nav class="nav-cluster">
+  <button class="arrow-btn" type="button" (click)="goToPreviousWeek()">
+    <nz-icon nzType="left" />
+  </button>
+
+  <div class="week-wrapper">
+    <button
+      class="week-pill"
+      type="button"
+      [class.open]="isPickerOpen"
+      (pointerdown)="onPillPointerdown()"
+      (click)="togglePicker(picker)"
+    >
+      <nz-icon nzType="calendar" class="ico-sm" />
+      <span class="range">{{ weekDays()[0] | date: 'd MMM' }} – {{ weekDays()[6] | date: 'd MMM' }}</span>
+    </button>
+
+    <nz-date-picker
+      #picker
+      class="hidden-picker"
+      nzInputReadOnly
+      [(ngModel)]="selectedDate"
+      [nzDateRender]="dateRenderTpl"
+      (ngModelChange)="onDateSelect($event)"
+      (nzOnOpenChange)="onPickerOpenChange($event)"
+    ></nz-date-picker>
+  </div>
+
+  <button class="arrow-btn" type="button" (click)="goToNextWeek()">
+    <nz-icon nzType="right" />
+  </button>
+
+  <button class="today-btn" type="button" (click)="goToToday()">Сьогодні</button>
+</nav>
+
+<div class="right-cluster">
+  <button class="add-btn" type="button" (click)="onCreateEvent()">
+    <nz-icon nzType="plus" class="ico-lg" />
+    <span class="add-label">Нова</span>
+  </button>
+  <button class="profile-btn" type="button" (click)="onProfile()">
+    <nz-icon nzType="user" />
+  </button>
+</div>
+
+<ng-template #dateRenderTpl let-date>
+  <div class="ant-picker-cell-inner" [class.highlighted]="isInSelectedWeek(date)">
+    {{ date.getDate() }}
+  </div>
+</ng-template>

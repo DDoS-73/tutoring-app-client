@@ -1,10 +1,16 @@
 import {
+  BarChartOutline,
   CalendarOutline,
+  CreditCardOutline,
+  DeleteOutline,
   DownOutline,
   LeftOutline,
   LoadingOutline,
+  LogoutOutline,
   PlusOutline,
   RightOutline,
+  SettingOutline,
+  TeamOutline,
   UserOutline,
 } from '@ant-design/icons-angular/icons';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
@@ -31,6 +37,20 @@ export default [
   },
   {
     provide: NZ_ICONS,
-    useValue: [LoadingOutline, LeftOutline, RightOutline, CalendarOutline, DownOutline, PlusOutline, UserOutline],
+    useValue: [
+      LoadingOutline,
+      LeftOutline,
+      RightOutline,
+      CalendarOutline,
+      DownOutline,
+      PlusOutline,
+      UserOutline,
+      SettingOutline,
+      LogoutOutline,
+      DeleteOutline,
+      TeamOutline,
+      CreditCardOutline,
+      BarChartOutline,
+    ],
   },
 ];

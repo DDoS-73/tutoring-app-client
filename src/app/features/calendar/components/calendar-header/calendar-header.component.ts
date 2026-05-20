@@ -1,9 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, output, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AuthService } from '../../../../core/services/auth.service';
+import { MainPages } from '../../../../shared/models/pages';
 import { DateService } from '../../services/date.service';
 
 @Component({
@@ -11,13 +15,14 @@ import { DateService } from '../../services/date.service';
   templateUrl: './calendar-header.component.html',
   styleUrl: './calendar-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzDatePickerModule, NzIconModule, FormsModule, DatePipe],
+  imports: [NzDatePickerModule, NzIconModule, NzDropDownModule, NzMenuModule, FormsModule, DatePipe],
 })
 export class CalendarHeaderComponent {
   public createEvent = output<void>();
 
   private readonly dateService = inject(DateService);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected weekDays: Signal<Date[]> = this.dateService.currentWeekDays;
   protected selectedDate: Date = new Date();
@@ -70,7 +75,11 @@ export class CalendarHeaderComponent {
     this.createEvent.emit();
   }
 
-  protected onProfile() {
+  protected onAdminPanel(): void {
+    this.router.navigate([MainPages.Admin]);
+  }
+
+  protected onSignOut(): void {
     this.authService.logout();
   }
 }

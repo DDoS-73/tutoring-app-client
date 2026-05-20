@@ -3,9 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient, QueryFunctionContext } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
 import { ApiEndpoints } from 'src/app/core/api/endpoints';
+import { ParticipantService } from 'src/app/core/services/participant.service';
 import { environment } from '../../../../environments/environment';
 import { CalendarEvent } from '../models/calendar-event.model';
-import { Participant } from '../models/participant.model';
 import { DeleteEventRequest } from '../models/requests/delete-event.request';
 import { UpdateEventRequest } from '../models/requests/update-event.request';
 import { DateService } from './date.service';
@@ -15,6 +15,9 @@ export class EventService {
   private readonly queryClient = inject(QueryClient);
   private readonly http = inject(HttpClient);
   private readonly dateService = inject(DateService);
+  private readonly participantService = inject(ParticipantService);
+
+  public readonly participantsQuery = this.participantService.participantsQuery;
 
   public eventsQuery = injectQuery(() => {
     const weekDays = this.dateService.currentWeekDays();
@@ -26,13 +29,6 @@ export class EventService {
       ...this._getQueryOptions(),
     };
   });
-
-  public participantsQuery = injectQuery(() => ({
-    queryKey: ['participants'],
-    queryFn: this._getParticipants.bind(this),
-    ...this._getQueryOptions(),
-    refetchOnMount: true,
-  }));
 
   public createEventMutation = injectMutation(() => ({
     mutationFn: this._createEvent.bind(this),
@@ -66,14 +62,6 @@ export class EventService {
     );
   }
 
-  private _getParticipants() {
-    return lastValueFrom(
-      this.http
-        .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`)
-        .pipe(map((participants) => participants.sort((a, b) => a.name.localeCompare(b.name))))
-    );
-  }
-
   private _createEvent(event: CalendarEvent) {
     return lastValueFrom(
       this.http.post<CalendarEvent>(`${environment.backendApi}${ApiEndpoints.Events.create}`, event)
@@ -100,11 +88,11 @@ export class EventService {
 
   private _getQueryOptions() {
     return {
-      staleTime: Infinity, // Data never becomes stale
-      gcTime: Infinity, // Data never gets garbage collected
-      refetchOnWindowFocus: false, // Don't refetch when window regains focus
-      refetchOnReconnect: false, // Don't refetch when reconnecting to network
-      refetchOnMount: false, // Don't refetch when component mounts
+      staleTime: Infinity,
+      gcTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: true,
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Participant } from './participant.model';
+import { Participant } from '../../../shared/models/participant.model';
 
 export class CalendarEvent {
   id?: string | number;

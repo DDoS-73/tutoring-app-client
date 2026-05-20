@@ -1,5 +1,1 @@
-export interface Participant {
-    id?: string | number;
-    name: string;
-    // color: string;
-}
+export { Participant } from '../../../shared/models/participant.model';

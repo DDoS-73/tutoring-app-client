@@ -44,10 +44,32 @@
     <nz-icon nzType="plus" class="ico-lg" />
     <span class="add-label">Нова</span>
   </button>
-  <button class="profile-btn" type="button" (click)="onProfile()">
+
+  <button
+    class="profile-btn"
+    type="button"
+    nz-dropdown
+    [nzDropdownMenu]="profileMenu"
+    nzTrigger="click"
+    nzPlacement="bottomRight"
+  >
     <nz-icon nzType="user" />
   </button>
 </div>
+
+<nz-dropdown-menu #profileMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="onAdminPanel()">
+      <nz-icon nzType="setting" />
+      Адмін-панель
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item nzDanger (click)="onSignOut()">
+      <nz-icon nzType="logout" />
+      Вийти
+    </li>
+  </ul>
+</nz-dropdown-menu>
 
 <ng-template #dateRenderTpl let-date>
   <div class="ant-picker-cell-inner" [class.highlighted]="isInSelectedWeek(date)">

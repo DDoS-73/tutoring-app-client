@@ -1,0 +1,55 @@
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">T</span>
+    <span class="brand-name">TeachUp</span>
+    <span class="crumb">Адмін</span>
+  </div>
+  <div class="top-right">
+    <button class="back-btn" type="button" (click)="navigateToCalendar()">
+      <nz-icon nzType="left" />
+      До календаря
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <div class="side-group">
+      <span class="side-label">Керування</span>
+      <a class="nav-item" routerLink="participants" routerLinkActive="active">
+        <nz-icon nzType="team" />
+        <span class="label">Учасники</span>
+      </a>
+      <span class="nav-item disabled">
+        <nz-icon nzType="calendar" />
+        <span class="label">Налаштування подій</span>
+        <span class="soon">Скоро</span>
+      </span>
+      <span class="nav-item disabled">
+        <nz-icon nzType="credit-card" />
+        <span class="label">Платежі</span>
+        <span class="soon">Скоро</span>
+      </span>
+    </div>
+
+    <div class="side-group">
+      <span class="side-label">Аналітика</span>
+      <span class="nav-item disabled">
+        <nz-icon nzType="bar-chart" />
+        <span class="label">Статистика</span>
+        <span class="soon">Скоро</span>
+      </span>
+    </div>
+
+    <div class="side-bottom">
+      <button class="nav-item danger" type="button" (click)="signOut()">
+        <nz-icon nzType="logout" />
+        <span class="label">Вийти</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <router-outlet />
+  </main>
+</div>

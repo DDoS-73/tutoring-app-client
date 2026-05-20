@@ -1,0 +1,44 @@
+<ng-template #deleteConfirmTpl>
+  <b>{{ deletingName() }}</b> буде видалено зі списку учасників. Минулі події залишаться; майбутні події з ним будуть
+  скасовані.
+</ng-template>
+
+<header class="pane-head">
+  <div>
+    <h2 class="pane-title">
+      Учасники
+      @if (participantsQuery.data(); as participants) {
+        <span class="count">{{ participants.length }}</span>
+      }
+    </h2>
+    <p class="pane-sub">Учні та групи, яких ви навчаєте. Видаліть тих, з ким більше не працюєте.</p>
+  </div>
+</header>
+
+@if (participantsQuery.isLoading()) {
+  <div class="spinner-wrap">
+    <nz-spin nzSimple />
+  </div>
+} @else if (participantsQuery.isError()) {
+  <div class="error-wrap">
+    <p>Не вдалося завантажити учасників. Спробуйте ще раз.</p>
+  </div>
+} @else {
+  <ul class="list">
+    @for (participant of participantRows(); track participant.id) {
+      <li class="row-item">
+        <span class="av">{{ participant.initials }}</span>
+        <span class="pname">{{ participant.name }}</span>
+        <button
+          class="del-btn"
+          type="button"
+          [disabled]="deleteMutation.isPending()"
+          (click)="onDelete(participant)"
+          aria-label="Видалити учасника"
+        >
+          <nz-icon nzType="delete" />
+        </button>
+      </li>
+    }
+  </ul>
+}

@@ -11,6 +11,11 @@ export const routes: Routes = [
     canMatch: [authGuard],
   },
   {
+    path: MainPages.Admin,
+    loadChildren: () => import('./features/admin/admin.routes').then((r) => r.adminRoutes),
+    canMatch: [authGuard],
+  },
+  {
     path: MainPages.Auth,
     loadChildren: () => authRoutes,
   },

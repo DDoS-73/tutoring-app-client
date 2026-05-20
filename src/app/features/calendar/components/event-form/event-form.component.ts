@@ -30,7 +30,7 @@ import { TILE_COLORS_OPTIONS } from '../../const/tile-colors.options';
 import { CalendarEvent, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls, RecurrenceControls } from '../../models/event-form.model';
-import { Participant } from '../../models/participant.model';
+import { Participant } from '../../../../shared/models/participant.model';
 
 function timeRangeValidator(control: AbstractControl): ValidationErrors | null {
   const startTime = control.get('startTime')?.value;

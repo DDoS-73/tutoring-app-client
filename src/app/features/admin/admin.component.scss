@@ -1,0 +1,249 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+// ── Top bar ──────────────────────────────────────────────────────────────────
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #ececec;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: #1a1a1a;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.brand-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.crumb {
+  color: #9a9a9a;
+  font-size: 13px;
+  padding-left: 12px;
+  margin-left: 2px;
+  border-left: 1px solid #ececec;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #e3e3e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #4a4a4a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:hover {
+    background: #f6f6f4;
+    color: #1a1a1a;
+  }
+}
+
+// ── Body layout ──────────────────────────────────────────────────────────────
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+
+.side {
+  background: #f6f6f4;
+  border-right: 1px solid #ececec;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.side-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.side-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  padding: 10px 12px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #4a4a4a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+  width: 100%;
+  transition:
+    background 0.12s,
+    color 0.12s;
+
+  &:hover {
+    background: #fff;
+    color: #1a1a1a;
+  }
+
+  &.active {
+    background: #cfe9d5;
+    color: #1a1a1a;
+    border-color: rgba(79, 140, 99, 0.15);
+  }
+
+  &.disabled {
+    color: #9a9a9a;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+      color: #9a9a9a;
+    }
+  }
+
+  &.danger:hover {
+    background: #fff;
+    color: #ff4d4f;
+  }
+}
+
+.soon {
+  font-size: 9px;
+  font-weight: 600;
+  color: #9a9a9a;
+  background: #efeeea;
+  border: 1px solid #e3e3e0;
+  padding: 1px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.side-bottom {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #ececec;
+}
+
+// ── Main pane ─────────────────────────────────────────────────────────────────
+
+.main {
+  background: #fff;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Tablet: icon-only sidebar ─────────────────────────────────────────────────
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .side {
+    padding: 14px 8px;
+    align-items: center;
+  }
+
+  .side-group {
+    width: 100%;
+  }
+
+  .side-label {
+    display: none;
+  }
+
+  .nav-item {
+    padding: 10px;
+    justify-content: center;
+    position: relative;
+
+    .label,
+    .soon {
+      display: none;
+    }
+
+    &.active::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+      background: #4f8c63;
+    }
+  }
+
+  .brand-name {
+    display: none;
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+
+@media (max-width: 480px) {
+  .layout {
+    grid-template-columns: 56px 1fr;
+  }
+
+  .top {
+    padding: 10px 14px;
+  }
+
+  .back-btn {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+}

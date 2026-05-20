@@ -45,7 +45,7 @@ select {
   max-height: 320px !important;
 }
 
-.ant-modal {
+.ant-modal:not(.ant-modal-confirm) {
   width: 60vw !important;
 
   @media screen and (max-width: 790px) {
@@ -56,6 +56,83 @@ select {
     .ant-modal-header,
     .ant-modal-body {
       padding: 16px;
+    }
+  }
+}
+
+.ant-modal-confirm {
+  width: 400px !important;
+  max-width: 92vw !important;
+
+  .ant-modal-content {
+    border-radius: 14px !important;
+    padding: 0 !important;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  .ant-modal-body {
+    padding: 0 !important;
+  }
+
+  .ant-modal-confirm-body-wrapper {
+    padding: 28px 28px 24px;
+  }
+
+  .ant-modal-confirm-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    > .anticon {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    .ant-modal-confirm-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .ant-modal-confirm-content {
+      font-size: 13px;
+      color: #6e6e6e;
+      line-height: 1.6;
+      margin-top: 0 !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  .ant-modal-confirm-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+
+    .ant-btn {
+      height: 34px;
+      padding: 0 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px !important;
+    }
+  }
+
+  .ant-modal-close {
+    top: 14px;
+    right: 14px;
+  }
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    border-radius: 10px !important;
+    padding: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+
+    .ant-dropdown-menu-item {
+      border-radius: 7px !important;
     }
   }
 }

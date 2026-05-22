@@ -20,16 +20,7 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   margin: 0 0 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
   color: #1a1a1a;
-}
-
-.count {
-  font-size: 13px;
-  color: #9a9a9a;
-  font-weight: 500;
 }
 
 .pane-sub {
@@ -37,6 +28,54 @@
   color: #6e6e6e;
   margin: 0;
   line-height: 1.5;
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+
+.tabs {
+  flex: 1;
+
+  ::ng-deep {
+    .ant-tabs-nav {
+      margin: 0;
+      padding: 0 24px;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .ant-tabs-content-holder {
+      overflow-y: auto;
+    }
+
+    .ant-tabs-tab {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #1a1a1a;
+    }
+
+    .ant-tabs-ink-bar {
+      background: #4f8c63;
+    }
+  }
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #9a9a9a;
+  background: #efeeea;
+  border: 1px solid #e3e3e0;
+  padding: 0 5px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 // ── Loading / Error ───────────────────────────────────────────────────────────
@@ -50,7 +89,7 @@
 
 .error-wrap p {
   font-size: 13px;
-  color: #ff4d4f;
+  color: #9a9a9a;
   margin: 0;
 }
 
@@ -78,8 +117,19 @@
   &:hover {
     background: #f6f6f4;
 
-    .del-btn {
+    .action-btn {
       opacity: 1;
+    }
+  }
+
+  &--archived {
+    .av {
+      background: #eaeaea;
+      color: #b0b0b0;
+    }
+
+    .pname {
+      color: #b0b0b0;
     }
   }
 }
@@ -111,9 +161,9 @@
   white-space: nowrap;
 }
 
-// ── Delete button ─────────────────────────────────────────────────────────────
+// ── Action button ─────────────────────────────────────────────────────────────
 
-.del-btn {
+.action-btn {
   width: 32px;
   height: 32px;
   display: inline-flex;
@@ -127,15 +177,21 @@
   opacity: 0;
   transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
 
-  &:hover {
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &--archive:hover {
     background: #ffe8e9;
     color: #ff4d4f;
     border-color: #ffe8e9;
   }
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
+  &--unarchive:hover {
+    background: #cfe9d5;
+    color: #4f8c63;
+    border-color: #cfe9d5;
   }
 }
 
@@ -159,9 +215,12 @@
     gap: 12px;
   }
 
-  // Touch devices have no hover, so always show the delete button
-  .del-btn {
+  .action-btn {
     opacity: 1;
     color: #9a9a9a;
+  }
+
+  ::ng-deep .ant-tabs-nav {
+    padding: 0 16px !important;
   }
 }

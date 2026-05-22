@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
@@ -12,12 +12,12 @@ export class ParticipantService {
   private readonly queryClient = inject(QueryClient);
 
   public readonly participantsQuery = injectQuery(() => ({
-    queryKey: ['participants'],
+    queryKey: ['participants', 'active'],
     queryFn: () =>
       lastValueFrom(
         this.http
           .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`)
-          .pipe(map((participants) => participants.sort((a, b) => a.name.localeCompare(b.name))))
+          .pipe(map((ps) => ps.sort((a, b) => a.name.localeCompare(b.name))))
       ),
     staleTime: Infinity,
     gcTime: Infinity,
@@ -26,11 +26,36 @@ export class ParticipantService {
     refetchOnMount: false,
   }));
 
-  public readonly deleteParticipantMutation = injectMutation(() => ({
+  public readonly archivedParticipantsQuery = injectQuery(() => ({
+    queryKey: ['participants', 'archived'],
+    queryFn: () =>
+      lastValueFrom(
+        this.http
+          .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`, {
+            params: new HttpParams().set('isArchived', 'true'),
+          })
+          .pipe(map((ps) => ps.sort((a, b) => a.name.localeCompare(b.name))))
+      ),
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  }));
+
+  public readonly archiveMutation = injectMutation(() => ({
     mutationFn: (id: string | number) =>
-      lastValueFrom(this.http.delete<void>(`${environment.backendApi}${ApiEndpoints.Participants.delete(id)}`)),
+      lastValueFrom(this.http.post<void>(`${environment.backendApi}${ApiEndpoints.Participants.archive(id)}`, null)),
     onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
       this.queryClient.invalidateQueries({ queryKey: ['events'] });
+    },
+  }));
+
+  public readonly unarchiveMutation = injectMutation(() => ({
+    mutationFn: (id: string | number) =>
+      lastValueFrom(this.http.post<void>(`${environment.backendApi}${ApiEndpoints.Participants.unarchive(id)}`, null)),
+    onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: ['participants'] });
     },
   }));

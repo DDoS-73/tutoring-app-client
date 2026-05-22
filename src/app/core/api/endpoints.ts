@@ -24,6 +24,7 @@ export class ApiEndpoints {
 
   static readonly Participants = {
     getAll: `${this.PARTICIPANTS}`,
-    delete: (id: string | number) => `${this.PARTICIPANTS}/${id}`,
+    archive: (id: string | number) => `${this.PARTICIPANTS}/${id}/archive`,
+    unarchive: (id: string | number) => `${this.PARTICIPANTS}/${id}/unarchive`,
   } as const;
 }

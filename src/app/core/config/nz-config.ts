@@ -1,6 +1,7 @@
 import {
   BarChartOutline,
   CalendarOutline,
+  ContainerOutline,
   CreditCardOutline,
   DeleteOutline,
   DownOutline,
@@ -51,6 +52,7 @@ export default [
       TeamOutline,
       CreditCardOutline,
       BarChartOutline,
+      ContainerOutline,
     ],
   },
 ];

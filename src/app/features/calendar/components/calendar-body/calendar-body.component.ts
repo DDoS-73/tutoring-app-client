@@ -70,7 +70,7 @@ export class CalendarBodyComponent {
       start.setHours(Math.min(Math.max(nextHour, CalendarConfig.startHour), CalendarConfig.endHour));
       startTime = start;
       const end = new Date(start);
-      end.setHours(end.getHours() + 1);
+      end.setMinutes(end.getMinutes() + 50);
       endTime = end;
     }
 
@@ -120,8 +120,8 @@ export class CalendarBodyComponent {
         const startTime = new Date(dayDate);
         startTime.setHours(hourIndex, 0, 0, 0);
 
-        const endTime = new Date(dayDate);
-        endTime.setHours(hourIndex + 1, 0, 0, 0);
+        const endTime = new Date(startTime);
+        endTime.setMinutes(startTime.getMinutes() + 50);
 
         const tileEvents = events.filter((event) => {
           const eventStart = event.startTime;

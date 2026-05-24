@@ -9,7 +9,6 @@ import {
   inject,
   Signal,
   viewChild,
-  viewChildren,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
@@ -31,8 +30,6 @@ const SWIPE_THRESHOLD = 0.25;
 })
 export class CalendarComponent implements AfterViewInit {
   private readonly container = viewChild.required<ElementRef>('container');
-  private readonly calendarBodies = viewChildren(CalendarBodyComponent);
-
   private readonly _dateService = inject(DateService);
   private readonly _eventService = inject(EventService);
   private readonly _dr = inject(DestroyRef);
@@ -53,10 +50,6 @@ export class CalendarComponent implements AfterViewInit {
   @HostListener('window:resize')
   onResize() {
     this._moveCalendarOnStartPosition();
-  }
-
-  protected openCreateDialog(): void {
-    this.calendarBodies()[1]?.openCreateDialog();
   }
 
   private _moveCalendarOnStartPosition(): void {

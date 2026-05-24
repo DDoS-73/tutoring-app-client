@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, output, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -18,8 +18,6 @@ import { DateService } from '../../services/date.service';
   imports: [NzDatePickerModule, NzIconModule, NzDropDownModule, NzMenuModule, FormsModule, DatePipe],
 })
 export class CalendarHeaderComponent {
-  public createEvent = output<void>();
-
   private readonly dateService = inject(DateService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -69,10 +67,6 @@ export class CalendarHeaderComponent {
 
   protected isInSelectedWeek(date: Date): boolean {
     return date >= this.weekDays()[0] && date <= this.weekDays()[6];
-  }
-
-  protected onCreateEvent() {
-    this.createEvent.emit();
   }
 
   protected onAdminPanel(): void {

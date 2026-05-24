@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm run *)",
       "Skill(angular-reviewer)",
-      "Skill(angular-reviewer:*)"
+      "Skill(angular-reviewer:*)",
+      "Skill(code-review-excellence)",
+      "Skill(code-review-excellence:*)"
     ]
   }
 }

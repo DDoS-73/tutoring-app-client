@@ -22,7 +22,10 @@ export class HighlightTodayDirective implements OnInit {
         const dayIndex = this.dayIndex();
         const date = days[dayIndex];
         const today = new Date();
-        const isHighlighted = today.getDate() === date.getDate() && today.getMonth() === date.getMonth();
+        const isHighlighted =
+          today.getFullYear() === date.getFullYear() &&
+          today.getMonth() === date.getMonth() &&
+          today.getDate() === date.getDate();
         this._el.nativeElement.classList.toggle('highlight_today', isHighlighted);
       },
       { injector: this._injector }

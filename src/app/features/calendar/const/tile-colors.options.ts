@@ -1,4 +1,4 @@
-import { Option } from 'src/app/shared/models/option';
+import { Option } from '../../../shared/models/option';
 
 export const TILE_COLORS_OPTIONS: Option<string>[] = [
   { value: '#FFF8BD', label: 'Лимонний' },

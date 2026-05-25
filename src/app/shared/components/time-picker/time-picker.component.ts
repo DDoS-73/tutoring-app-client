@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { CalendarConfig } from 'src/app/features/calendar/models/calendar.config';
+import { CalendarConfig } from '../../../features/calendar/models/calendar.config';
 
 @Component({
   selector: 'app-time-picker',

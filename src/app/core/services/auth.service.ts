@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, filter, map, Observable, take, tap, throwError } from 'rxjs';
-import { TokensResponse } from 'src/app/features/auth/models';
-import { StorageKeys } from 'src/app/shared/models/storage.keys';
+import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { TokensResponse } from '../../features/auth/models';
+import { StorageKeys } from '../../shared/models/storage.keys';
 import { environment } from '../../../environments/environment';
 import { MainPages } from '../../shared/models/pages';
 import { ApiEndpoints } from '../api/endpoints';
@@ -32,7 +32,7 @@ export class AuthService {
       return this._refreshTokenSubject.pipe(
         filter((result) => result !== null),
         take(1),
-        map((result) => result!)
+        switchMap((success) => (success ? of(true) : throwError(() => new Error('Token refresh failed'))))
       );
     }
 
@@ -60,7 +60,10 @@ export class AuthService {
         this._removeTokens();
         this._router.navigate([MainPages.Auth]);
       },
-      error: () => this._router.navigate([MainPages.Auth]),
+      error: () => {
+        this._removeTokens();
+        this._router.navigate([MainPages.Auth]);
+      },
     });
   }
 

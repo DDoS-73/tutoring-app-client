@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface LoginFormControls {
   email: FormControl<string>;

@@ -98,8 +98,6 @@ export class CalendarComponent implements AfterViewInit {
     fromEvent<TouchEvent>(container, 'touchend')
       .pipe(takeUntilDestroyed(this._dr))
       .subscribe(() => {
-        console.log(xShift < clientWidth * SWIPE_THRESHOLD || xShift > -clientWidth * SWIPE_THRESHOLD);
-
         if (xShift < clientWidth * SWIPE_THRESHOLD && xShift > -clientWidth * SWIPE_THRESHOLD) {
           this._applyTransform(container, clientWidth);
         }

@@ -2,8 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient, QueryFunctionContext } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
-import { ApiEndpoints } from 'src/app/core/api/endpoints';
-import { ParticipantService } from 'src/app/core/services/participant.service';
+import { ApiEndpoints } from '../../../core/api/endpoints';
+import { ParticipantService } from '../../../core/services/participant.service';
 import { environment } from '../../../../environments/environment';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { DeleteEventRequest } from '../models/requests/delete-event.request';
@@ -79,7 +79,7 @@ export class EventService {
     const params = new HttpParams().set('mode', mode).set('date', date.toISOString());
     return lastValueFrom(
       this.http.patch<CalendarEvent>(
-        `${environment.backendApi}${ApiEndpoints.Events.update(calendarEvent.id)}`,
+        `${environment.backendApi}${ApiEndpoints.Events.update(calendarEvent.id!)}`,
         calendarEvent,
         { params }
       )

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
-import { Option } from 'src/app/shared/models/option';
+import { Option } from '../../../../shared/models/option';
 import { ChangeEventMode } from '../../const/change-event-mode';
 
 @Component({

@@ -1,9 +1,10 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { Option } from 'src/app/shared/models/option';
-import { isSameDate } from 'src/app/shared/utils';
+import { Option } from '../../../../shared/models/option';
+import { isSameDate } from '../../../../shared/utils';
 import { ChangeEventMode } from '../../const/change-event-mode';
 import { DELETE_EVENT_MODE_OPTIONS } from '../../const/delete-event-mode-options';
 import { UPDATE_EVENT_MODE_OPTIONS } from '../../const/update-event-mode-options';
@@ -26,6 +27,7 @@ export class UpdateEventModalComponent {
 
   private readonly eventService = inject(EventService);
   private readonly dialog = inject(NzModalService);
+  private readonly notificationService = inject(NzNotificationService);
 
   protected isUpdating = this.eventService.updateEventMutation.isPending;
   protected isDeleting = this.eventService.deleteEventMutation.isPending;
@@ -36,7 +38,14 @@ export class UpdateEventModalComponent {
     const event = this.event();
 
     if (eventForm.invalid || !event.id) {
-      this.eventForm().validateForm();
+      if (eventForm.invalid) {
+        eventForm.markAllAsTouched();
+        if (eventForm.errors?.['invalidTimeRange']) {
+          this.notificationService.error('Помилка', 'Час закінчення повинен бути пізніше часу початку');
+        } else {
+          this.notificationService.error('Помилка', 'Заповніть всі поля');
+        }
+      }
       return;
     }
 

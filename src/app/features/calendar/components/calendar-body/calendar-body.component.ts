@@ -40,10 +40,10 @@ import { HourPipe } from './../../pipes/hour.pipe';
 })
 export class CalendarBodyComponent {
   private createEventModal = viewChild.required<TemplateRef<never>>('createEventModal');
-  protected createEventModalRef?: NzModalRef<any>;
+  protected createEventModalRef?: NzModalRef;
 
   private updateEventModal = viewChild.required<TemplateRef<never>>('updateEventModal');
-  protected updateEventModalRef?: NzModalRef<any>;
+  protected updateEventModalRef?: NzModalRef;
 
   public week = input.required<Date[]>();
   public events = input.required<CalendarEvent[]>();
@@ -56,23 +56,9 @@ export class CalendarBodyComponent {
   protected isDataLoading = this._getIsDataLoading();
   protected readonly CalendarConfig = CalendarConfig;
 
-  public openCreateDialog(tile?: Tile) {
-    let startTime: Date;
-    let endTime: Date;
-
-    if (tile) {
-      startTime = tile.startTime;
-      endTime = tile.endTime;
-    } else {
-      const start = new Date();
-      start.setMinutes(0, 0, 0);
-      const nextHour = start.getHours() + 1;
-      start.setHours(Math.min(Math.max(nextHour, CalendarConfig.startHour), CalendarConfig.endHour));
-      startTime = start;
-      const end = new Date(start);
-      end.setMinutes(end.getMinutes() + 50);
-      endTime = end;
-    }
+  public openCreateDialog(tile: Tile) {
+    let startTime: Date = tile.startTime;
+    let endTime: Date = tile.endTime;
 
     const calendarEvent: Partial<CalendarEvent> = { startTime, endTime };
     this.createEventModalRef = this.dialog.create({

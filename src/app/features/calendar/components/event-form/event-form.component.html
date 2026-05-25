@@ -2,7 +2,7 @@
   <form [formGroup]="eventForm">
     <div class="form-control">
       <p class="custom_input_label">Учень</p>
-      <input nz-input [nzAutocomplete]="auto" formControlName="participant" [(ngModel)]="participantsInputValue" />
+      <input nz-input [nzAutocomplete]="auto" formControlName="participant" />
       <nz-autocomplete [nzDataSource]="filteredOptions()" nzBackfill #auto></nz-autocomplete>
     </div>
 

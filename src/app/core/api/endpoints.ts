@@ -18,8 +18,8 @@ export class ApiEndpoints {
   static readonly Events = {
     getAll: `${this.EVENTS}`,
     create: `${this.EVENTS}`,
-    delete: (id: unknown) => `${this.EVENTS}/${id}`,
-    update: (id: unknown) => `${this.EVENTS}/${id}`,
+    delete: (id: string | number) => `${this.EVENTS}/${id}`,
+    update: (id: string | number) => `${this.EVENTS}/${id}`,
   } as const;
 
   static readonly Participants = {

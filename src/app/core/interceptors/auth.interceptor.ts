@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StorageKeys } from 'src/app/shared/models/storage.keys';
+import { StorageKeys } from '../../shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
 
 function isAuthEndpoint(url: string): boolean {

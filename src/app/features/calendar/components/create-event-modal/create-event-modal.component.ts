@@ -1,5 +1,6 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CalendarEvent, Recurrence } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
 import { EventFormComponent } from '../event-form/event-form.component';
@@ -13,10 +14,11 @@ import { EventFormComponent } from '../event-form/event-form.component';
 export class CreateEventModalComponent {
   private eventForm = viewChild.required<EventFormComponent>(EventFormComponent);
 
-  public event = input.required<CalendarEvent>();
+  public event = input.required<Partial<CalendarEvent>>();
   public eventCreated = output<void>();
 
   private readonly eventService = inject(EventService);
+  private readonly notificationService = inject(NzNotificationService);
 
   protected isCreating = this.eventService.createEventMutation.isPending;
   protected participants = this.eventService.participantsQuery.data;
@@ -24,7 +26,12 @@ export class CreateEventModalComponent {
   protected createEvent() {
     const { eventForm } = this.eventForm();
     if (eventForm.invalid) {
-      this.eventForm().validateForm();
+      eventForm.markAllAsTouched();
+      if (eventForm.errors?.['invalidTimeRange']) {
+        this.notificationService.error('Помилка', 'Час закінчення повинен бути пізніше часу початку');
+      } else {
+        this.notificationService.error('Помилка', 'Заповніть всі поля');
+      }
       return;
     }
 

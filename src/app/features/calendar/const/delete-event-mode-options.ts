@@ -1,4 +1,4 @@
-import { Option } from 'src/app/shared/models/option';
+import { Option } from '../../../shared/models/option';
 import { ChangeEventMode } from './change-event-mode';
 
 export const DELETE_EVENT_MODE_OPTIONS: Option<ChangeEventMode>[] = [

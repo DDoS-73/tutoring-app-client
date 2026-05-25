@@ -24,13 +24,13 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { TimePickerComponent } from 'src/app/shared/components/time-picker/time-picker.component';
+import { TimePickerComponent } from '../../../../shared/components/time-picker/time-picker.component';
+import { Participant } from '../../../../shared/models/participant.model';
 import { RECURRENCE_OPTIONS } from '../../const/recurrence.options';
 import { TILE_COLORS_OPTIONS } from '../../const/tile-colors.options';
 import { CalendarEvent, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls, RecurrenceControls } from '../../models/event-form.model';
-import { Participant } from '../../../../shared/models/participant.model';
 
 function timeRangeValidator(control: AbstractControl): ValidationErrors | null {
   const startTime = control.get('startTime')?.value;
@@ -82,7 +82,7 @@ export class EventFormComponent implements OnInit {
 
   protected participantsInputValue = signal('');
   protected options: Signal<string[]> = computed(() => {
-    return this.participants()?.map((participant) => participant.name) ?? [];
+    return this.participants().map((participant) => participant.name);
   });
   protected filteredOptions: Signal<string[]> = computed(() => {
     const inputValue = this.participantsInputValue();
@@ -121,6 +121,10 @@ export class EventFormComponent implements OnInit {
       color: event.color,
     });
 
+    this.participantControl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => this.participantsInputValue.set(value ?? ''));
+
     this.startTimeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((startTime) => {
       if (!startTime) return;
       const endTime = new Date(startTime);
@@ -128,15 +132,6 @@ export class EventFormComponent implements OnInit {
       this.endTimeControl.setValue(endTime);
       this.notificationService.info('Увага', 'Час закінчення встановлено на 50 хвилин після початку');
     });
-  }
-
-  public validateForm(): void {
-    if (this.eventForm.errors?.['invalidTimeRange']) {
-      this.notificationService.error('Помилка', 'Час закінчення повинен бути пізніше часу початку');
-      return;
-    }
-
-    this.notificationService.error('Помилка', 'Заповніть всі поля');
   }
 
   protected onDateChange(date: Date): void {
@@ -147,7 +142,7 @@ export class EventFormComponent implements OnInit {
     newStartTimeDate.setMonth(date.getMonth());
     newStartTimeDate.setFullYear(date.getFullYear());
 
-    this.startTimeControl.setValue(newStartTimeDate);
+    this.startTimeControl.setValue(newStartTimeDate, { emitEvent: false });
 
     const newEndTimeDate = new Date(this.endTimeControl.value);
     newEndTimeDate.setDate(date.getDate());

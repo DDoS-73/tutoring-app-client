@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { StorageKeys } from 'src/app/shared/models/storage.keys';
+import { StorageKeys } from '../../shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
 import { AuthService } from '../services/auth.service';
 

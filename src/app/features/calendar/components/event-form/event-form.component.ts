@@ -76,6 +76,7 @@ export class EventFormComponent implements OnInit {
         endDate: new FormControl<string | null>(null),
       }),
       color: new FormControl<string | null>(null, [Validators.required]),
+      note: new FormControl<string | null>(null, [Validators.maxLength(64)]),
     },
     { validators: timeRangeValidator }
   );
@@ -119,6 +120,7 @@ export class EventFormComponent implements OnInit {
         frequency: event.recurrence?.frequency ?? RecurrenceFrequency.NONE,
       },
       color: event.color,
+      note: event.note,
     });
 
     this.participantControl.valueChanges

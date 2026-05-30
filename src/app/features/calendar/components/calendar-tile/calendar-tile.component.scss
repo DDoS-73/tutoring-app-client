@@ -24,6 +24,9 @@
   cursor: pointer;
   z-index: 1;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &:hover {
     transform: scale(1.05);
@@ -39,4 +42,13 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+.note {
+  font-size: 9px;
+  color: grey;
+
+  @media screen and (max-width: 767px) {
+    font-size: 6px;
+  }
 }

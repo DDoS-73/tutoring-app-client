@@ -53,6 +53,7 @@ export class CreateEventModalComponent {
       },
       recurrence,
       color: formValue.color!,
+      note: formValue.note!,
     });
 
     this.eventService.createEventMutation.mutate(calendarEvent, {

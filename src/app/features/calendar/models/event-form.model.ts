@@ -13,4 +13,5 @@ export interface EventFormControls {
   endTime: FormControl<Date | null>;
   recurrence: FormGroup<RecurrenceControls>;
   color: FormControl<string | null>;
+  note: FormControl<string | null>;
 }

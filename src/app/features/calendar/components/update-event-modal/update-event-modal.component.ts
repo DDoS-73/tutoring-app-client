@@ -68,6 +68,7 @@ export class UpdateEventModalComponent {
       id: event.id,
       recurrence,
       color: formValue.color!,
+      note: formValue.note!,
     });
 
     if (event.recurrence.frequency === RecurrenceFrequency.NONE) {

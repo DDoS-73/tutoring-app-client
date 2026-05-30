@@ -7,6 +7,7 @@ export class CalendarEvent {
   endTime: Date;
   recurrence: Recurrence;
   color: string;
+  note?: string;
 
   constructor(calendarEvent: CalendarEvent) {
     this.id = calendarEvent.id;
@@ -15,6 +16,7 @@ export class CalendarEvent {
     this.endTime = new Date(calendarEvent.endTime);
     this.recurrence = new Recurrence(calendarEvent.recurrence);
     this.color = calendarEvent.color;
+    this.note = calendarEvent.note;
   }
 }
 

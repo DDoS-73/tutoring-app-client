@@ -5,26 +5,28 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuthService } from '../../../../core/services/auth.service';
 import { AuthLayoutComponent } from '../auth-layout/auth-layout.component';
 
-interface LoginFormControls {
+interface SignUpFormControls {
+  name: FormControl<string>;
   email: FormControl<string>;
   password: FormControl<string>;
 }
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink, NzIconModule, AuthLayoutComponent],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class SignUpComponent {
   private readonly _authService = inject(AuthService);
 
   protected isLoading = signal(false);
   protected isPasswordVisible = signal(false);
 
-  protected loginForm = new FormGroup<LoginFormControls>({
+  protected signUpForm = new FormGroup<SignUpFormControls>({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(5)] }),
   });
@@ -34,8 +36,8 @@ export class LoginComponent {
   }
 
   protected onSubmit(): void {
-    if (this.loginForm.invalid) {
-      Object.values(this.loginForm.controls).forEach((control) => {
+    if (this.signUpForm.invalid) {
+      Object.values(this.signUpForm.controls).forEach((control) => {
         control.markAsTouched();
         control.updateValueAndValidity();
       });
@@ -43,7 +45,8 @@ export class LoginComponent {
     }
 
     this.isLoading.set(true);
-    this._authService.login(this.loginForm.getRawValue()).subscribe({
+    // Submit registration to auth service
+    this._authService.signup(this.signUpForm.getRawValue()).subscribe({
       error: () => this.isLoading.set(false),
       complete: () => this.isLoading.set(false),
     });

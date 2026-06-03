@@ -1,0 +1,242 @@
+@use './variables' as *;
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+
+  .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $color-text-muted;
+    letter-spacing: 0.5px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      font-size: 20px;
+      color: $color-text-muted;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px 0 48px;
+      background-color: $color-bg-input;
+      border: 1.5px solid $color-border;
+      border-radius: 12px;
+      color: $color-text-main;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: $color-text-muted;
+        opacity: 0.6;
+      }
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px $color-bg-input inset !important;
+        -webkit-text-fill-color: $color-text-main !important;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+
+      &:focus {
+        border-color: $color-border-active;
+        background-color: rgba(47, 34, 29, 0.4);
+        box-shadow: 0 0 0 4px rgba(227, 204, 168, 0.1);
+      }
+
+      &.password-input {
+        padding-right: 48px;
+      }
+    }
+
+    .visibility-toggle {
+      position: absolute;
+      right: 16px;
+      background: none;
+      border: none;
+      padding: 0;
+      color: $color-text-muted;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $color-text-main;
+      }
+
+      [nz-icon] {
+        font-size: 20px;
+      }
+    }
+  }
+
+  &.has-error {
+    .form-input {
+      border-color: #ff8a80 !important;
+
+      &:focus {
+        box-shadow: 0 0 0 4px rgba(255, 138, 128, 0.15) !important;
+      }
+    }
+
+    .input-icon {
+      color: #ff8a80 !important;
+    }
+  }
+
+  .error-msg {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ff8a80;
+    margin-top: 4px;
+    animation: slideDown 0.2s ease-out;
+  }
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 58px;
+  background-color: $color-primary;
+  border: none;
+  border-radius: 29px;
+  padding: 0 8px 0 28px;
+  color: $color-primary-text;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(227, 204, 168, 0.15);
+  box-sizing: border-box;
+  margin-top: 10px;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(227, 204, 168, 0.25);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .arrow-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: $color-primary-text;
+    color: $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    .arrow-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(227, 204, 168, 0.3);
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.form-footer {
+  margin-top: 28px;
+  text-align: left;
+
+  .footer-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: $color-text-muted;
+  }
+
+  .footer-link {
+    color: $color-text-link;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      color 0.3s ease,
+      border-bottom 0.3s ease;
+    border-bottom: 1.5px solid transparent;
+
+    &:hover {
+      color: $color-text-main;
+      border-color: $color-text-main;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .form-group .input-wrapper .form-input {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    height: 52px;
+    font-size: 15px;
+
+    .arrow-circle {
+      width: 36px;
+      height: 36px;
+    }
+  }
+}

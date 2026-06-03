@@ -1,30 +1,44 @@
 <app-auth-layout
-  title="Welcome back to your calendar"
-  subtitle="Log in to your calendar and start planning."
-  mobileTitle="Welcome back to your calendar"
-  mobileSubtitle="Log in to your calendar and start planning."
+  title="Plan your week"
+  subtitle="Create your account and start planning."
+  mobileTitle="Plan your week"
+  mobileSubtitle="Create your own calendar and start planning."
 >
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <div
       class="form-group"
-      [class.has-error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+      [class.has-error]="signUpForm.get('name')?.touched && signUpForm.get('name')?.invalid"
+    >
+      <label class="form-label" for="name">Full name</label>
+      <div class="input-wrapper">
+        <span nz-icon nzType="user" nzTheme="outline" class="input-icon"></span>
+        <input id="name" type="text" formControlName="name" placeholder="Jordan Avery" class="form-input" />
+      </div>
+      @if (signUpForm.get('name')?.touched && signUpForm.get('name')?.hasError('required')) {
+        <span class="error-msg">Full name is required</span>
+      }
+    </div>
+
+    <div
+      class="form-group"
+      [class.has-error]="signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid"
     >
       <label class="form-label" for="email">Email</label>
       <div class="input-wrapper">
         <span nz-icon nzType="mail" nzTheme="outline" class="input-icon"></span>
         <input id="email" type="email" formControlName="email" placeholder="you@example.com" class="form-input" />
       </div>
-      @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) {
+      @if (signUpForm.get('email')?.touched && signUpForm.get('email')?.hasError('required')) {
         <span class="error-msg">Email is required</span>
       }
-      @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')) {
+      @if (signUpForm.get('email')?.touched && signUpForm.get('email')?.hasError('email')) {
         <span class="error-msg">Please enter a valid email address</span>
       }
     </div>
 
     <div
       class="form-group"
-      [class.has-error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+      [class.has-error]="signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid"
     >
       <label class="form-label" for="password">Password</label>
       <div class="input-wrapper">
@@ -44,10 +58,10 @@
           }
         </button>
       </div>
-      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
+      @if (signUpForm.get('password')?.touched && signUpForm.get('password')?.hasError('required')) {
         <span class="error-msg">Password is required</span>
       }
-      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength')) {
+      @if (signUpForm.get('password')?.touched && signUpForm.get('password')?.hasError('minlength')) {
         <span class="error-msg">Password must be at least 5 characters</span>
       }
     </div>
@@ -55,9 +69,9 @@
     <button type="submit" class="submit-btn" [disabled]="isLoading()">
       <span class="btn-text">
         @if (isLoading()) {
-          Logging in...
+          Creating account...
         } @else {
-          Log in
+          Create an account
         }
       </span>
       <div class="arrow-circle">
@@ -71,6 +85,6 @@
   </form>
 
   <div class="form-footer">
-    <span class="footer-text">New here? <a routerLink="/auth/sign-up" class="footer-link">Sign up</a></span>
+    <span class="footer-text">Already have an account? <a routerLink="/auth/login" class="footer-link">Log in</a></span>
   </div>
 </app-auth-layout>

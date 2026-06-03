@@ -3,14 +3,15 @@ import { Observable } from 'rxjs';
 import { StorageKeys } from '../../shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
 
-function isAuthEndpoint(url: string): boolean {
-  return Object.values(ApiEndpoints.Auth).some(
-    (endpoint) => endpoint !== ApiEndpoints.Auth.refresh && url.includes(endpoint)
-  );
+// login and signup don't need a token; logout and refresh are handled separately below
+const TOKEN_FREE_ENDPOINTS = [ApiEndpoints.Auth.login, ApiEndpoints.Auth.signup] as const;
+
+function isTokenFreeEndpoint(url: string): boolean {
+  return TOKEN_FREE_ENDPOINTS.some((endpoint) => url.includes(endpoint));
 }
 
 export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-  if (isAuthEndpoint(request.url)) {
+  if (isTokenFreeEndpoint(request.url)) {
     return next(request);
   }
 

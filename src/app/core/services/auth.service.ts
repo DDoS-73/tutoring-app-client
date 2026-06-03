@@ -27,6 +27,15 @@ export class AuthService {
     );
   }
 
+  public signup(data: { name: string; email: string; password: string }): Observable<TokensResponse> {
+    return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.signup}`, data).pipe(
+      tap((tokens) => {
+        this._setTokens(tokens);
+        this._router.navigate([MainPages.Calendar]);
+      })
+    );
+  }
+
   public refreshToken(): Observable<boolean> {
     if (this._isRefreshing) {
       return this._refreshTokenSubject.pipe(

@@ -1,14 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@use "./styles/variables" as *;
 
 html,
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
 }
+
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
 }
+
+html:has(app-auth-layout),
+body:has(app-auth-layout) {
+  background-color: $color-bg-main;
+}
+
 * {
   box-sizing: border-box;
 }

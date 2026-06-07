@@ -1,5 +1,6 @@
 <ng-template #archiveConfirmTpl>
-  <b>{{ archivingName() }}</b> буде переміщено до архіву. Минулі події залишаться; майбутні події з ним будуть скасовані.
+  <b>{{ archivingName() }}</b> will be moved to archive. Past events will remain; future events with this participant
+  will be cancelled.
 </ng-template>
 
 <ng-template #activeTitleTpl>
@@ -16,71 +17,311 @@
   }
 </ng-template>
 
-<header class="pane-head">
-  <div>
-    <h2 class="pane-title">Учасники</h2>
-    <p class="pane-sub">Учні та групи, яких ви навчаєте. Архівуйте тих, з ким більше не працюєте.</p>
+<div class="dashboard-container" [class.has-selection]="selectedParticipant() !== null">
+  <!-- ──────────────── MIDDLE PANEL: PARTICIPANT LIST ──────────────── -->
+  <div class="middle-panel">
+    <header class="pane-head">
+      <div>
+        <div class="pane-title-wrap">
+          <h2 class="pane-title">Participants</h2>
+          @if (activeQuery.data(); as data) {
+            <span class="count-badge">{{ data.length }}</span>
+          }
+        </div>
+        <p class="pane-sub">Pick a participant to see details.</p>
+      </div>
+      <button class="add-btn" type="button" [disabled]="createMutation.isPending()" (click)="onAddParticipant()">
+        <nz-icon nzType="plus" />
+        <span>Add</span>
+      </button>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <nz-icon nzType="search" class="search-icon" />
+        <input
+          type="text"
+          placeholder="Search participants"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+        />
+      </div>
+    </div>
+
+    <!-- Active/Archived Tabs -->
+    <nz-tabset class="tabs">
+      <!-- Active Tab -->
+      <nz-tab [nzTitle]="activeTitleTpl">
+        <div class="scroll-area">
+          @if (activeQuery.isLoading()) {
+            <div class="spinner-wrap">
+              <nz-spin nzSimple />
+            </div>
+          } @else if (activeQuery.isError()) {
+            <div class="error-wrap">
+              <p>Не вдалося завантажити учасників. Спробуйте ще раз.</p>
+            </div>
+          } @else {
+            <!-- STUDENTS Section -->
+            @if (activeStudents().length > 0) {
+              <div class="section-header">STUDENTS · {{ activeStudents().length }}</div>
+              <ul class="list">
+                @for (participant of activeStudents(); track participant.id) {
+                  <li
+                    class="row-item"
+                    [class.selected]="selectedParticipant()?.id === participant.id"
+                    (click)="selectParticipant(participant)"
+                  >
+                    <span class="av" [style.background-color]="participant.avatarColor">
+                      {{ participant.initials }}
+                    </span>
+                    <span class="pname">{{ participant.name }}</span>
+                    <button
+                      class="action-btn action-btn--archive"
+                      type="button"
+                      [disabled]="archiveMutation.isPending()"
+                      (click)="onArchive(participant); $event.stopPropagation()"
+                      aria-label="Архівувати учасника"
+                    >
+                      <nz-icon nzType="container" nzTheme="outline" />
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+
+            <!-- GROUPS Section -->
+            @if (activeGroups().length > 0) {
+              <div class="section-header">GROUPS · {{ activeGroups().length }}</div>
+              <ul class="list">
+                @for (participant of activeGroups(); track participant.id) {
+                  <li
+                    class="row-item"
+                    [class.selected]="selectedParticipant()?.id === participant.id"
+                    (click)="selectParticipant(participant)"
+                  >
+                    <span class="av av--group">
+                      <nz-icon nzType="team" nzTheme="outline" />
+                    </span>
+                    <span class="pname">{{ participant.name }}</span>
+                    <button
+                      class="action-btn action-btn--archive"
+                      type="button"
+                      [disabled]="archiveMutation.isPending()"
+                      (click)="onArchive(participant); $event.stopPropagation()"
+                      aria-label="Архівувати учасника"
+                    >
+                      <nz-icon nzType="container" nzTheme="outline" />
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+
+            @if (activeStudents().length === 0 && activeGroups().length === 0) {
+              <div class="empty-wrap">
+                <p>Нічого не знайдено.</p>
+              </div>
+            }
+          }
+        </div>
+      </nz-tab>
+
+      <!-- Archived Tab -->
+      <nz-tab [nzTitle]="archivedTitleTpl">
+        <div class="scroll-area">
+          @if (archivedQuery.isLoading()) {
+            <div class="spinner-wrap">
+              <nz-spin nzSimple />
+            </div>
+          } @else if (archivedQuery.isError()) {
+            <div class="error-wrap">
+              <p>Не вдалося завантажити архів учасників. Спробуйте ще раз.</p>
+            </div>
+          } @else {
+            <!-- STUDENTS Section -->
+            @if (archivedStudents().length > 0) {
+              <div class="section-header">STUDENTS · {{ archivedStudents().length }}</div>
+              <ul class="list">
+                @for (participant of archivedStudents(); track participant.id) {
+                  <li
+                    class="row-item row-item--archived"
+                    [class.selected]="selectedParticipant()?.id === participant.id"
+                    (click)="selectParticipant(participant)"
+                  >
+                    <span class="av av--archived">
+                      {{ participant.initials }}
+                    </span>
+                    <span class="pname">{{ participant.name }}</span>
+                    <button
+                      class="action-btn action-btn--unarchive"
+                      type="button"
+                      [disabled]="unarchiveMutation.isPending()"
+                      (click)="onUnarchive(participant); $event.stopPropagation()"
+                      aria-label="Розархівувати учасника"
+                    >
+                      <nz-icon nzType="container" nzTheme="outline" />
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+
+            <!-- GROUPS Section -->
+            @if (archivedGroups().length > 0) {
+              <div class="section-header">GROUPS · {{ archivedGroups().length }}</div>
+              <ul class="list">
+                @for (participant of archivedGroups(); track participant.id) {
+                  <li
+                    class="row-item row-item--archived"
+                    [class.selected]="selectedParticipant()?.id === participant.id"
+                    (click)="selectParticipant(participant)"
+                  >
+                    <span class="av av--group av--archived">
+                      <nz-icon nzType="team" nzTheme="outline" />
+                    </span>
+                    <span class="pname">{{ participant.name }}</span>
+                    <button
+                      class="action-btn action-btn--unarchive"
+                      type="button"
+                      [disabled]="unarchiveMutation.isPending()"
+                      (click)="onUnarchive(participant); $event.stopPropagation()"
+                      aria-label="Розархівувати учасника"
+                    >
+                      <nz-icon nzType="container" nzTheme="outline" />
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+
+            @if (archivedStudents().length === 0 && archivedGroups().length === 0) {
+              <div class="empty-wrap">
+                <p>Архів порожній.</p>
+              </div>
+            }
+          }
+        </div>
+      </nz-tab>
+    </nz-tabset>
   </div>
-</header>
 
-<nz-tabset class="tabs">
-  <nz-tab [nzTitle]="activeTitleTpl">
-    @if (activeQuery.isLoading()) {
-      <div class="spinner-wrap">
-        <nz-spin nzSimple />
-      </div>
-    } @else if (activeQuery.isError()) {
-      <div class="error-wrap">
-        <p>Не вдалося завантажити учасників. Спробуйте ще раз.</p>
-      </div>
+  <!-- ──────────────── RIGHT PANEL: PARTICIPANT DETAILS ──────────────── -->
+  <div class="right-panel">
+    @if (selectedParticipant(); as p) {
+      <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: p }"></ng-container>
     } @else {
-      <ul class="list">
-        @for (participant of activeRows(); track participant.id) {
-          <li class="row-item">
-            <span class="av">{{ participant.initials }}</span>
-            <span class="pname">{{ participant.name }}</span>
-            <button
-              class="action-btn action-btn--archive"
-              type="button"
-              [disabled]="archiveMutation.isPending()"
-              (click)="onArchive(participant)"
-              aria-label="Архівувати учасника"
-            >
-              <nz-icon nzType="container" nzTheme="outline" />
-            </button>
-          </li>
-        }
-      </ul>
+      <div class="no-selection">
+        <nz-icon nzType="info-circle" nzTheme="outline" class="info-icon" />
+        <h3>No Selection</h3>
+        <p>Pick a participant from the list to view their full details, lessons, and pricing options.</p>
+      </div>
     }
-  </nz-tab>
+  </div>
 
-  <nz-tab [nzTitle]="archivedTitleTpl">
-    @if (archivedQuery.isLoading()) {
-      <div class="spinner-wrap">
-        <nz-spin nzSimple />
+  <!-- ──────────────── MOBILE DETAIL OVERLAY ──────────────── -->
+  @if (selectedParticipant(); as p) {
+    <div class="mobile-detail-overlay">
+      <header class="overlay-header">
+        <button class="back-link" type="button" (click)="clearSelection()">
+          <nz-icon nzType="left" />
+          <span>Back to list</span>
+        </button>
+      </header>
+      <div class="overlay-content">
+        <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: p }"></ng-container>
       </div>
-    } @else if (archivedQuery.isError()) {
-      <div class="error-wrap">
-        <p>Не вдалося завантажити архів учасників. Спробуйте ще раз.</p>
+    </div>
+  }
+</div>
+
+<!-- ──────────────── REUSABLE DETAILS TEMPLATE ──────────────── -->
+<ng-template #detailsTpl let-p>
+  <div class="details-container">
+    <!-- Header: Avatar, Name, Badge, Actions -->
+    <div class="details-header">
+      <div class="header-main">
+        <div class="avatar-large-wrap">
+          @if (p.type === EventParticipantType.Group) {
+            <span class="avatar-large av--group">
+              <nz-icon nzType="team" />
+            </span>
+          } @else {
+            <span class="avatar-large" [style.background-color]="p.avatarColor">
+              {{ p.initials }}
+            </span>
+          }
+        </div>
+        <div class="header-text-block">
+          <h2 class="details-name">{{ p.name }}</h2>
+          <span class="role-badge">
+            {{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}
+          </span>
+        </div>
       </div>
-    } @else {
-      <ul class="list">
-        @for (participant of archivedRows(); track participant.id) {
-          <li class="row-item row-item--archived">
-            <span class="av">{{ participant.initials }}</span>
-            <span class="pname">{{ participant.name }}</span>
-            <button
-              class="action-btn action-btn--unarchive"
-              type="button"
-              [disabled]="unarchiveMutation.isPending()"
-              (click)="onUnarchive(participant)"
-              aria-label="Розархівувати учасника"
-            >
-              <nz-icon nzType="container" nzTheme="outline" />
-            </button>
-          </li>
+      <div class="header-actions">
+        <button class="detail-action-btn" type="button" (click)="onEditParticipant(p)">
+          <nz-icon nzType="edit" />
+          <span>Edit</span>
+        </button>
+        @if (p.isArchived) {
+          <button
+            class="detail-action-btn detail-action-btn--restore"
+            type="button"
+            [disabled]="unarchiveMutation.isPending()"
+            (click)="onUnarchive(p)"
+          >
+            <nz-icon nzType="reload" />
+            <span>Restore</span>
+          </button>
+        } @else {
+          <button
+            class="detail-action-btn detail-action-btn--remove"
+            type="button"
+            [disabled]="archiveMutation.isPending()"
+            (click)="onArchive(p)"
+          >
+            <nz-icon nzType="delete" />
+            <span>Archive</span>
+          </button>
         }
-      </ul>
-    }
-  </nz-tab>
-</nz-tabset>
+      </div>
+    </div>
+
+    <!-- Detail Cards -->
+    <div class="details-content-grid">
+      <!-- Identity Card -->
+      <div class="detail-card">
+        <div class="card-section-title">IDENTITY</div>
+        <div class="detail-row">
+          <span class="row-label">Full name<span class="required">*</span></span>
+          <span class="row-value">{{ p.name }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="row-label">Type</span>
+          <span class="row-value">{{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}</span>
+        </div>
+      </div>
+
+      <!-- Lessons Card -->
+      <div class="detail-card">
+        <div class="card-section-title">LESSONS</div>
+        <div class="detail-row">
+          <span class="row-label">Price per class<span class="required">*</span></span>
+          <span class="row-value">₴{{ p.price ?? 400 }}</span>
+        </div>
+      </div>
+
+      <!-- Info/Payments Notice Card -->
+      <div class="info-card">
+        <div class="info-card-left">
+          <nz-icon nzType="credit-card" />
+        </div>
+        <div class="info-card-right">
+          Used to calculate received, to-receive and loans in <strong class="payments-highlight">Payments</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

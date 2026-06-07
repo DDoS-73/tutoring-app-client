@@ -1,20 +1,17 @@
 @use "./styles/variables" as *;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 
 html,
 body {
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
+  background-color: $color-bg-main;
 }
 
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
-}
-
-html:has(app-auth-layout),
-body:has(app-auth-layout) {
-  background-color: $color-bg-main;
 }
 
 * {
@@ -157,4 +154,96 @@ select {
   border-radius: 50%;
   color: #1890ff;
   font-weight: 500;
+}
+
+.teachup-modal {
+  .ant-modal-content {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+
+.teachup-confirm-modal {
+  .ant-modal-content {
+    background-color: #3a2a23 !important;
+    border: 1px solid #46342b !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4) !important;
+    border-radius: 14px !important;
+  }
+
+  .ant-modal-confirm-body {
+    .anticon {
+      color: #e0857c !important;
+    }
+
+    .ant-modal-confirm-title {
+      color: #f5ebdd !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 700 !important;
+    }
+
+    .ant-modal-confirm-content {
+      color: #a67b5b !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 500 !important;
+
+      b {
+        color: #f5ebdd;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .ant-modal-confirm-btns {
+    // Cancel Button
+    .ant-btn:not(.ant-btn-dangerous):not(.ant-btn-primary) {
+      background: transparent !important;
+      border: 1px solid #5e4a3e !important;
+      border-radius: 11px !important;
+      color: #d6c2a1 !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 600 !important;
+      height: 38px !important;
+      padding: 0 16px !important;
+      transition:
+        background 0.15s,
+        color 0.15s !important;
+
+      &:hover {
+        background: rgba(214, 194, 161, 0.08) !important;
+        color: #f5ebdd !important;
+      }
+    }
+
+    // OK / Action Button (Danger)
+    .ant-btn-dangerous,
+    .ant-btn-primary {
+      background: #e0857c !important;
+      border: 1px solid #e0857c !important;
+      border-radius: 11px !important;
+      color: #2e211c !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 700 !important;
+      height: 38px !important;
+      padding: 0 16px !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.15) !important;
+      transition: opacity 0.15s !important;
+
+      &:hover {
+        opacity: 0.9 !important;
+      }
+    }
+  }
+
+  // Close icon if present
+  .ant-modal-close {
+    color: #8c745e !important;
+    &:hover {
+      color: #f5ebdd !important;
+    }
+  }
 }

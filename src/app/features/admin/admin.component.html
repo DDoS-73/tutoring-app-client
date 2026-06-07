@@ -1,50 +1,68 @@
 <header class="top">
   <div class="brand">
     <span class="brand-mark">T</span>
-    <span class="brand-name">TeachUp</span>
-    <span class="crumb">Адмін</span>
+    <span class="brand-name">Teach<span class="brand-name-up">Up</span></span>
+    <span class="crumb">Admin</span>
   </div>
   <div class="top-right">
     <button class="back-btn" type="button" (click)="navigateToCalendar()">
       <nz-icon nzType="left" />
-      До календаря
+      <span>Back to calendar</span>
     </button>
+    <div class="profile-btn">
+      <span>A</span>
+    </div>
   </div>
 </header>
 
 <div class="layout">
   <aside class="side">
     <div class="side-group">
-      <span class="side-label">Керування</span>
-      <a class="nav-item" routerLink="participants" routerLinkActive="active">
+      <span class="side-label">MANAGE</span>
+      <a class="nav-item" routerLink="participants" routerLinkActive="active" title="Participants">
         <nz-icon nzType="team" />
-        <span class="label">Учасники</span>
+        <span class="label">Participants</span>
       </a>
-      <span class="nav-item disabled">
-        <nz-icon nzType="calendar" />
-        <span class="label">Налаштування подій</span>
-        <span class="soon">Скоро</span>
+      <span class="nav-item disabled" title="Event Settings (Soon)">
+        <span class="nav-item-icon-wrap">
+          <nz-icon nzType="calendar" />
+          <span class="soon-dot"></span>
+        </span>
+        <span class="label">Event Settings</span>
+        <span class="soon">Soon</span>
       </span>
-      <span class="nav-item disabled">
-        <nz-icon nzType="credit-card" />
-        <span class="label">Платежі</span>
-        <span class="soon">Скоро</span>
+      <span class="nav-item disabled" title="Payments (Soon)">
+        <span class="nav-item-icon-wrap">
+          <nz-icon nzType="credit-card" />
+          <span class="soon-dot"></span>
+        </span>
+        <span class="label">Payments</span>
+        <span class="soon">Soon</span>
       </span>
     </div>
 
+    <hr class="side-divider" />
+
     <div class="side-group">
-      <span class="side-label">Аналітика</span>
-      <span class="nav-item disabled">
-        <nz-icon nzType="bar-chart" />
-        <span class="label">Статистика</span>
-        <span class="soon">Скоро</span>
+      <span class="side-label">INSIGHTS</span>
+      <span class="nav-item disabled" title="Statistics (Soon)">
+        <span class="nav-item-icon-wrap">
+          <nz-icon nzType="bar-chart" />
+          <span class="soon-dot"></span>
+        </span>
+        <span class="label">Statistics</span>
+        <span class="soon">Soon</span>
       </span>
     </div>
 
     <div class="side-bottom">
-      <button class="nav-item danger" type="button" (click)="signOut()">
+      <button class="nav-item nav-item-account" type="button" title="Account">
+        <nz-icon nzType="user" />
+        <span class="label">Account</span>
+      </button>
+      <button class="nav-item danger" type="button" (click)="signOut()" title="Sign out">
         <nz-icon nzType="logout" />
-        <span class="label">Вийти</span>
+        <span class="label">Sign out</span>
       </button>
     </div>
   </aside>

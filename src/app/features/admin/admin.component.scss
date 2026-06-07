@@ -2,248 +2,324 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #fff;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  background: #2e211c;
+  color: #f5ebdd;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
 }
 
-// ── Top bar ──────────────────────────────────────────────────────────────────
-
+// ── Header (65px height) ──────────────────────────────────────────────────────
 .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
-  border-bottom: 1px solid #ececec;
+  height: 65px;
+  padding: 0 24px;
+  background: #3a2a23;
+  border-bottom: 1px solid #46342b;
   flex-shrink: 0;
-  background: #fff;
+  box-sizing: border-box;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brand-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  background: #1a1a1a;
-  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1.5px solid #d6c2a1;
+  color: #d6c2a1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 800;
+  font-size: 15px;
 }
 
 .brand-name {
-  font-weight: 600;
-  font-size: 14px;
-  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 18px;
+  color: #f5ebdd;
+  letter-spacing: -0.2px;
+
+  .brand-name-up {
+    color: #d6c2a1;
+  }
 }
 
 .crumb {
-  color: #9a9a9a;
+  color: #8c745e;
   font-size: 13px;
+  font-weight: 600;
   padding-left: 12px;
   margin-left: 2px;
-  border-left: 1px solid #ececec;
+  border-left: 1px solid #46342b;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .back-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 34px;
-  padding: 0 12px;
-  border: 1px solid #e3e3e0;
-  border-radius: 8px;
-  background: #fff;
-  color: #4a4a4a;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid #5e4a3e;
+  border-radius: 11px;
+  background: transparent;
+  color: #d6c2a1;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   font-family: inherit;
+  transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background: #f6f6f4;
-    color: #1a1a1a;
+    background: rgba(214, 194, 161, 0.08);
+    color: #f5ebdd;
+  }
+
+  nz-icon {
+    font-size: 12px;
   }
 }
 
-// ── Body layout ──────────────────────────────────────────────────────────────
+.profile-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #5a4439;
+  border: 1px solid #5e4a3e;
+  color: #f5ebdd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
 
-.layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  flex: 1;
-  overflow: hidden;
+  &:hover {
+    background: #6f5446;
+  }
 }
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
+// ── Layout ────────────────────────────────────────────────────────────────────
+.layout {
+  display: grid;
+  grid-template-columns: 256px 1fr;
+  flex: 1;
+  overflow: hidden;
+  transition: grid-template-columns 300ms ease-in-out;
+}
 
+// ── Sidebar (Desktop: 256px width) ───────────────────────────────────────────
 .side {
-  background: #f6f6f4;
-  border-right: 1px solid #ececec;
-  padding: 14px 10px;
+  background: #3a2a23;
+  border-right: 1px solid #46342b;
+  padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 16px;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .side-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .side-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: #9a9a9a;
-  padding: 10px 12px 4px;
+  color: #8c745e;
+  padding: 0 12px 6px;
+}
+
+.side-divider {
+  border: none;
+  border-top: 1px solid #46342b;
+  margin: 8px 0;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  color: #4a4a4a;
-  font-size: 13px;
-  font-weight: 500;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #d6c2a1;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   border: 1px solid transparent;
   background: transparent;
   font-family: inherit;
   text-decoration: none;
   width: 100%;
-  transition:
-    background 0.12s,
-    color 0.12s;
+  box-sizing: border-box;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+  nz-icon {
+    font-size: 14px;
+  }
+
+  .nav-item-icon-wrap {
+    display: inline-flex;
+    position: relative;
+  }
+
+  .soon-dot {
+    display: none; // hidden on desktop
+  }
 
   &:hover {
-    background: #fff;
-    color: #1a1a1a;
+    background: rgba(214, 194, 161, 0.08);
+    color: #f5ebdd;
   }
 
   &.active {
-    background: #cfe9d5;
-    color: #1a1a1a;
-    border-color: rgba(79, 140, 99, 0.15);
+    background: rgba(214, 194, 161, 0.15);
+    color: #f5ebdd;
+    border: 1px solid rgba(214, 194, 161, 0.3);
   }
 
   &.disabled {
-    color: #9a9a9a;
+    color: #8c745e;
     cursor: not-allowed;
 
     &:hover {
       background: transparent;
-      color: #9a9a9a;
+      color: #8c745e;
     }
   }
 
-  &.danger:hover {
-    background: #fff;
-    color: #ff4d4f;
+  &.danger {
+    color: #e0857c;
+
+    &:hover {
+      background: rgba(224, 133, 124, 0.08);
+      color: #ff9e96;
+    }
   }
 }
 
 .soon {
   font-size: 9px;
-  font-weight: 600;
-  color: #9a9a9a;
-  background: #efeeea;
-  border: 1px solid #e3e3e0;
-  padding: 1px 6px;
+  font-weight: 700;
+  color: #d6c2a1;
+  background: #5a4439;
+  border: 1px solid #5e4a3e;
+  padding: 2px 8px;
   border-radius: 999px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  margin-left: auto;
 }
 
 .side-bottom {
   margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid #ececec;
+  padding-top: 16px;
+  border-top: 1px solid #46342b;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-// ── Main pane ─────────────────────────────────────────────────────────────────
-
+// ── Main Content Area ────────────────────────────────────────────────────────
 .main {
-  background: #fff;
+  background: #2e211c;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-// ── Tablet: icon-only sidebar ─────────────────────────────────────────────────
+// ── Responsive Layout Breakpoints ─────────────────────────────────────────────
 
-@media (max-width: 900px) {
+// Tablet viewport (768px - 1024px)
+@media (max-width: 1024px) {
   .layout {
     grid-template-columns: 64px 1fr;
   }
 
   .side {
-    padding: 14px 8px;
+    padding: 20px 8px;
     align-items: center;
+    gap: 12px;
   }
 
   .side-group {
     width: 100%;
+    align-items: center;
   }
 
   .side-label {
     display: none;
   }
 
+  .side-divider {
+    width: 100%;
+    margin: 4px 0;
+  }
+
   .nav-item {
-    padding: 10px;
+    padding: 12px;
     justify-content: center;
-    position: relative;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
 
     .label,
     .soon {
       display: none;
     }
 
-    &.active::before {
-      content: "";
-      position: absolute;
-      left: -8px;
-      top: 6px;
-      bottom: 6px;
-      width: 3px;
-      border-radius: 0 2px 2px 0;
-      background: #4f8c63;
+    nz-icon {
+      font-size: 16px;
+    }
+
+    &.disabled {
+      .soon-dot {
+        display: block;
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d6c2a1;
+        border: 1px solid #3a2a23;
+      }
     }
   }
 
-  .brand-name {
-    display: none;
+  .side-bottom {
+    width: 100%;
+    align-items: center;
   }
 }
 
-// ── Mobile ────────────────────────────────────────────────────────────────────
-
-@media (max-width: 480px) {
-  .layout {
-    grid-template-columns: 56px 1fr;
-  }
-
-  .top {
-    padding: 10px 14px;
+// Mobile viewport (< 768px)
+@media (max-width: 768px) {
+  .crumb {
+    display: none;
   }
 
   .back-btn {
-    font-size: 12px;
-    padding: 0 10px;
+    display: none;
   }
 }

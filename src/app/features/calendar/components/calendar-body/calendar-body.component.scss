@@ -43,6 +43,7 @@ $hour-list-width: 25px;
   display: flex;
   flex-direction: column;
   gap: 1px;
+  background-color: #fff;
 
   .hour-item {
     width: $hour-list-width;

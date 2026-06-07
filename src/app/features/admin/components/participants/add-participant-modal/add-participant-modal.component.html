@@ -1,0 +1,119 @@
+<div class="modal-wrapper">
+  <!-- Header -->
+  <header class="modal-header">
+    <div class="avatar-wrap">
+      <span class="avatar">{{ initials }}</span>
+    </div>
+    <div class="header-info">
+      <h2 class="header-title">{{ isEdit ? 'Edit Participant' : 'Add Participant' }}</h2>
+      <p class="header-subtitle">
+        @if (form.get('name')?.value) {
+          {{ form.get('name')?.value }} ·
+          {{ form.get('type')?.value === EventParticipantType.Student ? 'Student' : 'Group' }}
+        } @else {
+          {{ isEdit ? '' : 'New Participant' }}
+        }
+      </p>
+    </div>
+    <button class="close-btn" type="button" (click)="onClose()" aria-label="Close" [disabled]="isPending">
+      <nz-icon nzType="close" nzTheme="outline" />
+    </button>
+  </header>
+
+  <!-- Form Body -->
+  <form [formGroup]="form" (ngSubmit)="onSave()" class="modal-body">
+    <!-- Identity Section -->
+    <div class="section-title">IDENTITY</div>
+
+    <div class="form-field">
+      <label class="field-label" for="fullName"> Full name <span class="required">*</span> </label>
+      <div class="input-wrap" [class.error]="form.get('name')?.invalid && form.get('name')?.touched">
+        <input
+          id="fullName"
+          type="text"
+          formControlName="name"
+          placeholder="e.g. John Doe"
+          autocomplete="off"
+          [readonly]="isPending"
+        />
+      </div>
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <div class="error-msg">
+          @if (form.get('name')?.errors?.['required']) {
+            Name is required.
+          } @else if (form.get('name')?.errors?.['minlength']) {
+            Name must be between 2 and 24 characters.
+          } @else if (form.get('name')?.errors?.['maxlength']) {
+            Name must be between 2 and 24 characters.
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Type</label>
+      <div class="segmented-control">
+        <button
+          type="button"
+          [class.active]="form.get('type')?.value === EventParticipantType.Student"
+          (click)="setType(EventParticipantType.Student)"
+          [disabled]="isPending"
+        >
+          <nz-icon nzType="user" nzTheme="outline" />
+          <span>Student</span>
+        </button>
+        <button
+          type="button"
+          [class.active]="form.get('type')?.value === EventParticipantType.Group"
+          (click)="setType(EventParticipantType.Group)"
+          [disabled]="isPending"
+        >
+          <nz-icon nzType="team" nzTheme="outline" />
+          <span>Group</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <hr class="divider" />
+
+    <!-- Lessons Section -->
+    <div class="section-title">LESSONS</div>
+
+    <div class="form-field">
+      <label class="field-label" for="price"> Price per class <span class="required">*</span> </label>
+      <div class="price-input-container" [class.error]="form.get('price')?.invalid && form.get('price')?.touched">
+        <span class="currency-symbol">₴</span>
+        <input id="price" type="number" formControlName="price" placeholder="400" min="0" [readonly]="isPending" />
+      </div>
+      @if (form.get('price')?.invalid && form.get('price')?.touched) {
+        <div class="error-msg">Price is required and must be 0 or more.</div>
+      }
+      <div class="helper-text">
+        <nz-icon nzType="info-circle" nzTheme="outline" />
+        <span>Used to calculate received, to-receive and loans in Payments.</span>
+      </div>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <footer class="modal-footer">
+    <div class="footer-left">
+      @if (isEdit) {
+        <button class="delete-btn" type="button" (click)="onDelete()" [disabled]="isPending">
+          <nz-icon nzType="delete" nzTheme="outline" />
+          <span>Remove</span>
+        </button>
+      }
+    </div>
+    <div class="footer-right">
+      <button class="cancel-btn" type="button" (click)="onClose()" [disabled]="isPending">Cancel</button>
+      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending">
+        @if (isPending) {
+          <nz-icon nzType="loading" style="margin-right: 8px" />
+        }
+        <span>{{ isEdit ? 'Save' : 'Add' }}</span>
+      </button>
+    </div>
+  </footer>
+</div>

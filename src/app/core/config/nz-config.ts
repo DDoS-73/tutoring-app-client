@@ -14,6 +14,7 @@ import {
   LogoutOutline,
   MailOutline,
   PlusOutline,
+  ReloadOutline,
   RightOutline,
   SettingOutline,
   TeamOutline,
@@ -63,6 +64,7 @@ export default [
       EyeOutline,
       EyeInvisibleOutline,
       ArrowRightOutline,
+      ReloadOutline,
     ],
   },
 ];

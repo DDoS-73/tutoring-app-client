@@ -28,14 +28,17 @@ export class ParticipantsComponent {
   private readonly modal = inject(NzModalService);
   private readonly message = inject(NzMessageService);
   private readonly archiveConfirmTpl = viewChild.required<TemplateRef<void>>('archiveConfirmTpl');
+  private readonly deleteConfirmTpl = viewChild.required<TemplateRef<void>>('deleteConfirmTpl');
 
   protected readonly activeQuery = this.participantService.participantsQuery;
   protected readonly archivedQuery = this.participantService.archivedParticipantsQuery;
   protected readonly archiveMutation = this.participantService.archiveMutation;
   protected readonly unarchiveMutation = this.participantService.unarchiveMutation;
+  protected readonly deleteMutation = this.participantService.deleteMutation;
   protected readonly createMutation = this.participantService.createMutation;
 
   protected readonly archivingName = signal('');
+  protected readonly deletingName = signal('');
   protected readonly searchQuery = signal('');
   protected readonly selectedParticipant = signal<ParticipantRow | null>(null);
 
@@ -140,6 +143,38 @@ export class ParticipantsComponent {
     });
   }
 
+  protected onDelete(participant: ParticipantRow): void {
+    const id = participant.id;
+    if (id == null) return;
+    this.deletingName.set(participant.name);
+    this.modal.confirm({
+      nzTitle: 'Delete Participant?',
+      nzContent: this.deleteConfirmTpl(),
+      nzOkText: 'Delete',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzCancelText: 'Cancel',
+      nzIconType: 'delete',
+      nzCentered: true,
+      nzClassName: 'teachup-confirm-modal',
+      nzOnOk: () =>
+        new Promise((resolve, reject) => {
+          this.deleteMutation.mutate(id, {
+            onSuccess: () => {
+              if (this.selectedParticipant()?.id === id) {
+                this.selectedParticipant.set(null);
+              }
+              resolve(true);
+            },
+            onError: () => {
+              this.message.error('Failed to delete participant. Please try again.');
+              reject();
+            },
+          });
+        }),
+    });
+  }
+
   protected onAddParticipant(): void {
     this.modal.create<AddParticipantModalComponent>({
       nzContent: AddParticipantModalComponent,
@@ -169,7 +204,7 @@ export class ParticipantsComponent {
     modalRef.afterClose.subscribe((result) => {
       if (result) {
         if (result.action === 'delete') {
-          this.onArchive(participant);
+          this.onDelete(participant);
         } else if (result.updated) {
           this.selectedParticipant.set({
             ...participant,

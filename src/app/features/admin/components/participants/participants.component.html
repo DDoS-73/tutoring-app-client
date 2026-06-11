@@ -3,6 +3,11 @@
   will be cancelled.
 </ng-template>
 
+<ng-template #deleteConfirmTpl>
+  <b>{{ deletingName() }}</b> will be deleted forever. Past events will remain; future events with this participant will
+  be cancelled.
+</ng-template>
+
 <ng-template #activeTitleTpl>
   Активні
   @if (activeQuery.data(); as data) {
@@ -77,15 +82,26 @@
                       {{ participant.initials }}
                     </span>
                     <span class="pname">{{ participant.name }}</span>
-                    <button
-                      class="action-btn action-btn--archive"
-                      type="button"
-                      [disabled]="archiveMutation.isPending()"
-                      (click)="onArchive(participant); $event.stopPropagation()"
-                      aria-label="Архівувати учасника"
-                    >
-                      <nz-icon nzType="container" nzTheme="outline" />
-                    </button>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn action-btn--archive"
+                        type="button"
+                        [disabled]="archiveMutation.isPending()"
+                        (click)="onArchive(participant); $event.stopPropagation()"
+                        aria-label="Архівувати учасника"
+                      >
+                        <nz-icon nzType="container" nzTheme="outline" />
+                      </button>
+                      <button
+                        class="action-btn action-btn--delete"
+                        type="button"
+                        [disabled]="deleteMutation.isPending()"
+                        (click)="onDelete(participant); $event.stopPropagation()"
+                        aria-label="Видалити учасника"
+                      >
+                        <nz-icon nzType="delete" nzTheme="outline" />
+                      </button>
+                    </div>
                   </li>
                 }
               </ul>
@@ -105,15 +121,26 @@
                       <nz-icon nzType="team" nzTheme="outline" />
                     </span>
                     <span class="pname">{{ participant.name }}</span>
-                    <button
-                      class="action-btn action-btn--archive"
-                      type="button"
-                      [disabled]="archiveMutation.isPending()"
-                      (click)="onArchive(participant); $event.stopPropagation()"
-                      aria-label="Архівувати учасника"
-                    >
-                      <nz-icon nzType="container" nzTheme="outline" />
-                    </button>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn action-btn--archive"
+                        type="button"
+                        [disabled]="archiveMutation.isPending()"
+                        (click)="onArchive(participant); $event.stopPropagation()"
+                        aria-label="Архівувати учасника"
+                      >
+                        <nz-icon nzType="container" nzTheme="outline" />
+                      </button>
+                      <button
+                        class="action-btn action-btn--delete"
+                        type="button"
+                        [disabled]="deleteMutation.isPending()"
+                        (click)="onDelete(participant); $event.stopPropagation()"
+                        aria-label="Видалити учасника"
+                      >
+                        <nz-icon nzType="delete" nzTheme="outline" />
+                      </button>
+                    </div>
                   </li>
                 }
               </ul>
@@ -154,15 +181,26 @@
                       {{ participant.initials }}
                     </span>
                     <span class="pname">{{ participant.name }}</span>
-                    <button
-                      class="action-btn action-btn--unarchive"
-                      type="button"
-                      [disabled]="unarchiveMutation.isPending()"
-                      (click)="onUnarchive(participant); $event.stopPropagation()"
-                      aria-label="Розархівувати учасника"
-                    >
-                      <nz-icon nzType="container" nzTheme="outline" />
-                    </button>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn action-btn--unarchive"
+                        type="button"
+                        [disabled]="unarchiveMutation.isPending()"
+                        (click)="onUnarchive(participant); $event.stopPropagation()"
+                        aria-label="Розархівувати учасника"
+                      >
+                        <nz-icon nzType="container" nzTheme="outline" />
+                      </button>
+                      <button
+                        class="action-btn action-btn--delete"
+                        type="button"
+                        [disabled]="deleteMutation.isPending()"
+                        (click)="onDelete(participant); $event.stopPropagation()"
+                        aria-label="Видалити учасника"
+                      >
+                        <nz-icon nzType="delete" nzTheme="outline" />
+                      </button>
+                    </div>
                   </li>
                 }
               </ul>
@@ -182,15 +220,26 @@
                       <nz-icon nzType="team" nzTheme="outline" />
                     </span>
                     <span class="pname">{{ participant.name }}</span>
-                    <button
-                      class="action-btn action-btn--unarchive"
-                      type="button"
-                      [disabled]="unarchiveMutation.isPending()"
-                      (click)="onUnarchive(participant); $event.stopPropagation()"
-                      aria-label="Розархівувати учасника"
-                    >
-                      <nz-icon nzType="container" nzTheme="outline" />
-                    </button>
+                    <div class="row-actions">
+                      <button
+                        class="action-btn action-btn--unarchive"
+                        type="button"
+                        [disabled]="unarchiveMutation.isPending()"
+                        (click)="onUnarchive(participant); $event.stopPropagation()"
+                        aria-label="Розархівувати учасника"
+                      >
+                        <nz-icon nzType="container" nzTheme="outline" />
+                      </button>
+                      <button
+                        class="action-btn action-btn--delete"
+                        type="button"
+                        [disabled]="deleteMutation.isPending()"
+                        (click)="onDelete(participant); $event.stopPropagation()"
+                        aria-label="Видалити учасника"
+                      >
+                        <nz-icon nzType="delete" nzTheme="outline" />
+                      </button>
+                    </div>
                   </li>
                 }
               </ul>
@@ -265,27 +314,6 @@
           <nz-icon nzType="edit" />
           <span>Edit</span>
         </button>
-        @if (p.isArchived) {
-          <button
-            class="detail-action-btn detail-action-btn--restore"
-            type="button"
-            [disabled]="unarchiveMutation.isPending()"
-            (click)="onUnarchive(p)"
-          >
-            <nz-icon nzType="reload" />
-            <span>Restore</span>
-          </button>
-        } @else {
-          <button
-            class="detail-action-btn detail-action-btn--remove"
-            type="button"
-            [disabled]="archiveMutation.isPending()"
-            (click)="onArchive(p)"
-          >
-            <nz-icon nzType="delete" />
-            <span>Archive</span>
-          </button>
-        }
       </div>
     </div>
 

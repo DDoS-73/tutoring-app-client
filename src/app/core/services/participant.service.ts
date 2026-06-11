@@ -75,4 +75,13 @@ export class ParticipantService {
       this.queryClient.invalidateQueries({ queryKey: ['participants'] });
     },
   }));
+
+  public readonly deleteMutation = injectMutation(() => ({
+    mutationFn: (id: string | number) =>
+      lastValueFrom(this.http.delete<void>(`${environment.backendApi}${ApiEndpoints.Participants.delete(id)}`)),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+      this.queryClient.invalidateQueries({ queryKey: ['events'] });
+    },
+  }));
 }

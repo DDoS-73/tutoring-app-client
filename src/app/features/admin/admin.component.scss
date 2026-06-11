@@ -4,7 +4,7 @@
   height: 100vh;
   background: #2e211c;
   color: #f5ebdd;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   overflow: hidden;
 }
 
@@ -81,7 +81,9 @@
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
@@ -171,7 +173,10 @@
   text-decoration: none;
   width: 100%;
   box-sizing: border-box;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 
   nz-icon {
     font-size: 14px;
@@ -316,10 +321,6 @@
 // Mobile viewport (< 768px)
 @media (max-width: 768px) {
   .crumb {
-    display: none;
-  }
-
-  .back-btn {
     display: none;
   }
 }

@@ -13,6 +13,7 @@ import {
   LockOutline,
   LogoutOutline,
   MailOutline,
+  MenuOutline,
   PlusOutline,
   ReloadOutline,
   RightOutline,
@@ -65,6 +66,7 @@ export default [
       EyeInvisibleOutline,
       ArrowRightOutline,
       ReloadOutline,
+      MenuOutline,
     ],
   },
 ];

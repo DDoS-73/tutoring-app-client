@@ -1,5 +1,8 @@
 <header class="top">
   <div class="brand">
+    <button class="burger-btn" type="button" (click)="openDrawer()" aria-label="Toggle navigation">
+      <nz-icon nzType="menu" />
+    </button>
     <span class="brand-mark">T</span>
     <span class="brand-name">Teach<span class="brand-name-up">Up</span></span>
     <span class="crumb">Admin</span>
@@ -70,4 +73,6 @@
   <main class="main">
     <router-outlet />
   </main>
+
+  <app-admin-drawer [(visible)]="isDrawerVisible" />
 </div>

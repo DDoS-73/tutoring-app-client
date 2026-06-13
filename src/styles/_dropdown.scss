@@ -1,0 +1,17 @@
+@use "variables" as *;
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    border-radius: 10px !important;
+    padding: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+
+    .ant-dropdown-menu-item {
+      border-radius: 7px !important;
+    }
+  }
+}
+
+.ant-select-dropdown {
+  position: absolute !important;
+}

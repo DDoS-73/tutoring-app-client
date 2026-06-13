@@ -1,0 +1,55 @@
+@use "variables" as *;
+
+// Custom TeachUp styling for NZ Notifications
+.ant-notification-notice {
+  background-color: $color-bean-mocha !important;
+  border: 1px solid $color-border !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  color: $color-text-main !important;
+  font-family: "Montserrat", sans-serif !important;
+  padding: 16px 20px !important;
+
+  .ant-notification-notice-message {
+    color: $color-text-main !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .ant-notification-notice-description {
+    color: $color-text-muted !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .ant-notification-notice-close {
+    color: $color-text-muted !important;
+    top: 14px !important;
+    right: 16px !important;
+    transition: color 0.15s !important;
+
+    &:hover {
+      color: $color-text-main !important;
+    }
+  }
+
+  .ant-notification-notice-icon {
+    font-size: 22px !important;
+    margin-top: 2px !important;
+
+    &.ant-notification-notice-icon-error {
+      color: $color-error !important;
+    }
+    &.ant-notification-notice-icon-success {
+      color: $color-success !important;
+    }
+    &.ant-notification-notice-icon-info {
+      color: $color-primary !important;
+    }
+    &.ant-notification-notice-icon-warning {
+      color: $color-primary !important;
+    }
+  }
+}

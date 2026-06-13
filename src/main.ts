@@ -1,7 +1,9 @@
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import uk from '@angular/common/locales/uk';
-import { LOCALE_ID } from '@angular/core';
+import { inject, LOCALE_ID, provideAppInitializer } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { UserService } from './app/core/services/user.service';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -25,6 +27,10 @@ bootstrapApplication(AppComponent, {
     provideAnimationsAsync(),
     provideTanStackQuery(new QueryClient()),
     { provide: LOCALE_ID, useValue: 'uk' },
+    provideAppInitializer(() => {
+      const userService = inject(UserService);
+      return firstValueFrom(userService.loadCurrentUser());
+    }),
     ...nzConfig,
   ],
 }).catch((err) => console.error(err));

@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <title>TutoringApp</title>
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,9 +24,55 @@
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#000000" />
+    <style>
+      .app-loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #15100e;
+        color: #e6dcd5;
+        font-family: 'Montserrat', sans-serif;
+        z-index: 9999;
+      }
+      .app-loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(227, 204, 168, 0.1);
+        border-top: 4px solid #e3cca8;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      .app-loading-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: #8c736a;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body class="mat-typography">
-    <app-root></app-root>
+    <app-root>
+      <div class="app-loading-container">
+        <div class="app-loading-spinner"></div>
+        <div class="app-loading-text">Loading</div>
+      </div>
+    </app-root>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
   </body>
 </html>

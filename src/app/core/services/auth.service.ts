@@ -6,7 +6,9 @@ import { TokensResponse } from '../../features/auth/models';
 import { StorageKeys } from '../../shared/models/storage.keys';
 import { environment } from '../../../environments/environment';
 import { MainPages } from '../../shared/models/pages';
+import { QueryClient } from '@tanstack/angular-query-experimental';
 import { ApiEndpoints } from '../api/endpoints';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,25 +16,25 @@ import { ApiEndpoints } from '../api/endpoints';
 export class AuthService {
   private readonly _http = inject(HttpClient);
   private readonly _router = inject(Router);
+  private readonly _userService = inject(UserService);
+  private readonly _queryClient = inject(QueryClient);
 
   private _isRefreshing = false;
   private _refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
 
   public login(credentials: { email: string; password: string }): Observable<TokensResponse> {
     return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.login}`, credentials).pipe(
-      tap((tokens) => {
-        this._setTokens(tokens);
-        this._router.navigate([MainPages.Calendar]);
-      })
+      tap((tokens) => this._setTokens(tokens)),
+      switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
+      tap(() => this._router.navigate([MainPages.Calendar]))
     );
   }
 
   public signup(data: { name: string; email: string; password: string }): Observable<TokensResponse> {
     return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.signup}`, data).pipe(
-      tap((tokens) => {
-        this._setTokens(tokens);
-        this._router.navigate([MainPages.Calendar]);
-      })
+      tap((tokens) => this._setTokens(tokens)),
+      switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
+      tap(() => this._router.navigate([MainPages.Calendar]))
     );
   }
 
@@ -66,10 +68,14 @@ export class AuthService {
   public logout(): void {
     this._http.post(`${environment.backendApi}${ApiEndpoints.Auth.logout}`, {}).subscribe({
       complete: () => {
+        this._userService.clearUser();
+        this._queryClient.clear();
         this._removeTokens();
         this._router.navigate([MainPages.Auth]);
       },
       error: () => {
+        this._userService.clearUser();
+        this._queryClient.clear();
         this._removeTokens();
         this._router.navigate([MainPages.Auth]);
       },

@@ -2,6 +2,7 @@
 @use "./styles/modal";
 @use "./styles/dropdown";
 @use "./styles/picker";
+@use "./styles/timepicker";
 @use "./styles/notification";
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
@@ -39,11 +40,6 @@ h2 {
 .divider {
   height: 1px;
   background-color: #e0e0e0;
-}
-
-.timepicker-overlay,
-.timepicker-backdrop-overlay {
-  z-index: 1001 !important;
 }
 
 input,

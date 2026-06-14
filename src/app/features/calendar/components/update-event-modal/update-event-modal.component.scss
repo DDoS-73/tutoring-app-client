@@ -1,14 +1,3 @@
 :host {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.buttons-wrapper {
-  display: flex;
-  gap: 16px;
-
-  button {
-    flex-grow: 1;
-  }
+  display: block;
 }

@@ -1,7 +1,48 @@
-<app-event-form [event]="event()" [participants]="participants() ?? []"></app-event-form>
+<div class="modal-wrapper">
+  <!-- Header -->
+  <header class="modal-header">
+    <div class="avatar-wrap">
+      <span class="avatar">
+        <nz-icon nzType="calendar" nzTheme="outline" />
+      </span>
+    </div>
+    <div class="header-info">
+      <h2 class="header-title">Редагування події</h2>
+      <p class="header-subtitle">
+        {{ event().participant.name }}
+      </p>
+    </div>
+    <button
+      class="close-btn"
+      type="button"
+      (click)="close()"
+      aria-label="Close"
+      [disabled]="isUpdating() || isDeleting()"
+    >
+      <nz-icon nzType="close" nzTheme="outline" />
+    </button>
+  </header>
 
-@let isLoading = isUpdating() || isDeleting();
-<div class="buttons-wrapper">
-  <button nz-button nzDanger nzType="primary" [nzLoading]="isLoading" (click)="deleteEvent()">Видалити</button>
-  <button nz-button nzType="primary" [nzLoading]="isLoading" (click)="updateEvent()">Змінити</button>
+  <!-- Body -->
+  <div class="modal-body">
+    <app-event-form [event]="event()" [participants]="participants() ?? []"></app-event-form>
+  </div>
+
+  <!-- Footer -->
+  @let isLoading = isUpdating() || isDeleting();
+  <footer class="modal-footer">
+    <button class="delete-btn" type="button" (click)="deleteEvent()" [disabled]="isLoading">
+      <nz-icon nzType="delete" nzTheme="outline" />
+      <span>Видалити</span>
+    </button>
+    <div class="footer-right">
+      <button class="cancel-btn" type="button" (click)="close()" [disabled]="isLoading">Скасувати</button>
+      <button class="save-btn" type="button" (click)="updateEvent()" [disabled]="isLoading">
+        @if (isLoading) {
+          <nz-icon nzType="loading" style="margin-right: 8px" />
+        }
+        <span>Змінити</span>
+      </button>
+    </div>
+  </footer>
 </div>

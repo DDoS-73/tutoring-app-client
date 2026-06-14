@@ -1,11 +1,130 @@
 @use "variables" as *;
 
-.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
-  border: none;
-}
-.ant-picker-cell-inner.highlighted {
-  background: #1890ff33;
-  border-radius: 50%;
-  color: #1890ff;
-  font-weight: 500;
+.ant-picker-dropdown {
+  position: absolute !important;
+  font-family: "Montserrat", sans-serif !important;
+  z-index: 1050 !important;
+
+  .ant-picker-panel-container {
+    background-color: $color-bg-overlay !important;
+    border: 1px solid $color-border-overlay !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden !important;
+  }
+
+  .ant-picker-panel {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  // Header styles
+  .ant-picker-header {
+    background: $color-bg-overlay !important;
+    border-bottom: 1px solid $color-border-overlay !important;
+    color: $color-text-main-light !important;
+    
+    button {
+      color: $color-text-placeholder !important;
+      
+      &:hover {
+        color: $color-text-main-light !important;
+      }
+    }
+  }
+
+  .ant-picker-header-view {
+    color: $color-text-main-light !important;
+    font-weight: 700 !important;
+
+    button {
+      color: $color-text-main-light !important;
+      font-weight: 700 !important;
+
+      &:hover {
+        color: $color-accent !important;
+      }
+    }
+  }
+
+  // Content (Calendar Grid)
+  .ant-picker-content {
+    th {
+      color: $color-text-placeholder !important;
+      font-weight: 600 !important;
+      padding: 8px 0 !important;
+    }
+  }
+
+  .ant-picker-cell {
+    color: rgba($color-text-main-light, 0.3) !important; // Days out of month view
+
+    &.ant-picker-cell-in-view {
+      color: $color-text-main-light !important; // Days in month view
+    }
+
+    // Disabled days
+    &.ant-picker-cell-disabled {
+      color: rgba($color-text-main-light, 0.1) !important;
+      background: transparent !important;
+      
+      .ant-picker-cell-inner {
+        background: transparent !important;
+        color: rgba($color-text-main-light, 0.1) !important;
+      }
+    }
+  }
+
+  .ant-picker-cell-inner {
+    color: inherit !important;
+    border-radius: 50% !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+  }
+
+  .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end) {
+    .ant-picker-cell-inner {
+      background: rgba($color-accent, 0.08) !important;
+      background-color: rgba($color-accent, 0.08) !important;
+      color: $color-text-main-light !important;
+    }
+  }
+
+  // Selected Date
+  .ant-picker-cell-selected {
+    .ant-picker-cell-inner {
+      background: linear-gradient(to bottom, $color-accent-light, $color-accent) !important;
+      color: $color-accent-dark !important;
+      font-weight: 700 !important;
+    }
+  }
+
+  // Today marker
+  .ant-picker-cell-today {
+    .ant-picker-cell-inner {
+      &::before {
+        border: 1px solid $color-accent !important;
+        border-radius: 50% !important;
+      }
+    }
+  }
+
+  // Range picker styles
+  .ant-picker-active-bar {
+    background: $color-accent !important;
+  }
+
+  // Footer / Today link / Ok button
+  .ant-picker-footer {
+    background: $color-bg-overlay !important;
+    border-top: 1px solid $color-border-overlay !important;
+  }
+
+  .ant-picker-today-btn {
+    color: $color-accent !important;
+    font-weight: 600 !important;
+    
+    &:hover {
+      color: $color-text-main-light !important;
+    }
+  }
 }

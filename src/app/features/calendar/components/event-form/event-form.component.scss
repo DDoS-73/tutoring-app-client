@@ -1,3 +1,5 @@
+@use "../../../../../styles/variables" as *;
+
 :host,
 form {
   display: flex;
@@ -6,34 +8,19 @@ form {
   gap: 16px;
 }
 
-.form-control {
-  display: flex;
-  flex-direction: column;
-}
-
-.custom_input_label {
-  display: block;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  color: #000;
-}
-
 .time-wrapper {
   display: flex;
   gap: 16px;
+  width: 100%;
 
   @media screen and (max-width: 500px) {
     flex-direction: column;
     align-items: center;
 
-    .form-control {
+    .form-field {
       width: 100%;
     }
   }
-}
-
-button[type="submit"] {
-  margin-top: auto;
 }
 
 .custom-color-option {

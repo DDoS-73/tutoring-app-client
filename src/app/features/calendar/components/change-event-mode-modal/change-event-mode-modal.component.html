@@ -1,3 +1,26 @@
-@for (option of data; track option.value) {
-  <button nz-button nzType="default" (click)="modalRef.close(option.value)">{{ option.label }}</button>
-}
+<div class="modal-wrapper">
+  <!-- Header -->
+  <header class="modal-header">
+    <div class="avatar-wrap">
+      <span class="avatar">
+        <nz-icon nzType="question-circle" nzTheme="outline" />
+      </span>
+    </div>
+    <div class="header-info">
+      <h2 class="header-title">{{ title }}</h2>
+      <p class="header-subtitle">Оберіть варіант дії</p>
+    </div>
+    <button class="close-btn" type="button" (click)="modalRef.close()" aria-label="Close">
+      <nz-icon nzType="close" nzTheme="outline" />
+    </button>
+  </header>
+
+  <!-- Body / Actions -->
+  <div class="modal-body" style="flex-direction: row; gap: 12px; justify-content: center; padding: 24px">
+    @for (option of data; track option.value) {
+      <button class="save-btn" style="flex: 1; height: 44px" (click)="modalRef.close(option.value)">
+        {{ option.label }}
+      </button>
+    }
+  </div>
+</div>

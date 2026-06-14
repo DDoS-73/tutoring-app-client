@@ -33,12 +33,20 @@
 </div>
 
 <ng-template #createEventModal let-data>
-  <app-create-event-modal [event]="data.calendarEvent" (eventCreated)="createEventModalRef?.close()">
+  <app-create-event-modal
+    [event]="data.calendarEvent"
+    (eventCreated)="createEventModalRef?.close()"
+    (closeModal)="createEventModalRef?.close()"
+  >
   </app-create-event-modal>
 </ng-template>
 
 <ng-template #updateEventModal let-data>
-  <app-update-event-modal [event]="data.calendarEvent" (eventChanged)="updateEventModalRef?.close()">
+  <app-update-event-modal
+    [event]="data.calendarEvent"
+    (eventChanged)="updateEventModalRef?.close()"
+    (closeModal)="updateEventModalRef?.close()"
+  >
   </app-update-event-modal>
 </ng-template>
 

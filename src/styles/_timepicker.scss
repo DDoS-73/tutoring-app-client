@@ -1,0 +1,101 @@
+@use "variables" as *;
+
+.timepicker-overlay {
+  z-index: 1050 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 1050 !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.timepicker {
+  background-color: $color-bg-overlay !important;
+  border-color: $color-border-overlay !important;
+
+  &__header {
+    background-color: $color-bg-overlay-header !important;
+    border-color: $color-border-overlay !important;
+  }
+
+  &-dial__control {
+    color: rgba($color-text-main-light, 0.4) !important;
+
+    &_active {
+      color: $color-accent !important;
+    }
+  }
+
+  &-dial__colon {
+    color: rgba($color-text-main-light, 0.4) !important;
+  }
+
+  &__body {
+    background-color: $color-bg-overlay !important;
+  }
+
+  .clock-face {
+    background-color: $color-bg-overlay-header !important;
+    border-color: $color-border-overlay !important;
+
+    &__inner-button {
+      background-color: $color-bg-overlay-header !important;
+    }
+
+    &__number {
+      > span {
+        color: $color-text-main-light !important;
+
+        &.active {
+          background-color: $color-accent !important;
+          color: $color-accent-dark !important;
+        }
+
+        &.disabled {
+          color: grey !important;
+          background-color: transparent !important;
+        }
+      }
+
+      &:hover {
+        > span:not(.active):not(.disabled) {
+          color: $color-accent !important;
+        }
+      }
+    }
+
+    &__clock-hand {
+      background-color: $color-accent !important;
+
+      &::after {
+        background-color: $color-accent !important;
+        border-color: $color-accent !important;
+      }
+
+      &::before {
+        border-color: $color-accent !important;
+      }
+    }
+  }
+
+  &__actions {
+    background-color: $color-bg-overlay-header !important;
+    border-color: $color-border-overlay !important;
+  }
+
+  &-button {
+    color: $color-accent !important;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease !important;
+
+    span {
+      color: inherit !important;
+    }
+
+    &:hover {
+      background-color: rgba($color-accent, 0.08) !important;
+      color: $color-text-main-light !important;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Option } from '../../../../shared/models/option';
 import { isSameDate } from '../../../../shared/utils';
 import { ChangeEventMode } from '../../const/change-event-mode';
@@ -17,13 +18,14 @@ import { EventFormComponent } from '../event-form/event-form.component';
   selector: 'app-update-event-modal',
   templateUrl: './update-event-modal.component.html',
   styleUrl: './update-event-modal.component.scss',
-  imports: [EventFormComponent, NzButtonModule],
+  imports: [EventFormComponent, NzButtonModule, NzIconModule],
 })
 export class UpdateEventModalComponent {
   private eventForm = viewChild.required<EventFormComponent>(EventFormComponent);
 
   public event = input.required<CalendarEvent>();
   public eventChanged = output<void>();
+  public closeModal = output<void>();
 
   private readonly eventService = inject(EventService);
   private readonly dialog = inject(NzModalService);
@@ -32,6 +34,10 @@ export class UpdateEventModalComponent {
   protected isUpdating = this.eventService.updateEventMutation.isPending;
   protected isDeleting = this.eventService.deleteEventMutation.isPending;
   protected participants = this.eventService.participantsQuery.data;
+
+  protected close() {
+    this.closeModal.emit();
+  }
 
   protected updateEvent() {
     const { eventForm } = this.eventForm();
@@ -82,12 +88,14 @@ export class UpdateEventModalComponent {
       : UPDATE_EVENT_MODE_OPTIONS.filter((option) => option.value !== ChangeEventMode.ALL);
 
     const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
-      nzTitle: 'Оновлення події',
+      nzTitle: undefined,
+      nzClosable: false,
       nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
       nzData: updateEventModeOptions,
+      nzClassName: 'teachup-modal',
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;
@@ -105,12 +113,14 @@ export class UpdateEventModalComponent {
     }
 
     const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
-      nzTitle: 'Видалення події',
+      nzTitle: undefined,
+      nzClosable: false,
       nzContent: ChangeEventModeModalComponent,
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
       nzData: DELETE_EVENT_MODE_OPTIONS,
+      nzClassName: 'teachup-modal',
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {
       if (!mode || !event.id) return;

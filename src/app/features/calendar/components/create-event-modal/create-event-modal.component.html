@@ -1,13 +1,35 @@
-<app-event-form
-  [event]="event()"
-  [participants]="participants() ?? []"
-></app-event-form>
+<div class="modal-wrapper">
+  <!-- Header -->
+  <header class="modal-header">
+    <div class="avatar-wrap">
+      <span class="avatar">
+        <nz-icon nzType="calendar" nzTheme="outline" />
+      </span>
+    </div>
+    <div class="header-info">
+      <h2 class="header-title">Створення події</h2>
+      <p class="header-subtitle">Нова подія в розкладі</p>
+    </div>
+    <button class="close-btn" type="button" (click)="close()" aria-label="Close" [disabled]="isCreating()">
+      <nz-icon nzType="close" nzTheme="outline" />
+    </button>
+  </header>
 
-<button
-  nz-button
-  nzType="primary"
-  [nzLoading]="isCreating()"
-  (click)="createEvent()"
->
-  Підтвердити
-</button>
+  <!-- Body -->
+  <div class="modal-body">
+    <app-event-form [event]="event()" [participants]="participants() ?? []"></app-event-form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="modal-footer">
+    <div class="footer-right">
+      <button class="cancel-btn" type="button" (click)="close()" [disabled]="isCreating()">Скасувати</button>
+      <button class="save-btn" type="button" (click)="createEvent()" [disabled]="isCreating()">
+        @if (isCreating()) {
+          <nz-icon nzType="loading" style="margin-right: 8px" />
+        }
+        <span>Підтвердити</span>
+      </button>
+    </div>
+  </footer>
+</div>

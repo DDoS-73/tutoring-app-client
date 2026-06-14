@@ -23,3 +23,16 @@ $color-bean-mocha: #3e2c24;
 // Status feedback colors (TeachUp palette)
 $color-error: #e0857c; // Soft rose/red for errors
 $color-success: #a2c89d; // Soft green for success
+
+// Modal, Dropdown, and Picker overlay specific variables
+$color-bg-overlay: #3a2a23; // Lightest warm brown for modals, dropdown overlays, and pickers
+$color-bg-overlay-header: #30221c; // Darker brown for header/footer sections in overlays (like timepicker header)
+$color-bg-overlay-avatar: #5a4439; // Lighter brown accent for avatar circles
+$color-border-overlay: #46342b; // Border color for modal containers, picker panels
+$color-border-input: #5e4a3e; // Border color for inputs/selects inside modals
+$color-accent: #d6c2a1; // Active/highlight cream accent color (active borders, selected items, radio inner circle, clock hand)
+$color-accent-light: #ebdcc4; // Lighter cream accent for gradients
+$color-accent-dark: #4b362f; // Dark brown contrast color for text on top of cream background
+$color-text-main-light: #f5ebdd; // Light cream text color for headers/labels inside modals
+$color-text-muted-light: #a67b5b; // Muted tan color for secondary info (subtitles/labels)
+$color-text-placeholder: #8c745e; // Placeholder/icon brown color in inputs

@@ -1,6 +1,7 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CalendarEvent, Recurrence } from '../../models/calendar-event.model';
 import { EventService } from '../../services/event.service';
 import { EventFormComponent } from '../event-form/event-form.component';
@@ -9,19 +10,24 @@ import { EventFormComponent } from '../event-form/event-form.component';
   selector: 'app-create-event-modal',
   templateUrl: './create-event-modal.component.html',
   styleUrl: './create-event-modal.component.scss',
-  imports: [EventFormComponent, NzButtonModule],
+  imports: [EventFormComponent, NzButtonModule, NzIconModule],
 })
 export class CreateEventModalComponent {
   private eventForm = viewChild.required<EventFormComponent>(EventFormComponent);
 
   public event = input.required<Partial<CalendarEvent>>();
   public eventCreated = output<void>();
+  public closeModal = output<void>();
 
   private readonly eventService = inject(EventService);
   private readonly notificationService = inject(NzNotificationService);
 
   protected isCreating = this.eventService.createEventMutation.isPending;
   protected participants = this.eventService.participantsQuery.data;
+
+  protected close() {
+    this.closeModal.emit();
+  }
 
   protected createEvent() {
     const { eventForm } = this.eventForm();

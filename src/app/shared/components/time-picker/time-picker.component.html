@@ -1,9 +1,11 @@
-<input
-  [ngxTimepicker]="picker"
-  [format]="24"
-  [min]="`${CalendarConfig.startHour}:00`"
-  [max]="`${CalendarConfig.endHour}:00`"
-  [value]="value"
-  [disabled]="disabled"
-/>
+<div class="input-wrap">
+  <input
+    [ngxTimepicker]="picker"
+    [format]="24"
+    [min]="`${CalendarConfig.startHour}:00`"
+    [max]="`${CalendarConfig.endHour}:00`"
+    [value]="value"
+    [disabled]="disabled"
+  />
+</div>
 <ngx-material-timepicker #picker (timeChanged)="onTimeChange($event)" (timeSet)="onTimeSet($event)" />

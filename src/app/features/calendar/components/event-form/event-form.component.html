@@ -1,14 +1,28 @@
 @if (eventForm) {
   <form [formGroup]="eventForm">
-    <div class="form-control">
-      <p class="custom_input_label">Учень</p>
-      <input nz-input [nzAutocomplete]="auto" formControlName="participant" />
+    <!-- Participant -->
+    <div class="form-field">
+      <label class="field-label">Учень <span class="required">*</span></label>
+      <div
+        class="input-wrap"
+        [class.error]="eventForm.get('participant')?.invalid && eventForm.get('participant')?.touched"
+      >
+        <input [nzAutocomplete]="auto" formControlName="participant" placeholder="Оберіть учня" />
+      </div>
       <nz-autocomplete [nzDataSource]="filteredOptions()" nzBackfill #auto></nz-autocomplete>
+      @if (eventForm.get('participant')?.invalid && eventForm.get('participant')?.touched) {
+        <div class="error-msg">Учень є обов'язковим.</div>
+      }
     </div>
 
-    <div class="form-control">
-      <p class="custom_input_label">Колір</p>
-      <nz-select formControlName="color" [nzCustomTemplate]="customColorSelectTemplate">
+    <!-- Color Select -->
+    <div class="form-field">
+      <label class="field-label">Колір <span class="required">*</span></label>
+      <nz-select
+        [class.error]="eventForm.get('color')?.invalid && eventForm.get('color')?.touched"
+        formControlName="color"
+        [nzCustomTemplate]="customColorSelectTemplate"
+      >
         @for (option of TILE_COLORS_OPTIONS; track option.value) {
           <nz-option nzCustomContent [nzValue]="option.value" [nzLabel]="option.label">
             <div class="custom-color-option">
@@ -18,11 +32,17 @@
           </nz-option>
         }
       </nz-select>
+      @if (eventForm.get('color')?.invalid && eventForm.get('color')?.touched) {
+        <div class="error-msg">Колір є обов'язковим.</div>
+      }
     </div>
 
-    <div class="form-control">
-      <h2>Дата і час</h2>
-      <p class="custom_input_label">Дата</p>
+    <!-- Date and Time Section -->
+    <hr class="divider" />
+    <div class="section-title">Дата і час</div>
+
+    <div class="form-field">
+      <label class="field-label">Дата <span class="required">*</span></label>
       <nz-date-picker
         [nzAllowClear]="false"
         [ngModel]="event().startTime"
@@ -32,19 +52,20 @@
     </div>
 
     <div class="time-wrapper">
-      <div class="form-control">
-        <p class="custom_input_label">Час початку</p>
+      <div class="form-field" style="flex: 1">
+        <label class="field-label">Час початку <span class="required">*</span></label>
         <app-time-picker formControlName="startTime" />
       </div>
 
-      <div class="form-control">
-        <p class="custom_input_label">Час закінчення</p>
+      <div class="form-field" style="flex: 1">
+        <label class="field-label">Час закінчення <span class="required">*</span></label>
         <app-time-picker formControlName="endTime" />
       </div>
     </div>
 
-    <div class="form-control" formGroupName="recurrence">
-      <p class="custom_input_label">Повторювати</p>
+    <!-- Recurrence -->
+    <div class="form-field" formGroupName="recurrence">
+      <label class="field-label">Повторювати</label>
       <nz-radio-group formControlName="frequency">
         @for (option of RECURRENCE_OPTIONS; track option.value) {
           <label nz-radio [nzValue]="option.value">{{ option.label }}</label>
@@ -52,9 +73,19 @@
       </nz-radio-group>
     </div>
 
-    <div class="form-control">
-      <p class="custom_input_label">Нотатка</p>
-      <textarea rows="2" nz-input formControlName="note"></textarea>
+    <!-- Note -->
+    <div class="form-field">
+      <label class="field-label">Нотатка</label>
+      <div
+        class="input-wrap"
+        style="height: auto"
+        [class.error]="eventForm.get('note')?.invalid && eventForm.get('note')?.touched"
+      >
+        <textarea rows="2" formControlName="note" placeholder="Додайте опис події..."></textarea>
+      </div>
+      @if (eventForm.get('note')?.invalid && eventForm.get('note')?.touched) {
+        <div class="error-msg">Нотатка надто довга (макс. 64 символи).</div>
+      }
     </div>
   </form>
 }

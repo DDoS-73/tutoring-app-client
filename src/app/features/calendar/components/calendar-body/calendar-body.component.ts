@@ -62,18 +62,21 @@ export class CalendarBodyComponent {
 
     const calendarEvent: Partial<CalendarEvent> = { startTime, endTime };
     this.createEventModalRef = this.dialog.create({
-      nzTitle: 'Створення події',
+      nzTitle: undefined,
+      nzClosable: false,
       nzContent: this.createEventModal(),
       nzFooter: null,
       nzData: { calendarEvent },
       nzCentered: true,
       nzAutofocus: null,
+      nzClassName: 'teachup-modal',
     });
   }
 
   protected openUpdateDialog(calendarEvent: CalendarEvent) {
     this.updateEventModalRef = this.dialog.create({
-      nzTitle: 'Редагування події',
+      nzTitle: undefined,
+      nzClosable: false,
       nzContent: this.updateEventModal(),
       nzFooter: null,
       nzData: {
@@ -81,6 +84,7 @@ export class CalendarBodyComponent {
       },
       nzCentered: true,
       nzAutofocus: null,
+      nzClassName: 'teachup-modal',
     });
   }
 

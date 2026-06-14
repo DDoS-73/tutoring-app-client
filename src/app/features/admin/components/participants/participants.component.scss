@@ -4,7 +4,7 @@
   flex: 1;
   background: #2e211c;
   color: #f5ebdd;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 100%;
 }
 
@@ -93,8 +93,12 @@
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.15);
-  transition: opacity 0.2s, transform 0.1s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
 
   &:hover:not(:disabled) {
     opacity: 0.9;
@@ -289,7 +293,9 @@
   border: 1px solid transparent;
   cursor: pointer;
   box-sizing: border-box;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
@@ -367,7 +373,10 @@
   color: #8c745e;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.15s, background 0.15s, color 0.15s;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    color 0.15s;
 
   @media (hover: none) {
     &:not(:disabled) {
@@ -533,7 +542,9 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover:not(:disabled) {
     background: rgba(214, 194, 161, 0.08);
@@ -696,12 +707,12 @@
     flex-direction: column;
     position: fixed;
     top: 65px; // matches header height
-    left: 64px; // matches sidebar width
-    right: 0;
+    left: 0; // matches sidebar width
     bottom: 0;
     background: #2e211c;
     z-index: 1000;
     overflow-y: auto;
+    width: 100%;
   }
 
   .overlay-header {
@@ -743,10 +754,6 @@
     .middle-panel {
       display: none; // Hide list when detail is open
     }
-  }
-
-  .mobile-detail-overlay {
-    left: 64px; // matches mobile sidebar
   }
 
   .pane-head {

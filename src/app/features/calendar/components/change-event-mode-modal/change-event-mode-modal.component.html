@@ -16,9 +16,9 @@
   </header>
 
   <!-- Body / Actions -->
-  <div class="modal-body" style="flex-direction: row; gap: 12px; justify-content: center; padding: 24px">
+  <div class="modal-body mode-selection-body">
     @for (option of data; track option.value) {
-      <button class="save-btn" style="flex: 1; height: 44px" (click)="modalRef.close(option.value)">
+      <button class="save-btn mode-btn" (click)="modalRef.close(option.value)">
         {{ option.label }}
       </button>
     }

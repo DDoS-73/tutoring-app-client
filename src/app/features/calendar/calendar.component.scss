@@ -1,9 +1,12 @@
+@use "../../../styles/variables" as *;
+
 :host {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  background-color: $color-bg-main;
 }
 
 .calendar-area {

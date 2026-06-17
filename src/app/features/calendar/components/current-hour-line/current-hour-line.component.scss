@@ -1,19 +1,23 @@
+@use "../../../../../styles/variables" as *;
+
 :host {
   position: absolute;
   display: block;
-  height: 1px;
+  height: 1.5px;
   width: 100vw;
-  background-color: red;
+  background-color: $color-error;
   top: 10px;
   z-index: 998;
+  pointer-events: none;
 
   &::before {
     content: "";
     display: block;
-    height: 7px;
-    width: 7px;
+    height: 9px;
+    width: 9px;
     border-radius: 50px;
-    background-color: red;
+    background-color: $color-error;
     transform: translateY(-50%);
+    box-shadow: 0 0 6px rgba($color-error, 0.6);
   }
 }

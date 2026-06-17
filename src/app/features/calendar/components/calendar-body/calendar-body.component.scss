@@ -1,3 +1,5 @@
+@use "../../../../../styles/variables" as *;
+
 $hour-list-width: 25px;
 
 :host {
@@ -7,25 +9,37 @@ $hour-list-width: 25px;
 }
 
 .calendar-days {
-  display: flex;
+  display: grid;
+  grid-template-columns: $hour-list-width repeat(7, 1fr);
   gap: 1px;
   position: sticky;
   top: 0;
   z-index: 999;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: $color-border;
+  border-bottom: 1px solid $color-border;
 
   .week_day {
-    padding: 5px 0;
+    background-color: $color-bg-card;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
-    flex: 1 2 0;
     justify-content: center;
     align-items: center;
 
-    p {
-      line-height: 0.9rem;
-      font-size: 0.8rem;
+    p:first-child {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $color-primary;
+      line-height: 1.2;
+    }
+
+    p:last-child {
+      font-size: 0.75rem;
+      color: $color-text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      line-height: 1.2;
     }
   }
 }
@@ -33,6 +47,8 @@ $hour-list-width: 25px;
 .calendar-body {
   display: flex;
   flex-grow: 1;
+  gap: 1px;
+  background-color: $color-border;
 
   &::-webkit-scrollbar {
     display: none;
@@ -43,23 +59,32 @@ $hour-list-width: 25px;
   display: flex;
   flex-direction: column;
   gap: 1px;
-  background-color: #fff;
+  background-color: $color-border;
+  color: $color-text-muted;
 
   .hour-item {
+    background-color: $color-bg-card;
     width: $hour-list-width;
     padding-right: 5px;
     text-align: end;
     min-height: 60px;
     flex-grow: 1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 4px;
+    box-sizing: border-box;
   }
 }
 
 .grid-wrapper {
   position: relative;
   flex-grow: 1;
-  background-color: #e0e0e0;
-  display: flex;
-  flex-wrap: wrap;
+  background-color: $color-border;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: 1px;
 }
 
@@ -75,8 +100,10 @@ $hour-list-width: 25px;
   align-items: center;
   width: $hour-list-width;
   height: 100%;
+  background-color: $color-bg-card;
 
   nz-icon {
     font-size: 18px;
+    color: $color-primary;
   }
 }

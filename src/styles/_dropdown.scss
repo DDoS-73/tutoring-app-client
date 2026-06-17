@@ -4,10 +4,38 @@
   .ant-dropdown-menu {
     border-radius: 10px !important;
     padding: 8px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    background-color: $color-bg-overlay !important;
+    border: 1px solid $color-border-overlay !important;
 
     .ant-dropdown-menu-item {
       border-radius: 7px !important;
+      color: $color-text-main-light !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 500 !important;
+      transition: background-color 0.15s ease, color 0.15s ease !important;
+
+      &:hover {
+        background-color: rgba($color-primary, 0.08) !important;
+        color: $color-primary-hover !important;
+      }
+
+      &.ant-dropdown-menu-item-danger {
+        color: $color-error !important;
+
+        &:hover {
+          background-color: rgba($color-error, 0.08) !important;
+          color: #ff9e96 !important;
+        }
+      }
+    }
+
+    .ant-dropdown-menu-submenu-title {
+      color: $color-text-main-light !important;
+    }
+
+    .ant-dropdown-menu-item-divider {
+      background-color: $color-border-overlay !important;
     }
   }
 }

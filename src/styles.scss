@@ -30,16 +30,16 @@ h2 {
 }
 
 .highlight_today {
-  background-color: #eff9ef !important;
+  background-color: #342721 !important;
 
   &:hover {
-    background-color: #b2d8b2 !important;
+    background-color: #3c2d27 !important;
   }
 }
 
 .divider {
   height: 1px;
-  background-color: #e0e0e0;
+  background-color: $color-border;
 }
 
 input,

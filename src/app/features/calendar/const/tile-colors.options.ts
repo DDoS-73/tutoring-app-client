@@ -1,14 +1,14 @@
 import { Option } from '../../../shared/models/option';
 
 export const TILE_COLORS_OPTIONS: Option<string>[] = [
-  { value: '#FFF8BD', label: 'Лимонний' },
-  { value: '#FFE8A0', label: 'Жовтий' },
-  { value: '#C8F0E8', label: "М'ятний" },
-  { value: '#B8E0C8', label: 'Зелений' },
-  { value: '#DCC8FF', label: 'Лавандовий' },
-  { value: '#C8A0F0', label: 'Фіолетовий' },
-  { value: '#B4D4FF', label: 'Небесний' },
-  { value: '#9CB8F0', label: 'Синій' },
-  { value: '#DFE3E8', label: 'Графітовий' },
-  { value: '#B8BCC0', label: 'Сірий' },
+  { value: '#D6CE88', label: 'Лимонний' },
+  { value: '#D4B464', label: 'Жовтий' },
+  { value: '#8EC4B4', label: "М'ятний" },
+  { value: '#7AAE90', label: 'Зелений' },
+  { value: '#B09AD8', label: 'Лавандовий' },
+  { value: '#9A70C8', label: 'Фіолетовий' },
+  { value: '#7AAAD4', label: 'Небесний' },
+  { value: '#6888BC', label: 'Синій' },
+  { value: '#A8B0BA', label: 'Графітовий' },
+  { value: '#848C94', label: 'Сірий' },
 ];

@@ -1,0 +1,754 @@
+@use "../../../../../styles/variables" as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: $color-bg-main;
+  color: $color-text-main;
+  font-family: "Montserrat", sans-serif;
+  height: 100%;
+}
+
+.dashboard-container {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.middle-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 380px;
+  background: $color-bg-main;
+  border-right: 1px solid $color-border;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 92px;
+  padding: 0 24px;
+  border-bottom: 1px solid $color-border;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.pane-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pane-title {
+  font-size: 23px;
+  font-weight: 700;
+  color: $color-text-main;
+  margin: 0;
+  letter-spacing: -0.24px;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: $color-bg-card;
+  border: 1px solid $color-border-input;
+  font-size: 11px;
+  font-weight: 600;
+  color: $color-text-muted-light;
+  padding: 0 6px;
+}
+
+.pane-sub {
+  font-size: 13px;
+  color: $color-text-muted-light;
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+.search-bar-wrap {
+  padding: 12px 24px;
+  flex-shrink: 0;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  background: $color-bg-card;
+  border: 1px solid $color-border-input;
+  border-radius: 12px;
+  padding: 0 14px;
+  box-sizing: border-box;
+
+  .search-icon {
+    font-size: 14px;
+    color: $color-text-placeholder;
+  }
+
+  input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    color: $color-text-main;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    padding: 0;
+
+    &::placeholder {
+      color: $color-text-placeholder;
+    }
+  }
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 24px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-border;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: $color-border-input;
+  }
+}
+
+.spinner-wrap,
+.error-wrap,
+.empty-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: $color-text-muted-light;
+  font-size: 13.5px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row-item {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+
+    .arrow-icon {
+      color: $color-text-main;
+      transform: translateX(2px);
+    }
+  }
+
+  &.selected {
+    background: rgba(214, 194, 161, 0.13);
+    border: 1px solid rgba(214, 194, 161, 0.28);
+
+    .arrow-icon {
+      color: $color-text-main;
+    }
+  }
+}
+
+.student-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.pprice {
+  font-size: 11.5px;
+  color: $color-text-muted;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  font-size: 12px;
+  color: $color-text-placeholder;
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+
+.av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #4b362f;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4b362f;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.right-panel {
+  flex: 1;
+  background: $color-bg-main;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.no-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 48px;
+  text-align: center;
+  box-sizing: border-box;
+
+  .info-icon {
+    font-size: 36px;
+    color: $color-text-placeholder;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $color-text-main;
+    margin: 0 0 8px;
+  }
+
+  p {
+    font-size: 13.5px;
+    color: $color-text-muted-light;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+}
+
+.details-container {
+  padding: 30px 30px 48px;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+
+.month-selector-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 30px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.month-nav-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #5e4a3e;
+  color: $color-text-link;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+    border-color: #d6c2a1;
+    color: $color-text-main;
+  }
+}
+
+.month-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color-text-main;
+  min-width: 160px;
+  text-align: center;
+  user-select: none;
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid $color-border;
+}
+
+.student-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.student-header-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.student-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: $color-text-main;
+  margin: 0;
+  letter-spacing: -0.24px;
+}
+
+.price-debt-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-rate {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $color-text-muted-light;
+}
+
+.debt-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: $color-error;
+  background: rgba(224, 133, 124, 0.15);
+  border: 1px solid $color-error;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .metric-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.32px;
+    color: $color-text-muted;
+    margin-bottom: 10px;
+  }
+
+  .metric-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: $color-text-main;
+    line-height: 1.2;
+    margin-bottom: 8px;
+
+    &.positive {
+      color: $color-success;
+    }
+    &.negative {
+      color: $color-error;
+    }
+  }
+
+  .metric-sub {
+    font-size: 12px;
+    color: $color-text-muted-light;
+    font-weight: 500;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: $color-bg-main;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, $color-accent, $color-accent-light);
+    border-radius: 99px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.lessons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-main;
+  margin: 0;
+}
+
+.table-wrap {
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.lessons-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    background: rgba(46, 33, 28, 0.4);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $color-text-muted;
+    padding: 14px 18px;
+    border-bottom: 1px solid $color-border;
+    user-select: none;
+  }
+
+  td {
+    padding: 16px 18px;
+    border-bottom: 1px solid $color-border;
+    font-size: 13.5px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr {
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: rgba(214, 194, 161, 0.04);
+    }
+  }
+
+  .row-loan {
+    background-color: rgba(224, 133, 124, 0.02);
+
+    &:hover {
+      background-color: rgba(224, 133, 124, 0.05);
+    }
+  }
+
+  .col-checkbox {
+    width: 48px;
+    padding-right: 0;
+  }
+
+  .col-date {
+    .date-text {
+      color: $color-text-main;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .time-text {
+      color: $color-text-muted;
+      font-size: 12px;
+    }
+  }
+
+  .col-price {
+    color: $color-text-main;
+    font-weight: 600;
+  }
+
+  .col-status {
+    width: 120px;
+  }
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: $color-bg-main;
+    border: 2px solid $color-border-input;
+    border-radius: 6px;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      transform 0.1s;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid $color-primary-text;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    border-color: $color-border-active;
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $color-primary;
+    border-color: $color-primary;
+
+    &:after {
+      display: block;
+    }
+  }
+
+  input:active ~ .checkmark {
+    transform: scale(0.92);
+  }
+
+  input:disabled ~ .checkmark {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  user-select: none;
+
+  &.badge-paid {
+    color: $color-success;
+    background: rgba(162, 200, 157, 0.15);
+  }
+
+  &.badge-loan {
+    color: $color-error;
+    background: rgba(224, 133, 124, 0.15);
+  }
+
+  &.badge-upcoming {
+    color: $color-text-muted;
+    background: rgba(140, 116, 94, 0.15);
+  }
+}
+
+.empty-lessons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 32px;
+    color: $color-text-placeholder;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 13.5px;
+    color: $color-text-muted-light;
+    margin: 0;
+  }
+}
+
+.mobile-detail-overlay {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .middle-panel {
+    max-width: none;
+    border-right: none;
+  }
+
+  .right-panel {
+    display: none;
+  }
+
+  .mobile-detail-overlay {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 65px; // matches header height
+    left: 0;
+    bottom: 0;
+    background: $color-bg-main;
+    z-index: 1000;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  .overlay-header {
+    height: 50px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $color-border;
+    background: $color-bg-card;
+    flex-shrink: 0;
+  }
+
+  .back-link {
+    background: transparent;
+    border: none;
+    color: $color-text-link;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      color: $color-text-main;
+    }
+  }
+
+  .overlay-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container.has-selection {
+    .middle-panel {
+      display: none; // Hide list when detail overlay is open
+    }
+  }
+
+  .pane-head {
+    padding: 0 16px;
+  }
+
+  .search-bar-wrap {
+    padding: 12px 16px;
+  }
+
+  .details-container {
+    padding: 20px 16px 36px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .student-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .lessons-table {
+    th, td {
+      padding: 8px !important;
+    }
+  }
+}

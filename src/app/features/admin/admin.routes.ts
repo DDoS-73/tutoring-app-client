@@ -12,6 +12,10 @@ export const adminRoutes: Routes = [
         loadComponent: () =>
           import('./components/participants/participants.component').then((c) => c.ParticipantsComponent),
       },
+      {
+        path: 'payments',
+        loadComponent: () => import('./components/payments/payments.component').then((c) => c.PaymentsComponent),
+      },
     ],
   },
 ];

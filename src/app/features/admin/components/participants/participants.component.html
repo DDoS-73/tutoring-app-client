@@ -9,14 +9,14 @@
 </ng-template>
 
 <ng-template #activeTitleTpl>
-  Активні
+  Active
   @if (activeQuery.data(); as data) {
     <span class="tab-count">{{ data.length }}</span>
   }
 </ng-template>
 
 <ng-template #archivedTitleTpl>
-  Архівовані
+  Archived
   @if (archivedQuery.data(); as data) {
     <span class="tab-count">{{ data.length }}</span>
   }
@@ -65,7 +65,7 @@
             </div>
           } @else if (activeQuery.isError()) {
             <div class="error-wrap">
-              <p>Не вдалося завантажити учасників. Спробуйте ще раз.</p>
+              <p>Failed to load participants. Please try again.</p>
             </div>
           } @else {
             <!-- STUDENTS Section -->
@@ -88,7 +88,7 @@
                         type="button"
                         [disabled]="archiveMutation.isPending()"
                         (click)="onArchive(participant); $event.stopPropagation()"
-                        aria-label="Архівувати учасника"
+                        aria-label="Archive participant"
                       >
                         <nz-icon nzType="container" nzTheme="outline" />
                       </button>
@@ -97,7 +97,7 @@
                         type="button"
                         [disabled]="deleteMutation.isPending()"
                         (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Видалити учасника"
+                        aria-label="Delete participant"
                       >
                         <nz-icon nzType="delete" nzTheme="outline" />
                       </button>
@@ -127,7 +127,7 @@
                         type="button"
                         [disabled]="archiveMutation.isPending()"
                         (click)="onArchive(participant); $event.stopPropagation()"
-                        aria-label="Архівувати учасника"
+                        aria-label="Archive participant"
                       >
                         <nz-icon nzType="container" nzTheme="outline" />
                       </button>
@@ -136,7 +136,7 @@
                         type="button"
                         [disabled]="deleteMutation.isPending()"
                         (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Видалити учасника"
+                        aria-label="Delete participant"
                       >
                         <nz-icon nzType="delete" nzTheme="outline" />
                       </button>
@@ -148,7 +148,7 @@
 
             @if (activeStudents().length === 0 && activeGroups().length === 0) {
               <div class="empty-wrap">
-                <p>Нічого не знайдено.</p>
+                <p>No participants found.</p>
               </div>
             }
           }
@@ -164,7 +164,7 @@
             </div>
           } @else if (archivedQuery.isError()) {
             <div class="error-wrap">
-              <p>Не вдалося завантажити архів учасників. Спробуйте ще раз.</p>
+              <p>Failed to load archived participants. Please try again.</p>
             </div>
           } @else {
             <!-- STUDENTS Section -->
@@ -187,7 +187,7 @@
                         type="button"
                         [disabled]="unarchiveMutation.isPending()"
                         (click)="onUnarchive(participant); $event.stopPropagation()"
-                        aria-label="Розархівувати учасника"
+                        aria-label="Restore participant"
                       >
                         <nz-icon nzType="container" nzTheme="outline" />
                       </button>
@@ -196,7 +196,7 @@
                         type="button"
                         [disabled]="deleteMutation.isPending()"
                         (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Видалити учасника"
+                        aria-label="Delete participant"
                       >
                         <nz-icon nzType="delete" nzTheme="outline" />
                       </button>
@@ -226,7 +226,7 @@
                         type="button"
                         [disabled]="unarchiveMutation.isPending()"
                         (click)="onUnarchive(participant); $event.stopPropagation()"
-                        aria-label="Розархівувати учасника"
+                        aria-label="Restore participant"
                       >
                         <nz-icon nzType="container" nzTheme="outline" />
                       </button>
@@ -235,7 +235,7 @@
                         type="button"
                         [disabled]="deleteMutation.isPending()"
                         (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Видалити учасника"
+                        aria-label="Delete participant"
                       >
                         <nz-icon nzType="delete" nzTheme="outline" />
                       </button>
@@ -247,7 +247,7 @@
 
             @if (archivedStudents().length === 0 && archivedGroups().length === 0) {
               <div class="empty-wrap">
-                <p>Архів порожній.</p>
+                <p>Archive is empty.</p>
               </div>
             }
           }
@@ -323,7 +323,7 @@
       <div class="detail-card">
         <div class="card-section-title">IDENTITY</div>
         <div class="detail-row">
-          <span class="row-label">Full name<span class="required">*</span></span>
+          <span class="row-label">Full name</span>
           <span class="row-value">{{ p.name }}</span>
         </div>
         <div class="detail-row">
@@ -336,7 +336,7 @@
       <div class="detail-card">
         <div class="card-section-title">LESSONS</div>
         <div class="detail-row">
-          <span class="row-label">Price per class<span class="required">*</span></span>
+          <span class="row-label">Price per class</span>
           <span class="row-value">₴{{ p.price ?? 400 }}</span>
         </div>
       </div>

@@ -35,17 +35,13 @@
             <nz-icon nzType="calendar" />
             <span class="soon-dot"></span>
           </span>
-          <span class="label">Event Settings</span>
+          <span class="label">Event settings</span>
           <span class="soon">Soon</span>
         </span>
-        <span class="nav-item disabled" title="Payments (Soon)">
-          <span class="nav-item-icon-wrap">
-            <nz-icon nzType="credit-card" />
-            <span class="soon-dot"></span>
-          </span>
+        <a class="nav-item" routerLink="payments" routerLinkActive="active" (click)="closeDrawer()" title="Payments">
+          <nz-icon nzType="credit-card" />
           <span class="label">Payments</span>
-          <span class="soon">Soon</span>
-        </span>
+        </a>
       </div>
 
       <hr class="side-divider" />

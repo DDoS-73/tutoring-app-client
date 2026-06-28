@@ -6,7 +6,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-drawer',
-  standalone: true,
   templateUrl: './admin-drawer.component.html',
   styleUrl: './admin-drawer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +14,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class AdminDrawerComponent {
   private readonly authService = inject(AuthService);
 
-  visible = model<boolean>(false);
+  readonly visible = model<boolean>(false);
 
   protected closeDrawer(): void {
     this.visible.set(false);

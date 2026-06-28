@@ -20,6 +20,7 @@ export class ApiEndpoints {
     create: `${this.EVENTS}`,
     delete: (id: string | number) => `${this.EVENTS}/${id}`,
     update: (id: string | number) => `${this.EVENTS}/${id}`,
+    payments: (id: string | number) => `${this.EVENTS}/${id}/payments`,
   } as const;
 
   static readonly Participants = {

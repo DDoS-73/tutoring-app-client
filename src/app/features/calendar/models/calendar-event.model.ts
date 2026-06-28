@@ -8,6 +8,8 @@ export class CalendarEvent {
   recurrence: Recurrence;
   color: string;
   note?: string;
+  isPaid?: boolean;
+  paidAmount?: number | null;
 
   constructor(calendarEvent: CalendarEvent) {
     this.id = calendarEvent.id;
@@ -17,6 +19,8 @@ export class CalendarEvent {
     this.recurrence = new Recurrence(calendarEvent.recurrence);
     this.color = calendarEvent.color;
     this.note = calendarEvent.note;
+    this.isPaid = calendarEvent.isPaid;
+    this.paidAmount = calendarEvent.paidAmount;
   }
 }
 

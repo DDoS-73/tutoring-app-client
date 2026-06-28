@@ -1,5 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -7,14 +8,10 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { ParticipantService } from '../../../../core/services/participant.service';
-import { EventParticipantType, Participant } from '../../../../shared/models/participant.model';
-import { AddParticipantModalComponent } from './add-participant-modal/add-participant-modal.component';
+import { EventParticipantType } from '../../../../shared/models/participant.model';
+import { ParticipantRow, toParticipantRows } from '../../../../shared/models/participant-row.model';
 import { toInitials, getAvatarColor } from '../../../../shared/utils';
-
-export interface ParticipantRow extends Participant {
-  initials: string;
-  avatarColor: string;
-}
+import { AddParticipantModalComponent } from './add-participant-modal/add-participant-modal.component';
 
 @Component({
   selector: 'app-participants',
@@ -27,6 +24,7 @@ export class ParticipantsComponent {
   private readonly participantService = inject(ParticipantService);
   private readonly modal = inject(NzModalService);
   private readonly message = inject(NzMessageService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly archiveConfirmTpl = viewChild.required<TemplateRef<void>>('archiveConfirmTpl');
   private readonly deleteConfirmTpl = viewChild.required<TemplateRef<void>>('deleteConfirmTpl');
 
@@ -44,8 +42,8 @@ export class ParticipantsComponent {
 
   protected readonly EventParticipantType = EventParticipantType;
 
-  protected readonly activeRows = computed(() => this.toRows(this.activeQuery.data() ?? []));
-  protected readonly archivedRows = computed(() => this.toRows(this.archivedQuery.data() ?? []));
+  protected readonly activeRows = computed(() => toParticipantRows(this.activeQuery.data() ?? []));
+  protected readonly archivedRows = computed(() => toParticipantRows(this.archivedQuery.data() ?? []));
 
   protected readonly filteredActiveRows = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
@@ -80,15 +78,6 @@ export class ParticipantsComponent {
   protected readonly archivedGroups = computed(() =>
     this.filteredArchivedRows().filter((r) => r.type === EventParticipantType.Group)
   );
-
-  private toRows(data: Participant[]): ParticipantRow[] {
-    return data.map((p) => ({
-      ...p,
-      initials: toInitials(p.name),
-      avatarColor: getAvatarColor(p.name),
-      isArchived: p.isArchived ?? false,
-    }));
-  }
 
   protected selectParticipant(p: ParticipantRow): void {
     this.selectedParticipant.set(p);
@@ -139,7 +128,7 @@ export class ParticipantsComponent {
           this.selectedParticipant.set(null);
         }
       },
-      onError: () => this.message.error('Не вдалося розархівувати учасника. Спробуйте ще раз.'),
+      onError: () => this.message.error('Failed to restore participant. Please try again.'),
     });
   }
 
@@ -201,7 +190,7 @@ export class ParticipantsComponent {
       nzClassName: 'teachup-modal',
     });
 
-    modalRef.afterClose.subscribe((result) => {
+    modalRef.afterClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
       if (result) {
         if (result.action === 'delete') {
           this.onDelete(participant);

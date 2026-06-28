@@ -15,7 +15,7 @@
         }
       </p>
     </div>
-    <button class="close-btn" type="button" (click)="onClose()" aria-label="Close" [disabled]="isPending">
+    <button class="close-btn" type="button" (click)="onClose()" aria-label="Close" [disabled]="isPending()">
       <nz-icon nzType="close" nzTheme="outline" />
     </button>
   </header>
@@ -34,7 +34,7 @@
           formControlName="name"
           placeholder="e.g. John Doe"
           autocomplete="off"
-          [readonly]="isPending"
+          [readonly]="isPending()"
         />
       </div>
       @if (form.get('name')?.invalid && form.get('name')?.touched) {
@@ -57,7 +57,7 @@
           type="button"
           [class.active]="form.get('type')?.value === EventParticipantType.Student"
           (click)="setType(EventParticipantType.Student)"
-          [disabled]="isPending"
+          [disabled]="isPending()"
         >
           <nz-icon nzType="user" nzTheme="outline" />
           <span>Student</span>
@@ -66,7 +66,7 @@
           type="button"
           [class.active]="form.get('type')?.value === EventParticipantType.Group"
           (click)="setType(EventParticipantType.Group)"
-          [disabled]="isPending"
+          [disabled]="isPending()"
         >
           <nz-icon nzType="team" nzTheme="outline" />
           <span>Group</span>
@@ -84,7 +84,7 @@
       <label class="field-label" for="price"> Price per class <span class="required">*</span> </label>
       <div class="price-input-container" [class.error]="form.get('price')?.invalid && form.get('price')?.touched">
         <span class="currency-symbol">₴</span>
-        <input id="price" type="number" formControlName="price" placeholder="400" min="0" [readonly]="isPending" />
+        <input id="price" type="number" formControlName="price" placeholder="400" min="0" [readonly]="isPending()" />
       </div>
       @if (form.get('price')?.invalid && form.get('price')?.touched) {
         <div class="error-msg">Price is required and must be 0 or more.</div>
@@ -99,9 +99,9 @@
   <!-- Footer -->
   <footer class="modal-footer">
     <div class="footer-right">
-      <button class="cancel-btn" type="button" (click)="onClose()" [disabled]="isPending">Cancel</button>
-      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending">
-        @if (isPending) {
+      <button class="cancel-btn" type="button" (click)="onClose()" [disabled]="isPending()">Cancel</button>
+      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending()">
+        @if (isPending()) {
           <nz-icon nzType="loading" style="margin-right: 8px" />
         }
         <span>{{ isEdit ? 'Save' : 'Add' }}</span>

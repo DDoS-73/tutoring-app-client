@@ -1,0 +1,231 @@
+<div class="dashboard-container" [class.has-selection]="selectedStudent() !== null">
+  <!-- ──────────────── LEFT PANEL: STUDENT LIST ──────────────── -->
+  <div class="middle-panel">
+    <header class="pane-head">
+      <div>
+        <div class="pane-title-wrap">
+          <h2 class="pane-title">Payments</h2>
+          @if (filteredStudents(); as data) {
+            <span class="count-badge">{{ data.length }}</span>
+          }
+        </div>
+        <p class="pane-sub">Select a student to manage payments.</p>
+      </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <nz-icon nzType="search" class="search-icon" />
+        <input
+          type="text"
+          placeholder="Search students"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+        />
+      </div>
+    </div>
+
+    <!-- Student List -->
+    <div class="scroll-area">
+      @if (activeQuery.isLoading()) {
+        <div class="spinner-wrap">
+          <nz-spin nzSimple />
+        </div>
+      } @else if (activeQuery.isError()) {
+        <div class="error-wrap">
+          <p>Failed to load students. Please try again.</p>
+        </div>
+      } @else {
+        @if (filteredStudents().length > 0) {
+          <ul class="list">
+            @for (student of filteredStudents(); track student.id) {
+              <li
+                class="row-item"
+                [class.selected]="selectedStudent()?.id === student.id"
+                (click)="selectStudent(student)"
+              >
+                <span class="av" [style.background-color]="student.avatarColor">
+                  {{ student.initials }}
+                </span>
+                <div class="student-row-info">
+                  <span class="pname">{{ student.name }}</span>
+                  <span class="pprice">₴{{ student.price ?? 400 }} / class</span>
+                </div>
+                <nz-icon nzType="right" class="arrow-icon" />
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="empty-wrap">
+            <p>No students found.</p>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- ──────────────── RIGHT PANEL: PAYMENT DETAILS ──────────────── -->
+  <div class="right-panel">
+    @if (selectedStudent(); as student) {
+      <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: student }"></ng-container>
+    } @else {
+      <div class="no-selection">
+        <nz-icon nzType="credit-card" nzTheme="outline" class="info-icon" />
+        <h3>No Student Selected</h3>
+        <p>Pick a student from the list to manage their lessons, track payments, and review outstanding loans.</p>
+      </div>
+    }
+  </div>
+
+  <!-- ──────────────── MOBILE DETAIL OVERLAY ──────────────── -->
+  @if (selectedStudent(); as student) {
+    <div class="mobile-detail-overlay">
+      <header class="overlay-header">
+        <button class="back-link" type="button" (click)="clearSelection()">
+          <nz-icon nzType="left" />
+          <span>Back to list</span>
+        </button>
+      </header>
+      <div class="overlay-content">
+        <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: student }"></ng-container>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- ──────────────── REUSABLE DETAILS TEMPLATE ──────────────── -->
+<ng-template #detailsTpl let-student>
+  <div class="details-container">
+    <!-- Student Header Details -->
+    <div class="student-header">
+      <div class="student-header-left">
+        <span class="avatar-large" [style.background-color]="student.avatarColor">
+          {{ student.initials }}
+        </span>
+        <div class="student-header-meta">
+          <h2 class="student-name">{{ student.name }}</h2>
+          <div class="price-debt-wrap">
+            <span class="student-rate">₴{{ student.price ?? 400 }} / class</span>
+            @if (loanAmount() > 0) {
+              <span class="debt-badge">Debt: ₴{{ loanAmount() }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month Navigation (Centered Row below Header) -->
+    <div class="month-selector-row">
+      <button class="month-nav-btn" type="button" (click)="prevMonth()" aria-label="Previous month">
+        <nz-icon nzType="left" />
+      </button>
+      <span class="month-name">{{ monthLabel() }}</span>
+      <button class="month-nav-btn" type="button" (click)="nextMonth()" aria-label="Next month">
+        <nz-icon nzType="right" />
+      </button>
+    </div>
+
+    <!-- Financial Cards Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Classes</span>
+        <div class="metric-value">{{ totalClasses() }}</div>
+        <span class="metric-sub">scheduled this month</span>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Paid</span>
+        <div class="metric-value">{{ paidCount() }} / {{ totalClasses() }}</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width.%]="paidPercentage()"></div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Received</span>
+        <div class="metric-value positive">₴{{ receivedAmount() }}</div>
+        <span class="metric-sub">collected this month</span>
+      </div>
+
+      @if (loanAmount() > 0) {
+        <div class="metric-card">
+          <span class="metric-label">Debt</span>
+          <div class="metric-value negative">₴{{ loanAmount() }}</div>
+          <span class="metric-sub">{{ loanCount() }} missed / loans</span>
+        </div>
+      } @else {
+        <div class="metric-card">
+          <span class="metric-label">To receive</span>
+          <div class="metric-value">₴{{ toReceiveAmount() }}</div>
+          <span class="metric-sub">{{ upcomingCount() }} upcoming</span>
+        </div>
+      }
+    </div>
+
+    <!-- Lesson History Table -->
+    <div class="lessons-section">
+      <div class="section-title-wrap">
+        <h3 class="section-title">Lesson History</h3>
+        @if (isDataLoading()) {
+          <nz-spin nzSimple nzSize="small"></nz-spin>
+        }
+      </div>
+
+      <div class="table-wrap">
+        @if (studentLessons().length > 0) {
+          <table class="lessons-table">
+            <thead>
+              <tr>
+                <th class="col-checkbox"></th>
+                <th class="col-date">Date / Time</th>
+                <th class="col-price">Price</th>
+                <th class="col-status">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (lesson of studentLessons(); track lesson.eventId + '_' + lesson.startTime.toISOString()) {
+                <tr [class.row-paid]="lesson.isPaid" [class.row-loan]="lesson.status === 'Loan'">
+                  <td class="col-checkbox">
+                    <label class="checkbox-container">
+                      <input
+                        type="checkbox"
+                        [checked]="lesson.isPaid"
+                        [disabled]="paymentsService.updateStatusMutation.isPending()"
+                        (change)="onTogglePaid(lesson)"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td class="col-date">
+                    <div class="date-text">
+                      {{ lesson.startTime | date: 'd MMMM, EEEE' }}
+                    </div>
+                    <div class="time-text">
+                      {{ lesson.startTime | date: 'HH:mm' }} - {{ lesson.endTime | date: 'HH:mm' }}
+                    </div>
+                  </td>
+                  <td class="col-price">₴{{ lesson.price }}</td>
+                  <td class="col-status">
+                    @if (lesson.status === 'Paid') {
+                      <span class="status-badge badge-paid">Paid</span>
+                    } @else if (lesson.status === 'Loan') {
+                      <span class="status-badge badge-loan">Loan</span>
+                    } @else {
+                      <span class="status-badge badge-upcoming">Upcoming</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty-lessons">
+            <nz-icon nzType="calendar" class="empty-icon" />
+            <p>No lessons scheduled for this month.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</ng-template>

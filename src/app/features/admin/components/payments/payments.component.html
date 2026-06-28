@@ -130,7 +130,7 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <span class="metric-label">Classes</span>
-        <div class="metric-value">{{ totalClasses() }}</div>
+        <div class="metric-value">{{ completedClasses() }} / {{ totalClasses() }}</div>
         <span class="metric-sub">scheduled this month</span>
       </div>
 
@@ -185,7 +185,11 @@
             </thead>
             <tbody>
               @for (lesson of studentLessons(); track lesson.eventId + '_' + lesson.startTime.toISOString()) {
-                <tr [class.row-paid]="lesson.isPaid" [class.row-loan]="lesson.status === 'Loan'">
+                <tr
+                  [class.row-paid]="lesson.isPaid"
+                  [class.row-loan]="lesson.status === 'Loan'"
+                  [class.row-past]="lesson.isCompleted"
+                >
                   <td class="col-checkbox">
                     <label class="checkbox-container">
                       <input

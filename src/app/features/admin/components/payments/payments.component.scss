@@ -282,7 +282,6 @@
   margin: 0 auto;
 }
 
-
 .month-selector-row {
   display: flex;
   justify-content: center;
@@ -511,6 +510,43 @@
 
     &:hover {
       background-color: rgba(224, 133, 124, 0.05);
+    }
+  }
+
+  .row-past {
+    background-color: rgba(0, 0, 0, 0.15);
+    opacity: 0.75;
+
+    &.row-loan {
+      background-color: rgba(224, 133, 124, 0.015);
+    }
+
+    &:hover {
+      opacity: 0.95;
+      background-color: rgba(0, 0, 0, 0.22);
+
+      &.row-loan {
+        background-color: rgba(224, 133, 124, 0.04);
+      }
+    }
+
+    .col-date {
+      .date-text,
+      .time-text {
+        text-decoration: line-through;
+        opacity: 0.75;
+      }
+    }
+
+    .checkbox-container {
+      input:checked ~ .checkmark {
+        background-color: transparent;
+        border-color: $color-primary;
+
+        &:after {
+          border-color: $color-primary;
+        }
+      }
     }
   }
 
@@ -747,7 +783,8 @@
   }
 
   .lessons-table {
-    th, td {
+    th,
+    td {
       padding: 8px !important;
     }
   }

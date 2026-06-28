@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Participant, EventParticipantType } from '../../shared/models/participant.model';
+import { EventParticipantType, Participant } from '../../shared/models/participant.model';
 import { ApiEndpoints } from '../api/endpoints';
 
 @Injectable({ providedIn: 'root' })
@@ -52,8 +52,13 @@ export class ParticipantService {
   }));
 
   public readonly updateMutation = injectMutation(() => ({
-    mutationFn: ({ id, dto }: { id: string | number; dto: { name: string; type: EventParticipantType; price: number } }) =>
-      lastValueFrom(this.http.patch<void>(`${environment.backendApi}${ApiEndpoints.Participants.update(id)}`, dto)),
+    mutationFn: ({
+      id,
+      dto,
+    }: {
+      id: string | number;
+      dto: { name: string; type: EventParticipantType; price: number };
+    }) => lastValueFrom(this.http.patch<void>(`${environment.backendApi}${ApiEndpoints.Participants.update(id)}`, dto)),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: ['participants'] });
     },

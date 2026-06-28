@@ -1,14 +1,14 @@
-import { NgTemplateOutlet, DatePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { ParticipantService } from '../../../../core/services/participant.service';
-import { EventParticipantType } from '../../../../shared/models/participant.model';
 import { ParticipantRow, toParticipantRows } from '../../../../shared/models/participant-row.model';
+import { EventParticipantType } from '../../../../shared/models/participant.model';
 import { PaymentsService } from './payments.service';
-import { injectQuery } from '@tanstack/angular-query-experimental';
 
 export interface LessonRow {
   eventId: string | number;
@@ -17,6 +17,7 @@ export interface LessonRow {
   price: number;
   isPaid: boolean;
   status: 'Paid' | 'Loan' | 'Upcoming';
+  isCompleted: boolean;
 }
 
 @Component({
@@ -29,7 +30,7 @@ export interface LessonRow {
 export class PaymentsComponent {
   private readonly participantService = inject(ParticipantService);
   protected readonly paymentsService = inject(PaymentsService);
-  private readonly message = inject(NzMessageService);
+  private readonly notification = inject(NzNotificationService);
 
   protected readonly activeQuery = this.participantService.participantsQuery;
   protected readonly searchQuery = signal('');
@@ -104,6 +105,8 @@ export class PaymentsComponent {
       const occurrenceTime = new Date(evt.startTime);
       const isPast = occurrenceTime < now;
       const isPaid = evt.isPaid ?? false;
+      const endTime = new Date(evt.endTime);
+      const isCompleted = endTime < now;
 
       let status: 'Paid' | 'Loan' | 'Upcoming';
       if (isPaid) {
@@ -120,16 +123,22 @@ export class PaymentsComponent {
       return {
         eventId: evt.id!,
         startTime: occurrenceTime,
-        endTime: new Date(evt.endTime),
+        endTime,
         price,
         isPaid,
         status,
+        isCompleted,
       };
     });
   });
 
   // Financial Metrics
   protected readonly totalClasses = computed(() => this.studentLessons().length);
+
+  protected readonly completedClasses = computed(() => {
+    const now = new Date();
+    return this.studentLessons().filter((l) => l.endTime < now).length;
+  });
 
   protected readonly paidCount = computed(() => this.studentLessons().filter((l) => l.isPaid).length);
 
@@ -196,7 +205,7 @@ export class PaymentsComponent {
 
     this.paymentsService.updateStatusMutation.mutate(body, {
       onError: () => {
-        this.message.error('Failed to update payment status.');
+        this.notification.error('Error', 'Failed to update payment status.');
       },
     });
   }

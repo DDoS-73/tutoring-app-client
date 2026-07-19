@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-07-19
+
+### Changed
+
+- **Calendar Grid Resolution**: Adjusted the calendar body hourly tile generation logic to represent full 1-hour slots (60 minutes) instead of 50-minute slots. This prevents layout issues and ensures tutoring events scheduled in the last 10 minutes of an hour are correctly captured and rendered in their corresponding grid cell.
+- **Default Lesson Duration**: Configured the event creation dialog to default the end time to exactly 50 minutes (standard lesson length) after the clicked cell's start time, improving user efficiency when scheduling new classes.
+
 ## [1.0.0] - 2026-07-19
 
 ### Added

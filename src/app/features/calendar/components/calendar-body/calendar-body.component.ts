@@ -58,7 +58,8 @@ export class CalendarBodyComponent {
 
   public openCreateDialog(tile: Tile) {
     let startTime: Date = tile.startTime;
-    let endTime: Date = tile.endTime;
+    let endTime: Date = new Date(startTime);
+    endTime.setMinutes(startTime.getMinutes() + 50);
 
     const calendarEvent: Partial<CalendarEvent> = { startTime, endTime };
     this.createEventModalRef = this.dialog.create({
@@ -111,7 +112,7 @@ export class CalendarBodyComponent {
         startTime.setHours(hourIndex, 0, 0, 0);
 
         const endTime = new Date(startTime);
-        endTime.setMinutes(startTime.getMinutes() + 50);
+        endTime.setHours(startTime.getHours() + 1, 0, 0, 0);
 
         const tileEvents = events.filter((event) => {
           const eventStart = event.startTime;

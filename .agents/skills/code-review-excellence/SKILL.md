@@ -178,20 +178,20 @@ Use labels to indicate priority:
 
 ## Language-Specific Guides
 
-根据审查的代码语言，查阅对应的详细指南：
+Refer to the detailed guide for the language being reviewed:
 
 | Language/Framework | Reference File                              | Key Topics                                                  |
 | ------------------ | ------------------------------------------- | ----------------------------------------------------------- |
-| **Angular 17+**    | [Angular Guide](reference/angular.md)       | Signals, Standalone 组件, RxJS, Zoneless 变更检测, 模板优化 |
-| **TypeScript**     | [TypeScript Guide](reference/typescript.md) | 类型安全, async/await, 不可变性                             |
-| **CSS/Less/Sass**  | [CSS Guide](reference/css-less-sass.md)     | 变量规范, !important, 性能优化, 响应式, 兼容性              |
+| **Angular 17+**    | [Angular Guide](reference/angular.md)       | Signals, Standalone components, RxJS, Zoneless change detection, Template optimization |
+| **TypeScript**     | [TypeScript Guide](reference/typescript.md) | Type safety, async/await, Immutability                      |
+| **CSS/Less/Sass**  | [CSS Guide](reference/css-less-sass.md)     | Variable conventions, !important usage, Performance optimization, Responsiveness, Compatibility |
 
 ## Additional Resources
 
-- [Architecture Review Guide](reference/architecture-review-guide.md) - 架构设计审查指南（SOLID、反模式、耦合度）
-- [Performance Review Guide](reference/performance-review-guide.md) - 性能审查指南（Web Vitals、N+1、复杂度）
-- [Common Bugs Checklist](reference/common-bugs-checklist.md) - 按语言分类的常见错误清单
-- [Security Review Guide](reference/security-review-guide.md) - 安全审查指南
-- [Code Review Best Practices](reference/code-review-best-practices.md) - 代码审查最佳实践
-- [PR Review Template](assets/pr-review-template.md) - PR 审查评论模板
-- [Review Checklist](assets/review-checklist.md) - 快速参考清单
+- [Architecture Review Guide](reference/architecture-review-guide.md) - Architecture design review guide (SOLID, anti-patterns, coupling)
+- [Performance Review Guide](reference/performance-review-guide.md) - Performance review guide (Web Vitals, N+1, complexity)
+- [Common Bugs Checklist](reference/common-bugs-checklist.md) - Common bugs checklist categorized by language
+- [Security Review Guide](reference/security-review-guide.md) - Security review guide
+- [Code Review Best Practices](reference/code-review-best-practices.md) - Code review best practices
+- [PR Review Template](assets/pr-review-template.md) - PR review comment template
+- [Review Checklist](assets/review-checklist.md) - Quick reference checklist

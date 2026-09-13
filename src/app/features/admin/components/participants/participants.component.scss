@@ -1,4 +1,5 @@
 @use "../../../../../styles/tokens" as *;
+@use "../../../../../styles/mixins" as mixins;
 
 @use "../../../../../styles/tabs" as tabs;
 
@@ -253,11 +254,7 @@
 
 // Section Headers inside the list
 .section-header {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.32px;
-  color: $color-text-muted;
+  @include mixins.section-label;
   padding: 16px 24px 8px;
 }
 

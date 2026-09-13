@@ -1,13 +1,13 @@
 @use "./tokens" as *;
 
-form {
+.auth-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
   width: 100%;
 }
 
-.form-group {
+.auth-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -120,7 +120,7 @@ form {
   }
 }
 
-.submit-btn {
+.auth-form .submit-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -172,7 +172,7 @@ form {
   }
 }
 
-.spinner {
+.auth-form .spinner {
   width: 20px;
   height: 20px;
   border: 2px solid rgba(227, 204, 168, 0.3);
@@ -181,7 +181,7 @@ form {
   animation: spin 0.8s linear infinite;
 }
 
-.form-footer {
+.auth-form-footer {
   margin-top: 28px;
   text-align: left;
 
@@ -225,12 +225,12 @@ form {
 }
 
 @media (max-width: 767px) {
-  .form-group .input-wrapper .form-input {
+  .auth-form .form-group .input-wrapper .form-input {
     height: 48px;
     font-size: 14px;
   }
 
-  .submit-btn {
+  .auth-form .submit-btn {
     height: 52px;
     font-size: 15px;
 

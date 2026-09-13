@@ -4,11 +4,8 @@
   mobileTitle="Welcome back to your calendar"
   mobileSubtitle="Log in to your calendar and start planning."
 >
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
-    <div
-      class="form-group"
-      [class.has-error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
-    >
+  <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="form-group" [class.has-error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
       <label class="form-label" for="email">Email</label>
       <div class="input-wrapper">
         <span nz-icon nzType="mail" nzTheme="outline" class="input-icon"></span>
@@ -22,35 +19,7 @@
       }
     </div>
 
-    <div
-      class="form-group"
-      [class.has-error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
-    >
-      <label class="form-label" for="password">Password</label>
-      <div class="input-wrapper">
-        <span nz-icon nzType="lock" nzTheme="outline" class="input-icon"></span>
-        <input
-          id="password"
-          [type]="isPasswordVisible() ? 'text' : 'password'"
-          formControlName="password"
-          placeholder="••••••••"
-          class="form-input password-input"
-        />
-        <button type="button" class="visibility-toggle" (click)="togglePasswordVisibility()">
-          @if (isPasswordVisible()) {
-            <span nz-icon nzType="eye" nzTheme="outline"></span>
-          } @else {
-            <span nz-icon nzType="eye-invisible" nzTheme="outline"></span>
-          }
-        </button>
-      </div>
-      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
-        <span class="error-msg">Password is required</span>
-      }
-      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength')) {
-        <span class="error-msg">Password must be at least 5 characters</span>
-      }
-    </div>
+    <app-password-field [form]="loginForm" />
 
     <button type="submit" class="submit-btn" [disabled]="isLoading()">
       <span class="btn-text">
@@ -70,7 +39,7 @@
     </button>
   </form>
 
-  <div class="form-footer">
+  <div class="auth-form-footer">
     <span class="footer-text">New here? <a routerLink="/auth/sign-up" class="footer-link">Sign up</a></span>
   </div>
 </app-auth-layout>

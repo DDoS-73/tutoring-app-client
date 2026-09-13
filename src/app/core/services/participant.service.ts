@@ -2,10 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { ParticipantRow, toParticipantRows } from '../../shared/models/participant-row.model';
 import { EventParticipantType, Participant } from '../../shared/models/participant.model';
+import { apiUrl } from '../api/api-url';
 import { ApiEndpoints } from '../api/endpoints';
+import { QueryKeys } from '../api/query-keys';
+import { cachedForever } from '../api/query-options';
 
 @Injectable({ providedIn: 'root' })
 export class ParticipantService {
@@ -13,35 +15,27 @@ export class ParticipantService {
   private readonly queryClient = inject(QueryClient);
 
   public readonly participantsQuery = injectQuery(() => ({
-    queryKey: ['participants', 'active'],
+    queryKey: QueryKeys.participants.active(),
     queryFn: () =>
       lastValueFrom(
         this.http
-          .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`)
+          .get<Participant[]>(apiUrl(ApiEndpoints.Participants.getAll))
           .pipe(map((ps) => ps.sort((a, b) => a.name.localeCompare(b.name))))
       ),
-    staleTime: Infinity,
-    gcTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    ...cachedForever(),
   }));
 
   public readonly archivedParticipantsQuery = injectQuery(() => ({
-    queryKey: ['participants', 'archived'],
+    queryKey: QueryKeys.participants.archived(),
     queryFn: () =>
       lastValueFrom(
         this.http
-          .get<Participant[]>(`${environment.backendApi}${ApiEndpoints.Participants.getAll}`, {
+          .get<Participant[]>(apiUrl(ApiEndpoints.Participants.getAll), {
             params: new HttpParams().set('isArchived', 'true'),
           })
           .pipe(map((ps) => ps.sort((a, b) => a.name.localeCompare(b.name))))
       ),
-    staleTime: Infinity,
-    gcTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    ...cachedForever(),
   }));
 
   public readonly allRows = computed<ParticipantRow[]>(() => [
@@ -59,9 +53,9 @@ export class ParticipantService {
 
   public readonly createMutation = injectMutation(() => ({
     mutationFn: (dto: { name: string; type: EventParticipantType; price: number }) =>
-      lastValueFrom(this.http.post<Participant>(`${environment.backendApi}${ApiEndpoints.Participants.create}`, dto)),
+      lastValueFrom(this.http.post<Participant>(apiUrl(ApiEndpoints.Participants.create), dto)),
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
     },
   }));
 
@@ -72,35 +66,35 @@ export class ParticipantService {
     }: {
       id: string | number;
       dto: { name: string; type: EventParticipantType; price: number };
-    }) => lastValueFrom(this.http.patch<void>(`${environment.backendApi}${ApiEndpoints.Participants.update(id)}`, dto)),
+    }) => lastValueFrom(this.http.patch<void>(apiUrl(ApiEndpoints.Participants.update(id)), dto)),
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
     },
   }));
 
   public readonly archiveMutation = injectMutation(() => ({
     mutationFn: (id: string | number) =>
-      lastValueFrom(this.http.post<void>(`${environment.backendApi}${ApiEndpoints.Participants.archive(id)}`, null)),
+      lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.archive(id)), null)),
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
-      this.queryClient.invalidateQueries({ queryKey: ['events'] });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.events.all() });
     },
   }));
 
   public readonly unarchiveMutation = injectMutation(() => ({
     mutationFn: (id: string | number) =>
-      lastValueFrom(this.http.post<void>(`${environment.backendApi}${ApiEndpoints.Participants.unarchive(id)}`, null)),
+      lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.unarchive(id)), null)),
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
     },
   }));
 
   public readonly deleteMutation = injectMutation(() => ({
     mutationFn: (id: string | number) =>
-      lastValueFrom(this.http.delete<void>(`${environment.backendApi}${ApiEndpoints.Participants.delete(id)}`)),
+      lastValueFrom(this.http.delete<void>(apiUrl(ApiEndpoints.Participants.delete(id)))),
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['participants'] });
-      this.queryClient.invalidateQueries({ queryKey: ['events'] });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.events.all() });
     },
   }));
 }

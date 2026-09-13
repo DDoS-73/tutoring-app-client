@@ -2,15 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
-import { environment } from '../../../environments/environment';
-import { StorageKeys } from '../../shared/models/storage.keys';
+import { apiUrl } from '../api/api-url';
 import { ApiEndpoints } from '../api/endpoints';
+import { TokenStorage } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly _http = inject(HttpClient);
+  private readonly _tokenStorage = inject(TokenStorage);
 
   private readonly _currentUser = signal<User | null>(null);
   public readonly currentUser = this._currentUser.asReadonly();
@@ -22,12 +23,12 @@ export class UserService {
       return of(this._currentUser());
     }
 
-    if (!localStorage.getItem(StorageKeys.AccessToken) && !localStorage.getItem(StorageKeys.RefreshToken)) {
+    if (!this._tokenStorage.hasAnyToken()) {
       this._currentUser.set(null);
       return of(null);
     }
 
-    return this._http.get<User>(`${environment.backendApi}${ApiEndpoints.User.me}`).pipe(
+    return this._http.get<User>(apiUrl(ApiEndpoints.User.me)).pipe(
       tap((user) => {
         this._currentUser.set(user);
         this._isLoaded = true;

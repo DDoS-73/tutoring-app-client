@@ -4,6 +4,8 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { QueryKeys } from '../../../../../core/api/query-keys';
+import { cachedForeverRefetchOnMount } from '../../../../../core/api/query-options';
 import { DEFAULT_PARTICIPANT_PRICE } from '../../../../../shared/models/participant.model';
 import { ParticipantDetailService } from '../participant-detail/participant-detail.service';
 import { PaymentsService } from './payments.service';
@@ -59,14 +61,9 @@ export class ParticipantPaymentsComponent {
   protected readonly eventsQuery = injectQuery(() => {
     const { from, to } = this.monthRange();
     return {
-      queryKey: ['events', 'month', from, to],
+      queryKey: QueryKeys.events.month(from, to),
       queryFn: () => this.paymentsService.getEventsForRange(from, to),
-      staleTime: 0,
-      // Keep cached event data indefinitely to avoid re-fetching when switching months back and forth within the same session
-      gcTime: Infinity,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: true,
+      ...cachedForeverRefetchOnMount(),
     };
   });
 

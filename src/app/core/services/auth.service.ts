@@ -3,11 +3,11 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { TokensResponse } from '../../features/auth/models';
-import { StorageKeys } from '../../shared/models/storage.keys';
-import { environment } from '../../../environments/environment';
 import { MainPages } from '../../shared/models/pages';
 import { QueryClient } from '@tanstack/angular-query-experimental';
+import { apiUrl } from '../api/api-url';
 import { ApiEndpoints } from '../api/endpoints';
+import { TokenStorage } from './token-storage.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -18,12 +18,13 @@ export class AuthService {
   private readonly _router = inject(Router);
   private readonly _userService = inject(UserService);
   private readonly _queryClient = inject(QueryClient);
+  private readonly _tokenStorage = inject(TokenStorage);
 
   private _isRefreshing = false;
   private _refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
 
   public login(credentials: { email: string; password: string }): Observable<TokensResponse> {
-    return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.login}`, credentials).pipe(
+    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.login), credentials).pipe(
       tap((tokens) => this._setTokens(tokens)),
       switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
       tap(() => this._router.navigate([MainPages.Calendar]))
@@ -31,7 +32,7 @@ export class AuthService {
   }
 
   public signup(data: { name: string; email: string; password: string }): Observable<TokensResponse> {
-    return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.signup}`, data).pipe(
+    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.signup), data).pipe(
       tap((tokens) => this._setTokens(tokens)),
       switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
       tap(() => this._router.navigate([MainPages.Calendar]))
@@ -50,7 +51,7 @@ export class AuthService {
     this._isRefreshing = true;
     this._refreshTokenSubject.next(null);
 
-    return this._http.post<TokensResponse>(`${environment.backendApi}${ApiEndpoints.Auth.refresh}`, {}).pipe(
+    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.refresh), {}).pipe(
       map((tokens) => {
         this._setTokens(tokens);
         this._isRefreshing = false;
@@ -66,29 +67,20 @@ export class AuthService {
   }
 
   public logout(): void {
-    this._http.post(`${environment.backendApi}${ApiEndpoints.Auth.logout}`, {}).subscribe({
-      complete: () => {
-        this._userService.clearUser();
-        this._queryClient.clear();
-        this._removeTokens();
-        this._router.navigate([MainPages.Auth]);
-      },
-      error: () => {
-        this._userService.clearUser();
-        this._queryClient.clear();
-        this._removeTokens();
-        this._router.navigate([MainPages.Auth]);
-      },
+    this._http.post(apiUrl(ApiEndpoints.Auth.logout), {}).subscribe({
+      complete: () => this._clearSession(),
+      error: () => this._clearSession(),
     });
   }
 
-  private _setTokens(tokens: TokensResponse): void {
-    localStorage.setItem(StorageKeys.AccessToken, tokens.accessToken);
-    localStorage.setItem(StorageKeys.RefreshToken, tokens.refreshToken);
+  private _clearSession(): void {
+    this._userService.clearUser();
+    this._queryClient.clear();
+    this._tokenStorage.removeTokens();
+    this._router.navigate([MainPages.Auth]);
   }
 
-  private _removeTokens(): void {
-    localStorage.removeItem(StorageKeys.AccessToken);
-    localStorage.removeItem(StorageKeys.RefreshToken);
+  private _setTokens(tokens: TokensResponse): void {
+    this._tokenStorage.setTokens(tokens.accessToken, tokens.refreshToken);
   }
 }

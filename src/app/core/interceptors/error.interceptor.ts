@@ -3,21 +3,7 @@ import { inject } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ApiEndpoints } from '../api/endpoints';
-
-export interface ProblemDetails {
-  type?: string;
-  title?: string;
-  status?: number;
-  detail?: string;
-  instance?: string;
-  [key: string]: any; // Allow for custom extension members
-}
-
-export interface ValidationProblemDetails extends ProblemDetails {
-  errors?: {
-    [key: string]: string[];
-  };
-}
+import { ProblemDetails, ValidationProblemDetails } from '../models/problem-details.model';
 
 export function ErrorInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const notificationService = inject(NzNotificationService);

@@ -1,7 +1,8 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StorageKeys } from '../../shared/models/storage.keys';
 import { ApiEndpoints } from '../api/endpoints';
+import { TokenStorage } from '../services/token-storage.service';
 
 // login and signup don't need a token; logout and refresh are handled separately below
 const TOKEN_FREE_ENDPOINTS = [ApiEndpoints.Auth.login, ApiEndpoints.Auth.signup] as const;
@@ -15,10 +16,11 @@ export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandler
     return next(request);
   }
 
-  let token = localStorage.getItem(StorageKeys.AccessToken);
+  const tokenStorage = inject(TokenStorage);
+  let token = tokenStorage.getAccessToken();
 
   if (request.url.includes(ApiEndpoints.Auth.refresh)) {
-    token = localStorage.getItem(StorageKeys.RefreshToken);
+    token = tokenStorage.getRefreshToken();
   }
 
   if (!token) {

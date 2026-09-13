@@ -39,11 +39,6 @@ export class UserService {
     );
   }
 
-  public setUser(user: User): void {
-    this._currentUser.set(user);
-    this._isLoaded = true;
-  }
-
   public clearUser(): void {
     this._currentUser.set(null);
     this._isLoaded = false;

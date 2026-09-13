@@ -1,0 +1,27 @@
+@if (participant(); as p) {
+  <div class="details-content-grid">
+    <!-- Identity Card -->
+    <div class="detail-card">
+      <div class="card-section-title">IDENTITY</div>
+      <div class="detail-row">
+        <span class="row-label">Full name</span>
+        <span class="row-value">{{ p.name }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="row-label">Type</span>
+        <span class="row-value">{{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}</span>
+      </div>
+    </div>
+
+    <!-- Info/Payments Notice Card -->
+    <div class="info-card">
+      <div class="info-card-left">
+        <nz-icon nzType="credit-card" />
+      </div>
+      <div class="info-card-right">
+        Used to calculate received, to-receive and loans in the <strong class="payments-highlight">Payments</strong>
+        tab.
+      </div>
+    </div>
+  </div>
+}

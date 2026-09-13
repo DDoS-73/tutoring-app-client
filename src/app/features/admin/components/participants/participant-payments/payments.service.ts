@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
-import { ApiEndpoints } from '../../../../core/api/endpoints';
-import { CalendarEvent } from '../../../calendar/models/calendar-event.model';
+import { environment } from '../../../../../../environments/environment';
+import { ApiEndpoints } from '../../../../../core/api/endpoints';
+import { CalendarEvent } from '../../../../calendar/models/calendar-event.model';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentsService {
@@ -25,10 +25,10 @@ export class PaymentsService {
       const url = `${environment.backendApi}${ApiEndpoints.Events.payments(body.eventId)}`;
 
       if (body.isPaid) {
-        return lastValueFrom(this.http.post<any>(url, { occurrenceDate: body.date }));
+        return lastValueFrom(this.http.post<void>(url, { occurrenceDate: body.date }));
       } else {
         const params = new HttpParams().set('occurrenceDate', body.date);
-        return lastValueFrom(this.http.delete<any>(url, { params }));
+        return lastValueFrom(this.http.delete<void>(url, { params }));
       }
     },
     onSuccess: () => {

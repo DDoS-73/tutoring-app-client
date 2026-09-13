@@ -1,13 +1,11 @@
-import { DatePipe, NgTemplateOutlet } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { ParticipantService } from '../../../../core/services/participant.service';
-import { ParticipantRow, toParticipantRows } from '../../../../shared/models/participant-row.model';
-import { EventParticipantType } from '../../../../shared/models/participant.model';
+import { DEFAULT_PARTICIPANT_PRICE } from '../../../../../shared/models/participant.model';
+import { ParticipantDetailService } from '../participant-detail/participant-detail.service';
 import { PaymentsService } from './payments.service';
 
 export interface LessonRow {
@@ -21,33 +19,20 @@ export interface LessonRow {
 }
 
 @Component({
-  selector: 'app-payments',
-  templateUrl: './payments.component.html',
-  styleUrl: './payments.component.scss',
+  selector: 'app-participant-payments',
+  templateUrl: './participant-payments.component.html',
+  styleUrl: './participant-payments.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzSpinModule, FormsModule, NgTemplateOutlet, DatePipe],
+  imports: [NzIconModule, NzSpinModule, DatePipe],
 })
-export class PaymentsComponent {
-  private readonly participantService = inject(ParticipantService);
+export class ParticipantPaymentsComponent {
+  private readonly participantDetail = inject(ParticipantDetailService);
   protected readonly paymentsService = inject(PaymentsService);
   private readonly notification = inject(NzNotificationService);
 
-  protected readonly activeQuery = this.participantService.participantsQuery;
-  protected readonly searchQuery = signal('');
-  protected readonly selectedStudent = signal<ParticipantRow | null>(null);
+  protected readonly participant = this.participantDetail.participant;
+
   protected readonly selectedDate = signal<Date>(new Date());
-
-  protected readonly activeRows = computed(() => toParticipantRows(this.activeQuery.data() ?? []));
-
-  protected readonly filteredStudents = computed(() => {
-    const query = this.searchQuery().toLowerCase().trim();
-    const rows = this.activeRows();
-    const students = rows.filter(
-      (r) => r.type === EventParticipantType.Student || r.type === undefined || r.type === null
-    );
-    if (!query) return students;
-    return students.filter((r) => r.name.toLowerCase().includes(query));
-  });
 
   protected readonly monthRange = computed(() => {
     const date = this.selectedDate();
@@ -74,7 +59,7 @@ export class PaymentsComponent {
   protected readonly eventsQuery = injectQuery(() => {
     const { from, to } = this.monthRange();
     return {
-      queryKey: ['events', from, to],
+      queryKey: ['events', 'month', from, to],
       queryFn: () => this.paymentsService.getEventsForRange(from, to),
       staleTime: 0,
       // Keep cached event data indefinitely to avoid re-fetching when switching months back and forth within the same session
@@ -88,7 +73,7 @@ export class PaymentsComponent {
   protected readonly isDataLoading = computed(() => this.eventsQuery.isFetching());
 
   protected readonly studentLessons = computed<LessonRow[]>(() => {
-    const student = this.selectedStudent();
+    const student = this.participant();
     if (!student) return [];
 
     const events = this.eventsQuery.data() ?? [];
@@ -117,8 +102,10 @@ export class PaymentsComponent {
         status = 'Upcoming';
       }
 
-      // Use snapshotted paidAmount if available/paid, otherwise student rate (default to 400 if undefined)
-      const price = isPaid ? (evt.paidAmount ?? student.price ?? 400) : (student.price ?? 400);
+      // Use snapshotted paidAmount if available/paid, otherwise student rate (default if undefined)
+      const price = isPaid
+        ? (evt.paidAmount ?? student.price ?? DEFAULT_PARTICIPANT_PRICE)
+        : (student.price ?? DEFAULT_PARTICIPANT_PRICE);
 
       return {
         eventId: evt.id!,
@@ -166,19 +153,16 @@ export class PaymentsComponent {
       .reduce((sum, l) => sum + l.price, 0)
   );
 
+  protected readonly pendingEventId = computed(() => {
+    const mutation = this.paymentsService.updateStatusMutation;
+    return mutation.isPending() ? mutation.variables()?.eventId : undefined;
+  });
+
   protected readonly paidPercentage = computed(() => {
     const total = this.totalClasses();
     if (total === 0) return 0;
     return Math.round((this.paidCount() / total) * 100);
   });
-
-  protected selectStudent(p: ParticipantRow): void {
-    this.selectedStudent.set(p);
-  }
-
-  protected clearSelection(): void {
-    this.selectedStudent.set(null);
-  }
 
   protected prevMonth(): void {
     const current = this.selectedDate();
@@ -193,7 +177,7 @@ export class PaymentsComponent {
   }
 
   protected onTogglePaid(lesson: LessonRow): void {
-    const student = this.selectedStudent();
+    const student = this.participant();
     if (!student || student.id == null) return;
 
     const body = {

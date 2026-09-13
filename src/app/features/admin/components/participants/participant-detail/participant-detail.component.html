@@ -1,0 +1,59 @@
+<ng-template #deleteConfirmTpl>
+  <b>{{ deletingName() }}</b> will be deleted forever. Past events will remain; future events with this participant will
+  be cancelled.
+</ng-template>
+
+@if (isResolving()) {
+  <div class="spinner-wrap">
+    <nz-spin nzSimple />
+  </div>
+} @else {
+  @if (participant(); as p) {
+    <div class="detail-shell">
+      <button class="back-link" type="button" routerLink="/admin/participants">
+        <nz-icon nzType="left" />
+        <span>Back to list</span>
+      </button>
+
+      <div class="detail-body">
+        <div class="student-header">
+          <div class="student-header-left">
+            @if (p.type === EventParticipantType.Group) {
+              <span class="avatar-large av--group">
+                <nz-icon nzType="team" />
+              </span>
+            } @else {
+              <span class="avatar-large" [style.background-color]="p.avatarColor">
+                {{ p.initials }}
+              </span>
+            }
+            <div class="student-header-meta">
+              <h2 class="student-name">{{ p.name }}</h2>
+              <div class="meta-row">
+                <span class="role-badge">{{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}</span>
+                <span class="student-rate">₴{{ p.price ?? DEFAULT_PARTICIPANT_PRICE }} / class</span>
+              </div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="detail-action-btn" type="button" (click)="onEdit(p)">
+              <nz-icon nzType="edit" />
+              <span>Edit</span>
+            </button>
+          </div>
+        </div>
+
+        <nz-tabset nzLinkRouter class="detail-tabs">
+          <nz-tab>
+            <a *nzTabLink nz-tab-link routerLink="general" routerLinkActive>General</a>
+          </nz-tab>
+          <nz-tab>
+            <a *nzTabLink nz-tab-link routerLink="payments" routerLinkActive>Payments</a>
+          </nz-tab>
+        </nz-tabset>
+
+        <router-outlet />
+      </div>
+    </div>
+  }
+}

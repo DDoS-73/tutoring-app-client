@@ -1,0 +1,223 @@
+@use "../../../../../../styles/variables" as *;
+
+// Deliberately plain/auto-height on desktop: .right-panel (participants.component.scss)
+// is already the scroll container here, same as the pre-routing .details-container did.
+// Only the tablet/mobile fixed-overlay context below needs an internal flex/scroll split,
+// because that's the only place this host's height is unambiguously definite (top+bottom).
+:host {
+  display: block;
+}
+
+.spinner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 320px;
+  padding: 48px 24px;
+}
+
+.detail-shell {
+  display: flex;
+  flex-direction: column;
+}
+
+// Only shown once the overlay CSS in participants.component.scss activates on tablet/mobile
+.back-link {
+  display: none;
+}
+
+.detail-body {
+  padding: 30px 30px 48px;
+  max-width: 840px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid $color-border;
+}
+
+.student-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4b362f;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  &.av--group {
+    border-radius: 14px;
+    background: $color-bg-overlay-avatar;
+    border: 1px solid $color-border-input;
+    color: $color-accent;
+  }
+}
+
+.student-header-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.student-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: $color-text-main;
+  margin: 0;
+  letter-spacing: -0.24px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  color: $color-accent;
+  background: rgba(214, 194, 161, 0.14);
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.student-rate {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $color-text-muted-light;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid $color-border-input;
+  border-radius: 11px;
+  background: transparent;
+  color: $color-accent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: rgba(214, 194, 161, 0.08);
+    color: $color-text-main;
+  }
+}
+
+.detail-tabs {
+  margin-bottom: 20px;
+
+  ::ng-deep {
+    .ant-tabs-nav {
+      margin: 0 0 20px;
+    }
+
+    .ant-tabs-tab {
+      padding: 10px 0;
+      margin: 0 20px 0 0;
+    }
+
+    .ant-tabs-tab-btn a {
+      color: $color-text-muted-light;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-text-main;
+      }
+    }
+
+    .ant-tabs-tab-active .ant-tabs-tab-btn a {
+      color: $color-text-main;
+    }
+
+    .ant-tabs-ink-bar {
+      background: $color-accent;
+      height: 2px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  // .right-panel is position:fixed with top+bottom set here (participants.component.scss),
+  // which is what makes height:100% below a genuinely definite (not flex-stretch-dependent) size.
+  :host {
+    height: 100%;
+  }
+
+  .detail-shell {
+    height: 100%;
+  }
+
+  .detail-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .back-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 50px;
+    padding: 0 24px;
+    border: none;
+    border-bottom: 1px solid $color-border;
+    background: $color-bg-card;
+    color: $color-text-link;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &:hover {
+      color: $color-text-main;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-body {
+    padding: 20px 16px 36px;
+  }
+
+  .student-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

@@ -1,0 +1,120 @@
+@if (participant(); as student) {
+  <div class="payments-container">
+    <!-- Month Navigation -->
+    <div class="month-selector-row">
+      <button class="month-nav-btn" type="button" (click)="prevMonth()" aria-label="Previous month">
+        <nz-icon nzType="left" />
+      </button>
+      <span class="month-name">{{ monthLabel() }}</span>
+      <button class="month-nav-btn" type="button" (click)="nextMonth()" aria-label="Next month">
+        <nz-icon nzType="right" />
+      </button>
+    </div>
+
+    <!-- Financial Cards Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Classes</span>
+        <div class="metric-value">{{ completedClasses() }} / {{ totalClasses() }}</div>
+        <span class="metric-sub">scheduled this month</span>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Paid</span>
+        <div class="metric-value">{{ paidCount() }} / {{ totalClasses() }}</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width.%]="paidPercentage()"></div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Received</span>
+        <div class="metric-value positive">₴{{ receivedAmount() }}</div>
+        <span class="metric-sub">collected this month</span>
+      </div>
+
+      @if (loanAmount() > 0) {
+        <div class="metric-card">
+          <span class="metric-label">Debt</span>
+          <div class="metric-value negative">₴{{ loanAmount() }}</div>
+          <span class="metric-sub">{{ loanCount() }} missed / loans</span>
+        </div>
+      } @else {
+        <div class="metric-card">
+          <span class="metric-label">To receive</span>
+          <div class="metric-value">₴{{ toReceiveAmount() }}</div>
+          <span class="metric-sub">{{ upcomingCount() }} upcoming</span>
+        </div>
+      }
+    </div>
+
+    <!-- Lesson History Table -->
+    <div class="lessons-section">
+      <div class="section-title-wrap">
+        <h3 class="section-title">Lesson History</h3>
+        @if (isDataLoading()) {
+          <nz-spin nzSimple nzSize="small"></nz-spin>
+        }
+      </div>
+
+      <div class="table-wrap">
+        @if (studentLessons().length > 0) {
+          <table class="lessons-table">
+            <thead>
+              <tr>
+                <th class="col-checkbox"></th>
+                <th class="col-date">Date / Time</th>
+                <th class="col-price">Price</th>
+                <th class="col-status">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (lesson of studentLessons(); track lesson.eventId + '_' + lesson.startTime.toISOString()) {
+                <tr
+                  [class.row-paid]="lesson.isPaid"
+                  [class.row-loan]="lesson.status === 'Loan'"
+                  [class.row-past]="lesson.isCompleted"
+                >
+                  <td class="col-checkbox">
+                    <label class="checkbox-container">
+                      <input
+                        type="checkbox"
+                        [checked]="lesson.isPaid"
+                        [disabled]="pendingEventId() === lesson.eventId"
+                        (change)="onTogglePaid(lesson)"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td class="col-date">
+                    <div class="date-text">
+                      {{ lesson.startTime | date: 'd MMMM, EEEE' }}
+                    </div>
+                    <div class="time-text">
+                      {{ lesson.startTime | date: 'HH:mm' }} - {{ lesson.endTime | date: 'HH:mm' }}
+                    </div>
+                  </td>
+                  <td class="col-price">₴{{ lesson.price }}</td>
+                  <td class="col-status">
+                    @if (lesson.status === 'Paid') {
+                      <span class="status-badge badge-paid">Paid</span>
+                    } @else if (lesson.status === 'Loan') {
+                      <span class="status-badge badge-loan">Loan</span>
+                    } @else {
+                      <span class="status-badge badge-upcoming">Upcoming</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty-lessons">
+            <nz-icon nzType="calendar" class="empty-icon" />
+            <p>No lessons scheduled for this month.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

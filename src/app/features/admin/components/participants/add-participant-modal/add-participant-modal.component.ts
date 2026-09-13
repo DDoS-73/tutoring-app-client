@@ -5,7 +5,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { ParticipantService } from '../../../../../core/services/participant.service';
-import { EventParticipantType, Participant } from '../../../../../shared/models/participant.model';
+import {
+  DEFAULT_PARTICIPANT_PRICE,
+  EventParticipantType,
+  Participant,
+} from '../../../../../shared/models/participant.model';
 import { toInitials } from '../../../../../shared/utils';
 
 @Component({
@@ -28,7 +32,7 @@ export class AddParticipantModalComponent {
   protected readonly form = inject(FormBuilder).nonNullable.group({
     name: [this.editData?.name || '', [Validators.required, Validators.minLength(2), Validators.maxLength(24)]],
     type: [this.editData?.type ?? EventParticipantType.Student, [Validators.required]],
-    price: [this.editData?.price ?? 400, [Validators.required, Validators.min(0)]],
+    price: [this.editData?.price ?? DEFAULT_PARTICIPANT_PRICE, [Validators.required, Validators.min(0)]],
   });
 
   protected readonly isPending = computed(() =>

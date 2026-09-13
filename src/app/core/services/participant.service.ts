@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, Signal } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ParticipantRow, toParticipantRows } from '../../shared/models/participant-row.model';
 import { EventParticipantType, Participant } from '../../shared/models/participant.model';
 import { ApiEndpoints } from '../api/endpoints';
 
@@ -42,6 +43,19 @@ export class ParticipantService {
     refetchOnReconnect: false,
     refetchOnMount: false,
   }));
+
+  public readonly allRows = computed<ParticipantRow[]>(() => [
+    ...toParticipantRows(this.participantsQuery.data() ?? []),
+    ...toParticipantRows(this.archivedParticipantsQuery.data() ?? []),
+  ]);
+
+  public participantById(id: Signal<string | null | undefined>): Signal<ParticipantRow | null> {
+    return computed(() => {
+      const key = id();
+      if (key == null) return null;
+      return this.allRows().find((r) => String(r.id) === key) ?? null;
+    });
+  }
 
   public readonly createMutation = injectMutation(() => ({
     mutationFn: (dto: { name: string; type: EventParticipantType; price: number }) =>

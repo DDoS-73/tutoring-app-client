@@ -22,7 +22,7 @@
   }
 </ng-template>
 
-<div class="dashboard-container" [class.has-selection]="selectedParticipant() !== null">
+<div class="dashboard-container" [class.has-selection]="hasSelection()">
   <!-- ──────────────── MIDDLE PANEL: PARTICIPANT LIST ──────────────── -->
   <div class="middle-panel">
     <header class="pane-head">
@@ -73,11 +73,8 @@
               <div class="section-header">STUDENTS · {{ activeStudents().length }}</div>
               <ul class="list">
                 @for (participant of activeStudents(); track participant.id) {
-                  <li
-                    class="row-item"
-                    [class.selected]="selectedParticipant()?.id === participant.id"
-                    (click)="selectParticipant(participant)"
-                  >
+                  <li class="row-item" routerLinkActive="selected">
+                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
                     <span class="av" [style.background-color]="participant.avatarColor">
                       {{ participant.initials }}
                     </span>
@@ -112,11 +109,8 @@
               <div class="section-header">GROUPS · {{ activeGroups().length }}</div>
               <ul class="list">
                 @for (participant of activeGroups(); track participant.id) {
-                  <li
-                    class="row-item"
-                    [class.selected]="selectedParticipant()?.id === participant.id"
-                    (click)="selectParticipant(participant)"
-                  >
+                  <li class="row-item" routerLinkActive="selected">
+                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
                     <span class="av av--group">
                       <nz-icon nzType="team" nzTheme="outline" />
                     </span>
@@ -172,11 +166,8 @@
               <div class="section-header">STUDENTS · {{ archivedStudents().length }}</div>
               <ul class="list">
                 @for (participant of archivedStudents(); track participant.id) {
-                  <li
-                    class="row-item row-item--archived"
-                    [class.selected]="selectedParticipant()?.id === participant.id"
-                    (click)="selectParticipant(participant)"
-                  >
+                  <li class="row-item row-item--archived" routerLinkActive="selected">
+                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
                     <span class="av av--archived">
                       {{ participant.initials }}
                     </span>
@@ -211,11 +202,8 @@
               <div class="section-header">GROUPS · {{ archivedGroups().length }}</div>
               <ul class="list">
                 @for (participant of archivedGroups(); track participant.id) {
-                  <li
-                    class="row-item row-item--archived"
-                    [class.selected]="selectedParticipant()?.id === participant.id"
-                    (click)="selectParticipant(participant)"
-                  >
+                  <li class="row-item row-item--archived" routerLinkActive="selected">
+                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
                     <span class="av av--group av--archived">
                       <nz-icon nzType="team" nzTheme="outline" />
                     </span>
@@ -256,11 +244,10 @@
     </nz-tabset>
   </div>
 
-  <!-- ──────────────── RIGHT PANEL: PARTICIPANT DETAILS ──────────────── -->
+  <!-- ──────────────── RIGHT PANEL: PARTICIPANT DETAILS (routed) ──────────────── -->
   <div class="right-panel">
-    @if (selectedParticipant(); as p) {
-      <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: p }"></ng-container>
-    } @else {
+    <router-outlet (activate)="hasSelection.set(true)" (deactivate)="hasSelection.set(false)" />
+    @if (!hasSelection()) {
       <div class="no-selection">
         <nz-icon nzType="info-circle" nzTheme="outline" class="info-icon" />
         <h3>No Selection</h3>
@@ -268,88 +255,4 @@
       </div>
     }
   </div>
-
-  <!-- ──────────────── MOBILE DETAIL OVERLAY ──────────────── -->
-  @if (selectedParticipant(); as p) {
-    <div class="mobile-detail-overlay">
-      <header class="overlay-header">
-        <button class="back-link" type="button" (click)="clearSelection()">
-          <nz-icon nzType="left" />
-          <span>Back to list</span>
-        </button>
-      </header>
-      <div class="overlay-content">
-        <ng-container *ngTemplateOutlet="detailsTpl; context: { $implicit: p }"></ng-container>
-      </div>
-    </div>
-  }
 </div>
-
-<!-- ──────────────── REUSABLE DETAILS TEMPLATE ──────────────── -->
-<ng-template #detailsTpl let-p>
-  <div class="details-container">
-    <!-- Header: Avatar, Name, Badge, Actions -->
-    <div class="details-header">
-      <div class="header-main">
-        <div class="avatar-large-wrap">
-          @if (p.type === EventParticipantType.Group) {
-            <span class="avatar-large av--group">
-              <nz-icon nzType="team" />
-            </span>
-          } @else {
-            <span class="avatar-large" [style.background-color]="p.avatarColor">
-              {{ p.initials }}
-            </span>
-          }
-        </div>
-        <div class="header-text-block">
-          <h2 class="details-name">{{ p.name }}</h2>
-          <span class="role-badge">
-            {{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}
-          </span>
-        </div>
-      </div>
-      <div class="header-actions">
-        <button class="detail-action-btn" type="button" (click)="onEditParticipant(p)">
-          <nz-icon nzType="edit" />
-          <span>Edit</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Detail Cards -->
-    <div class="details-content-grid">
-      <!-- Identity Card -->
-      <div class="detail-card">
-        <div class="card-section-title">IDENTITY</div>
-        <div class="detail-row">
-          <span class="row-label">Full name</span>
-          <span class="row-value">{{ p.name }}</span>
-        </div>
-        <div class="detail-row">
-          <span class="row-label">Type</span>
-          <span class="row-value">{{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}</span>
-        </div>
-      </div>
-
-      <!-- Lessons Card -->
-      <div class="detail-card">
-        <div class="card-section-title">LESSONS</div>
-        <div class="detail-row">
-          <span class="row-label">Price per class</span>
-          <span class="row-value">₴{{ p.price ?? 400 }}</span>
-        </div>
-      </div>
-
-      <!-- Info/Payments Notice Card -->
-      <div class="info-card">
-        <div class="info-card-left">
-          <nz-icon nzType="credit-card" />
-        </div>
-        <div class="info-card-right">
-          Used to calculate received, to-receive and loans in <strong class="payments-highlight">Payments</strong>.
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>

@@ -5,7 +5,8 @@
       "Skill(angular-reviewer)",
       "Skill(angular-reviewer:*)",
       "Skill(code-review-excellence)",
-      "Skill(code-review-excellence:*)"
+      "Skill(code-review-excellence:*)",
+      "Bash(xargs grep -l \"nzLinkRouter\\\\|nz-tab-link\")"
     ]
   }
 }

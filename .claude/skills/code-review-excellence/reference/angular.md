@@ -1,60 +1,60 @@
 # Angular Code Review Guide
 
-> Angular 17+ 代码审查指南，覆盖 Signals、Standalone 组件、RxJS 反模式、Zoneless 变更检测、模板最佳实践及性能优化等核心主题。
+> Angular 17+ code review guide covering Signals, Standalone components, RxJS anti-patterns, Zoneless change detection, template best practices, and performance optimization.
 
-## 目录
+## Table of Contents
 
-- [Signals 与变更检测](#signals-与变更检测)
-- [Standalone 组件迁移](#standalone-组件迁移)
-- [RxJS 反模式](#rxjs-反模式)
-- [Zoneless 变更检测](#zoneless-变更检测)
-- [模板最佳实践](#模板最佳实践)
-- [性能优化](#性能优化)
+- [Signals & Change Detection](#signals--change-detection)
+- [Standalone Component Migration](#standalone-component-migration)
+- [RxJS Anti-Patterns](#rxjs-anti-patterns)
+- [Zoneless Change Detection](#zoneless-change-detection)
+- [Template Best Practices](#template-best-practices)
+- [Performance Optimization](#performance-optimization)
 - [Review Checklist](#review-checklist)
 
 ---
 
-## Signals 与变更检测
+## Signals & Change Detection
 
-### Signal + OnPush 自动触发变更检测
+### Signal + OnPush Automatic Change Detection Triggering
 
 ```typescript
-// ❌ 可变状态 + OnPush = 界面不更新
+// ❌ Mutable state + OnPush = UI does not update
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<p>{{ data.name }}</p>`,
 })
 export class UserProfile {
   data = { name: 'Alice' };
-  changeName() { this.data.name = 'Bob'; } // UI 不会更新！
+  changeName() { this.data.name = 'Bob'; } // UI will not update!
 }
 
-// ✅ Signal + OnPush = 自动变更检测
+// ✅ Signal + OnPush = Automatic change detection
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<p>{{ name() }}</p>`,
 })
 export class UserProfile {
   name = signal('Alice');
-  changeName() { this.name.set('Bob'); } // 自动触发 CD
+  changeName() { this.name.set('Bob'); } // Automatically triggers CD
 }
 ```
 
-### @Input() 对象变异不会被 OnPush 检测
+### @Input() Object Mutation Is Not Detected by OnPush
 
 ```typescript
-// ❌ 变异 Input 对象——引用不变，OnPush 不检测
+// ❌ Mutating Input object - reference unchanged, OnPush skips check
 @Input() config!: Config;
 updateConfig() { this.config.theme = 'dark'; }
 
-// ✅ 创建新引用
+// ✅ Create a new reference
 updateConfig() { this.config = { ...this.config, theme: 'dark' }; }
 ```
 
-### computed() 用于派生状态
+### Use computed() for Derived State
 
 ```typescript
-// ❌ effect 用于同步状态——反模式，可能触发额外 CD 周期
+// ❌ effect for state synchronization - anti-pattern, can trigger extra CD cycles
 export class CartComponent {
   total = signal(0);
   discounted = signal(0);
@@ -64,37 +64,37 @@ export class CartComponent {
   }
 }
 
-// ✅ computed 用于派生状态——惰性计算，无副作用
+// ✅ computed for derived state - lazy evaluation, no side effects
 export class CartComponent {
   total = signal(0);
   discounted = computed(() => this.total() * 0.9);
 }
 ```
 
-### effect() 中 Signal 读取在 await 后不会被追踪
+### Signal Reads After await in effect() Are Not Tracked
 
 ```typescript
-// ❌ await 之后读取 Signal——依赖未被追踪
+// ❌ Signal read after await - dependency is untracked
 effect(async () => {
   const data = await fetchUserData();
-  console.log(`Theme: ${theme()}`); // theme() 未被追踪！
+  console.log(`Theme: ${theme()}`); // theme() is untracked!
 });
 
-// ✅ 在 await 之前同步读取
+// ✅ Read synchronously before await
 effect(async () => {
-  const currentTheme = theme(); // 同步读取，被追踪
+  const currentTheme = theme(); // Synchronous read, tracked
   const data = await fetchUserData();
   console.log(`Theme: ${currentTheme}`);
 });
 ```
 
-### effect 只在特定场景使用
+### Use effect Only in Specific Scenarios
 
 ```typescript
-// ❌ 用 effect 同步两个 Signal——永远用 computed
+// ❌ Using effect to sync two Signals - always use computed instead
 effect(() => { this.filtered.set(this.items().filter(i => i.active)); });
 
-// ✅ effect 的合理场景：DOM 操作、分析日志、订阅外部源
+// ✅ Appropriate use cases for effect: DOM operations, analytics logging, subscribing to external sources
 effect(() => {
   const canvas = this.canvasRef.nativeElement;
   const ctx = canvas.getContext('2d');
@@ -108,19 +108,19 @@ effect(() => {
 
 ---
 
-## Standalone 组件迁移
+## Standalone Component Migration
 
-### Angular 19+ standalone 是默认值
+### Standalone is Default in Angular 19+
 
 ```typescript
-// ❌ Legacy NgModule 组件
+// ❌ Legacy NgModule component
 @Component({
   selector: 'old-component',
   standalone: false,
 })
 export class OldComponent {}
 
-// ✅ 现代 Standalone 组件（Angular 19+ standalone 是默认值）
+// ✅ Modern Standalone component (standalone is default in Angular 19+)
 @Component({
   selector: 'user-profile',
   imports: [ProfilePhoto, RouterLink],
@@ -129,28 +129,28 @@ export class OldComponent {}
 export class UserProfile {}
 ```
 
-### 审查标记
+### Review Flags
 
 ```typescript
-// ⚠️ 需要迁移的信号：
+// ⚠️ Signals indicating migration needed:
 // 1. standalone: false
 // 2. @NgModule declarations
-// 3. 组件通过 NgModule 而非直接 import
+// 3. Components imported via NgModule instead of directly
 
-// ✅ 迁移路径：
-// 1. 删除 standalone: false
-// 2. 将依赖添加到组件的 imports 数组
-// 3. 如果不再有 declarations，删除 NgModule
+// ✅ Migration path:
+// 1. Remove standalone: false
+// 2. Add dependencies to component's imports array
+// 3. Delete NgModule if declarations become empty
 ```
 
 ---
 
-## RxJS 反模式
+## RxJS Anti-Patterns
 
-### subscribe() 必须配 takeUntilDestroyed
+### subscribe() Must Pair with takeUntilDestroyed
 
 ```typescript
-// ❌ 裸 subscribe——内存泄漏！组件销毁后仍继续接收数据
+// ❌ Bare subscribe - memory leak! Continues receiving data after component destruction
 @Component({ /* ... */ })
 export class UserProfile implements OnInit {
   ngOnInit() {
@@ -158,7 +158,7 @@ export class UserProfile implements OnInit {
   }
 }
 
-// ✅ takeUntilDestroyed——自动在组件销毁时取消（需在构造函数或注入上下文中调用）
+// ✅ takeUntilDestroyed - automatically unsubscribes on destruction (must be called in constructor or injection context)
 @Component({ /* ... */ })
 export class UserProfile {
   constructor() {
@@ -168,7 +168,7 @@ export class UserProfile {
   }
 }
 
-// ✅ 在构造函数外使用——传入 DestroyRef
+// ✅ Outside constructor - pass DestroyRef
 @Component({ /* ... */ })
 export class UserProfile {
   private destroyRef = inject(DestroyRef);
@@ -179,48 +179,48 @@ export class UserProfile {
 }
 ```
 
-### toSignal 优于 AsyncPipe
+### Prefer toSignal over AsyncPipe
 
 ```typescript
-// ❌ AsyncPipe——需要导入，模板中有 | async
+// ❌ AsyncPipe - requires import, template clutter with | async
 @Component({
   imports: [AsyncPipe],
   template: `{{ data$ | async }}`,
 })
 
-// ✅ toSignal——自动取消订阅，可在任何地方使用
+// ✅ toSignal - automatic unsubscription, can be used anywhere
 export class UserProfile {
   data = toSignal(this.data$, { initialValue: null });
-  // 模板直接用 data()
+  // Template accesses data() directly
 }
 ```
 
-### 避免重复 toSignal 调用
+### Avoid Repeated toSignal Calls
 
 ```typescript
-// ❌ toSignal 每次调用都创建新订阅
+// ❌ toSignal creates a new subscription on every call
 getData() {
   return toSignal(this.http.get('/api/data'));
 }
 
-// ✅ 存储结果
+// ✅ Store result in property
 data = toSignal(this.http.get('/api/data'), { initialValue: null });
 ```
 
 ---
 
-## Zoneless 变更检测
+## Zoneless Change Detection
 
-### 普通属性变异不会被检测（Angular 21+）
+### Primitive/Object Property Mutation Is Not Detected (Angular 21+)
 
 ```typescript
-// ❌ Zoneless 下普通属性赋值不触发 CD
+// ❌ Property assignment does not trigger CD in Zoneless mode
 export class UserService {
   user: User | null = null;
-  loadUser() { this.user = fetchResult; } // 不触发！
+  loadUser() { this.user = fetchResult; } // Does not trigger CD!
 }
 
-// ✅ Signal 自动触发 CD
+// ✅ Signal automatically triggers CD
 export class UserService {
   private _user = signal<User | null>(null);
   readonly user = this._user.asReadonly();
@@ -228,125 +228,125 @@ export class UserService {
 }
 ```
 
-### NgZone API 在 Zoneless 中失效
+### NgZone APIs Are Ineffective in Zoneless Mode
 
 ```typescript
-// ❌ NgZone.onStable 在 zoneless 中永远不会触发
-ngZone.onStable.subscribe(() => { /* 永远不触发 */ });
+// ❌ NgZone.onStable never fires in zoneless mode
+ngZone.onStable.subscribe(() => { /* Never fires */ });
 
-// ✅ 使用 afterNextRender
-afterNextRender({ write: () => { /* CD 之后执行 */ } });
+// ✅ Use afterNextRender
+afterNextRender({ write: () => { /* Executes after CD */ } });
 ```
 
-### Reactive Forms 变异需要 markForCheck
+### Reactive Forms Mutations Require markForCheck
 
 ```typescript
-// ❌ Reactive Forms 的 setValue/patchValue 在 zoneless 中不自动调度 CD
-this.form.patchValue({ name: 'Alice' }); // UI 可能不更新
+// ❌ Reactive Forms setValue/patchValue does not automatically schedule CD in zoneless
+this.form.patchValue({ name: 'Alice' }); // UI may not update
 
-// ✅ 手动标记或通过 Signal 反映
+// ✅ Manually mark or reflect via Signal
 this.form.patchValue({ name: 'Alice' });
 this.cdr.markForCheck();
 ```
 
-### Zoneless 下有效的 CD 触发器
+### Valid CD Triggers in Zoneless Mode
 
-| 触发器 | 说明 |
+| Trigger | Description |
 |--------|------|
-| `signal.set()` / `.update()` | Signal 更新自动触发 |
-| `ChangeDetectorRef.markForCheck()` | 手动标记 |
-| `ComponentRef.setInput()` | 输入绑定 |
-| 模板事件监听器回调 | 用户交互 |
+| `signal.set()` / `.update()` | Signal update automatically triggers CD |
+| `ChangeDetectorRef.markForCheck()` | Manual marking |
+| `ComponentRef.setInput()` | Input binding |
+| Template event listener callbacks | User interaction |
 
 ---
 
-## 模板最佳实践
+## Template Best Practices
 
-### 复杂逻辑提取为 computed Signal
+### Extract Complex Logic to computed Signal
 
 ```typescript
-// ❌ 模板中复杂表达式
+// ❌ Complex expressions in template
 template: `<div *ngIf="items.filter(i => i.active).length > 0 && user.role === 'admin'">`
 
-// ✅ 提取为 computed
+// ✅ Extract to computed
 filteredItems = computed(() => this.items().filter(i => i.active));
 shouldShow = computed(() => this.filteredItems().length > 0 && this.user().role === 'admin');
 template: `@if (shouldShow()) { <div>...</div> }`
 ```
 
-### 原生绑定优于 NgClass / NgStyle
+### Native Bindings Preferred Over NgClass / NgStyle
 
 ```typescript
-// ❌ NgClass/NgStyle——额外指令开销
+// ❌ NgClass/NgStyle - extra directive overhead
 template: `<div [ngClass]="{active: isActive}" [ngStyle]="{'color': textColor}">`
 
-// ✅ 原生 class/style 绑定——性能更好
+// ✅ Native class/style bindings - better performance
 template: `<div [class.active]="isActive" [style.color]="textColor">`
 ```
 
-### 模板专用成员标记 protected
+### Mark Template-Only Members as protected
 
 ```typescript
-// ❂ 模板专用方法暴露为 public
+// ❌ Template-only method exposed as public
 export class UserProfile {
   formatName(name: string) { return name.trim(); }
 }
 
-// ✅ 模板专用成员用 protected
+// ✅ Template-only members marked as protected
 export class UserProfile {
   protected formatName(name: string) { return name.trim(); }
 }
 ```
 
-### Angular 管理的属性标记 readonly
+### Mark Angular-Managed Properties as readonly
 
 ```typescript
-// ❌ input/output/model 可被意外覆盖
+// ❌ input/output/model can be overwritten accidentally
 userId = input<string>();
 userSaved = output<void>();
 
-// ✅ readonly 防止意外赋值
+// ✅ readonly prevents accidental assignment
 readonly userId = input<string>();
 readonly userSaved = output<void>();
 readonly userName = model<string>();
 ```
 
-### 命名规范：操作名而非事件名
+### Naming Conventions: Action Names Instead of Event Names
 
 ```typescript
-// ❌ 以事件命名
+// ❌ Named after event
 template: `<button (click)="handleClick()">Save</button>`
 
-// ✅ 以操作命名
+// ✅ Named after action
 template: `<button (click)="saveUserData()">Save</button>`
 ```
 
 ---
 
-## 性能优化
+## Performance Optimization
 
-### effect 是最后手段——优先 computed
+### effect Is a Last Resort - Prefer computed
 
 ```typescript
-// ❌ effect 用于状态同步——触发额外 CD，可能无限循环
+// ❌ effect used for state sync - triggers extra CD, potential infinite loops
 effect(() => {
   this.filteredItems.set(this.items().filter(i => i.active));
 });
 
-// ✅ computed——惰性计算，无副作用，无额外 CD
+// ✅ computed - lazy evaluation, no side effects, no extra CD
 filteredItems = computed(() => this.items().filter(i => i.active));
 ```
 
-### afterRenderEffect 分离读写阶段
+### afterRenderEffect Separate Read and Write Phases
 
 ```typescript
-// ❌ 无阶段指定 = mixedReadWrite = 额外 DOM 回流
+// ❌ No phase specified = mixedReadWrite = extra DOM reflow
 afterRenderEffect(() => {
-  const height = el.offsetHeight; // 读
-  el.style.height = height + 10 + 'px'; // 写
+  const height = el.offsetHeight; // Read
+  el.style.height = height + 10 + 'px'; // Write
 });
 
-// ✅ 分离阶段减少回流
+// ✅ Separate phases to reduce reflow
 afterRenderEffect({
   earlyRead: () => el.offsetHeight,
   write: (height) => { el.style.height = height() + 10 + 'px'; },
@@ -354,10 +354,10 @@ afterRenderEffect({
 });
 ```
 
-### inject() 优于构造函数注入
+### Prefer inject() over Constructor Injection
 
 ```typescript
-// ❌ 构造函数注入——多依赖时难以阅读
+// ❌ Constructor injection - hard to read with multiple dependencies
 export class UserService {
   constructor(
     private http: HttpClient,
@@ -366,7 +366,7 @@ export class UserService {
   ) {}
 }
 
-// ✅ inject()——更好的类型推断和可读性
+// ✅ inject() - better type inference and readability
 export class UserService {
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -378,42 +378,42 @@ export class UserService {
 
 ## Review Checklist
 
-### Signals 与变更检测
+### Signals & Change Detection
 
-- [ ] Signal + OnPush 用于模板状态（非可变对象）
-- [ ] `@Input()` 对象通过新引用更新（非变异）
-- [ ] 派生状态用 `computed()`，不用 `effect()`
-- [ ] `effect()` 中 Signal 读取在 `await` 之前
-- [ ] `effect()` 只用于 DOM 操作、日志、外部源订阅
+- [ ] Signal + OnPush used for template state (immutable objects)
+- [ ] `@Input()` objects updated via new reference (not mutated)
+- [ ] Derived state uses `computed()`, not `effect()`
+- [ ] Signal reads inside `effect()` occur before `await`
+- [ ] `effect()` used only for DOM operations, logging, external source subscriptions
 
-### Standalone 组件
+### Standalone Components
 
-- [ ] 无 `standalone: false`（Angular 19+）
-- [ ] 组件通过 `imports` 数组导入依赖
-- [ ] 无不必要的 `@NgModule`
+- [ ] No `standalone: false` (Angular 19+)
+- [ ] Components import dependencies via `imports` array
+- [ ] No unnecessary `@NgModule`
 
 ### RxJS
 
-- [ ] `.subscribe()` 配 `takeUntilDestroyed` 或 `async` pipe
-- [ ] 优先 `toSignal` 而非 `AsyncPipe`
-- [ ] 无重复 `toSignal` 调用
+- [ ] `.subscribe()` paired with `takeUntilDestroyed` or `async` pipe
+- [ ] Prefer `toSignal` over `AsyncPipe`
+- [ ] No repeated `toSignal` calls
 
 ### Zoneless
 
-- [ ] 模板状态通过 Signal 管理（非普通属性）
-- [ ] 无 `NgZone.onStable` / `NgZone.onMicrotaskEmpty`
-- [ ] Reactive Forms 变异后有 `markForCheck()`
+- [ ] Template state managed via Signals (not standard properties)
+- [ ] No `NgZone.onStable` / `NgZone.onMicrotaskEmpty`
+- [ ] Reactive Forms mutations followed by `markForCheck()`
 
-### 模板
+### Templates
 
-- [ ] 复杂逻辑提取为 `computed` Signal
-- [ ] 使用原生 `[class]`/`[style]` 而非 `NgClass`/`NgStyle`
-- [ ] 模板专用成员标记 `protected`
-- [ ] `input`/`output`/`model` 属性标记 `readonly`
-- [ ] 事件处理器以操作命名（`saveData` 而非 `handleClick`）
+- [ ] Complex logic extracted to `computed` Signal
+- [ ] Uses native `[class]`/`[style]` instead of `NgClass`/`NgStyle`
+- [ ] Template-only members marked `protected`
+- [ ] `input`/`output`/`model` properties marked `readonly`
+- [ ] Event handlers named after actions (`saveData` instead of `handleClick`)
 
-### 性能
+### Performance
 
-- [ ] `effect()` 不用于状态同步
-- [ ] `afterRenderEffect` 分离读写阶段
-- [ ] `inject()` 用于依赖注入
+- [ ] `effect()` not used for state sync
+- [ ] `afterRenderEffect` separates read/write phases
+- [ ] `inject()` used for dependency injection

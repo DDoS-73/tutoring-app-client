@@ -11,10 +11,32 @@ export const adminRoutes: Routes = [
         path: 'participants',
         loadComponent: () =>
           import('./components/participants/participants.component').then((c) => c.ParticipantsComponent),
-      },
-      {
-        path: 'payments',
-        loadComponent: () => import('./components/payments/payments.component').then((c) => c.PaymentsComponent),
+        children: [
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./components/participants/participant-detail/participant-detail.component').then(
+                (c) => c.ParticipantDetailComponent
+              ),
+            children: [
+              { path: '', redirectTo: 'general', pathMatch: 'full' },
+              {
+                path: 'general',
+                loadComponent: () =>
+                  import('./components/participants/participant-general/participant-general.component').then(
+                    (c) => c.ParticipantGeneralComponent
+                  ),
+              },
+              {
+                path: 'payments',
+                loadComponent: () =>
+                  import('./components/participants/participant-payments/participant-payments.component').then(
+                    (c) => c.ParticipantPaymentsComponent
+                  ),
+              },
+            ],
+          },
+        ],
       },
     ],
   },

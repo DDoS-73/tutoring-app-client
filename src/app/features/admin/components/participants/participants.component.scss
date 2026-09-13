@@ -283,6 +283,7 @@
 }
 
 .row-item {
+  position: relative; // containing block for .row-link's stretched inset:0
   display: grid;
   grid-template-columns: 40px 1fr auto;
   align-items: center;
@@ -323,7 +324,18 @@
   }
 }
 
+// Stretched-link pattern: covers the whole row for click/keyboard/screen-reader navigation
+// (position:absolute also removes it from .row-item's grid auto-placement automatically),
+// while sitting behind the action buttons so they stay independently clickable.
+.row-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .row-actions {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -450,244 +462,6 @@
   }
 }
 
-// Details Styling
-.details-container {
-  padding: 30px 30px 48px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.details-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 28px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #46342b;
-}
-
-.header-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.avatar-large-wrap {
-  flex-shrink: 0;
-}
-
-.avatar-large {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: #4b362f;
-
-  &.av--group {
-    border-radius: 14px;
-    background: #5a4439;
-    border: 1px solid #5e4a3e;
-    color: #d6c2a1;
-  }
-}
-
-.header-text-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.details-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: #f5ebdd;
-  margin: 0;
-  letter-spacing: -0.24px;
-}
-
-.role-badge {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  font-size: 11px;
-  font-weight: 700;
-  color: #d6c2a1;
-  background: rgba(214, 194, 161, 0.14);
-  padding: 3px 10px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.detail-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 14px;
-  border: 1px solid #5e4a3e;
-  border-radius: 11px;
-  background: transparent;
-  color: #d6c2a1;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s;
-
-  &:hover:not(:disabled) {
-    background: rgba(214, 194, 161, 0.08);
-    color: #f5ebdd;
-  }
-
-  &--remove {
-    color: #e0857c;
-    &:hover:not(:disabled) {
-      background: rgba(224, 133, 124, 0.08);
-      color: #ff9e96;
-    }
-  }
-
-  &--restore {
-    color: #d6c2a1;
-    &:hover:not(:disabled) {
-      background: rgba(214, 194, 161, 0.08);
-      color: #f5ebdd;
-    }
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-// Details Cards
-.details-content-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.detail-card {
-  background: #3a2a23;
-  border: 1px solid #46342b;
-  border-radius: 14px;
-  padding: 21px;
-  box-sizing: border-box;
-}
-
-.card-section-title {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.32px;
-  color: #8c745e;
-  margin-bottom: 14px;
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #46342b;
-  box-sizing: border-box;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.row-label {
-  font-size: 13.5px;
-  font-weight: 400;
-  color: #a67b5b;
-
-  .required {
-    color: #e0857c;
-    font-weight: 700;
-    margin-left: 2px;
-  }
-}
-
-.row-value {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #f5ebdd;
-}
-
-// Subsection Chosen Book Box
-.chosen-book-box {
-  margin-top: 16px;
-  background: #5a4439;
-  border: 1px solid #5e4a3e;
-  border-radius: 10px;
-  padding: 12px 16px;
-  box-sizing: border-box;
-
-  .book-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #d6c2a1;
-    margin-bottom: 4px;
-  }
-
-  .book-title {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #f5ebdd;
-  }
-}
-
-// Info / Payments Card at bottom
-.info-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: #3a2a23;
-  border: 1px solid #46342b;
-  border-radius: 14px;
-  padding: 21px;
-  box-sizing: border-box;
-}
-
-.info-card-left {
-  flex-shrink: 0;
-  font-size: 18px;
-  color: #d6c2a1;
-  display: flex;
-  align-items: center;
-}
-
-.info-card-right {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #a67b5b;
-
-  .payments-highlight {
-    color: #d6c2a1;
-    font-weight: 700;
-  }
-}
-
-// ──────────────── MOBILE DETAIL OVERLAY ────────────────
-.mobile-detail-overlay {
-  display: none; // hidden on desktop
-}
-
 // ──────────────── RESPONSIVE BREAKPOINTS ────────────────
 
 // Tablet (768px - 1024px)
@@ -697,54 +471,22 @@
     border-right: none;
   }
 
+  // Hidden by default; becomes a fullscreen overlay only once a participant route is active
   .right-panel {
     display: none;
   }
 
-  // Show selection overlay on tablet
-  .mobile-detail-overlay {
+  .dashboard-container.has-selection .right-panel {
     display: flex;
     flex-direction: column;
     position: fixed;
     top: 65px; // matches header height
-    left: 0; // matches sidebar width
+    left: 0; // full width — the global sidebar is already hidden at this breakpoint
     bottom: 0;
     background: #2e211c;
     z-index: 1000;
     overflow-y: auto;
     width: 100%;
-  }
-
-  .overlay-header {
-    height: 50px;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #46342b;
-    background: #3a2a23;
-    flex-shrink: 0;
-  }
-
-  .back-link {
-    background: transparent;
-    border: none;
-    color: #d6c2a1;
-    font-size: 13.5px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    padding: 0;
-
-    &:hover {
-      color: #f5ebdd;
-    }
-  }
-
-  .overlay-content {
-    flex: 1;
-    overflow-y: auto;
   }
 }
 
@@ -766,20 +508,5 @@
 
   ::ng-deep .ant-tabs-nav {
     padding: 0 16px !important;
-  }
-
-  .details-container {
-    padding: 20px 16px 36px;
-  }
-
-  .details-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .header-actions {
-    width: 100%;
-    justify-content: flex-end;
   }
 }

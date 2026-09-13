@@ -1,0 +1,380 @@
+@use "../../../../../../styles/variables" as *;
+
+:host {
+  display: block;
+}
+
+.payments-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.month-selector-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 20px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.month-nav-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #5e4a3e;
+  color: $color-text-link;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+    border-color: #d6c2a1;
+    color: $color-text-main;
+  }
+}
+
+.month-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color-text-main;
+  min-width: 160px;
+  text-align: center;
+  user-select: none;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .metric-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.32px;
+    color: $color-text-muted;
+    margin-bottom: 10px;
+  }
+
+  .metric-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: $color-text-main;
+    line-height: 1.2;
+    margin-bottom: 8px;
+
+    &.positive {
+      color: $color-success;
+    }
+    &.negative {
+      color: $color-error;
+    }
+  }
+
+  .metric-sub {
+    font-size: 12px;
+    color: $color-text-muted-light;
+    font-weight: 500;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: $color-bg-main;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, $color-accent, $color-accent-light);
+    border-radius: 99px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.lessons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-main;
+  margin: 0;
+}
+
+.table-wrap {
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.lessons-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    background: rgba(46, 33, 28, 0.4);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $color-text-muted;
+    padding: 14px 18px;
+    border-bottom: 1px solid $color-border;
+    user-select: none;
+  }
+
+  td {
+    padding: 16px 18px;
+    border-bottom: 1px solid $color-border;
+    font-size: 13.5px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr {
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: rgba(214, 194, 161, 0.04);
+    }
+  }
+
+  .row-loan {
+    background-color: rgba(224, 133, 124, 0.02);
+
+    &:hover {
+      background-color: rgba(224, 133, 124, 0.05);
+    }
+  }
+
+  .row-past {
+    background-color: rgba(0, 0, 0, 0.15);
+    opacity: 0.75;
+
+    &.row-loan {
+      background-color: rgba(224, 133, 124, 0.015);
+    }
+
+    &:hover {
+      opacity: 0.95;
+      background-color: rgba(0, 0, 0, 0.22);
+
+      &.row-loan {
+        background-color: rgba(224, 133, 124, 0.04);
+      }
+    }
+
+    .col-date {
+      .date-text,
+      .time-text {
+        text-decoration: line-through;
+        opacity: 0.75;
+      }
+    }
+
+    .checkbox-container {
+      input:checked ~ .checkmark {
+        background-color: transparent;
+        border-color: $color-primary;
+
+        &:after {
+          border-color: $color-primary;
+        }
+      }
+    }
+  }
+
+  .col-checkbox {
+    width: 48px;
+    padding-right: 0;
+  }
+
+  .col-date {
+    .date-text {
+      color: $color-text-main;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .time-text {
+      color: $color-text-muted;
+      font-size: 12px;
+    }
+  }
+
+  .col-price {
+    color: $color-text-main;
+    font-weight: 600;
+  }
+
+  .col-status {
+    width: 120px;
+  }
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: $color-bg-main;
+    border: 2px solid $color-border-input;
+    border-radius: 6px;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      transform 0.1s;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid $color-primary-text;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    border-color: $color-border-active;
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $color-primary;
+    border-color: $color-primary;
+
+    &:after {
+      display: block;
+    }
+  }
+
+  input:active ~ .checkmark {
+    transform: scale(0.92);
+  }
+
+  input:disabled ~ .checkmark {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  user-select: none;
+
+  &.badge-paid {
+    color: $color-success;
+    background: rgba(162, 200, 157, 0.15);
+  }
+
+  &.badge-loan {
+    color: $color-error;
+    background: rgba(224, 133, 124, 0.15);
+  }
+
+  &.badge-upcoming {
+    color: $color-text-muted;
+    background: rgba(140, 116, 94, 0.15);
+  }
+}
+
+.empty-lessons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 32px;
+    color: $color-text-placeholder;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 13.5px;
+    color: $color-text-muted-light;
+    margin: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lessons-table {
+    th,
+    td {
+      padding: 8px !important;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuthService } from '../../../../core/services/auth.service';
+import { markAllTouched } from '../../../../shared/utils';
 import { AuthLayoutComponent } from '../auth-layout/auth-layout.component';
 
 interface LoginFormControls {
@@ -35,10 +36,7 @@ export class LoginComponent {
 
   protected onSubmit(): void {
     if (this.loginForm.invalid) {
-      Object.values(this.loginForm.controls).forEach((control) => {
-        control.markAsTouched();
-        control.updateValueAndValidity();
-      });
+      markAllTouched(this.loginForm);
       return;
     }
 

@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "tokens" as *;
 
 .ant-dropdown {
   .ant-dropdown-menu {
@@ -13,7 +13,9 @@
       color: $color-text-main-light !important;
       font-family: "Montserrat", sans-serif !important;
       font-weight: 500 !important;
-      transition: background-color 0.15s ease, color 0.15s ease !important;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease !important;
 
       &:hover {
         background-color: rgba($color-primary, 0.08) !important;
@@ -25,7 +27,7 @@
 
         &:hover {
           background-color: rgba($color-error, 0.08) !important;
-          color: #ff9e96 !important;
+          color: $color-danger-hover !important;
         }
       }
     }
@@ -60,7 +62,10 @@
     align-items: center !important;
     transition: background-color 0.15s ease !important;
 
-    &:hover, &-active, &-option-selected, &.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    &:hover,
+    &-active,
+    &-option-selected,
+    &.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
       background-color: $color-bg-input !important;
     }
 

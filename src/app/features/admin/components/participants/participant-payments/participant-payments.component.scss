@@ -1,4 +1,4 @@
-@use "../../../../../../styles/variables" as *;
+@use "../../../../../../styles/tokens" as *;
 
 :host {
   display: block;
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid #5e4a3e;
+  border: 1px solid $color-border-input;
   color: $color-text-link;
   border-radius: 8px;
   cursor: pointer;
@@ -38,7 +38,7 @@
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
-    border-color: #d6c2a1;
+    border-color: $color-accent;
     color: $color-text-main;
   }
 }

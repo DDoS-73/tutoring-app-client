@@ -1,9 +1,11 @@
+@use "../../../styles/tokens" as *;
+
 :host {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #2e211c;
-  color: #f5ebdd;
+  background: $color-bg-main;
+  color: $color-text-main;
   font-family: "Montserrat", sans-serif;
   overflow: hidden;
 }
@@ -15,8 +17,8 @@
   justify-content: space-between;
   height: 65px;
   padding: 0 16px;
-  background: #3a2a23;
-  border-bottom: 1px solid #46342b;
+  background: $color-bg-card;
+  border-bottom: 1px solid $color-border;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -31,7 +33,7 @@
   display: none; // Hidden on desktop
   background: transparent;
   border: none;
-  color: #d6c2a1;
+  color: $color-accent;
   font-size: 18px;
   cursor: pointer;
   align-items: center;
@@ -47,7 +49,7 @@
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
-    color: #f5ebdd;
+    color: $color-text-main;
   }
 
   nz-icon {
@@ -60,8 +62,8 @@
   height: 32px;
   border-radius: 8px;
   background: transparent;
-  border: 1.5px solid #d6c2a1;
-  color: #d6c2a1;
+  border: 1.5px solid $color-accent;
+  color: $color-accent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -72,21 +74,21 @@
 .brand-name {
   font-weight: 700;
   font-size: 18px;
-  color: #f5ebdd;
+  color: $color-text-main;
   letter-spacing: -0.2px;
 
   .brand-name-up {
-    color: #d6c2a1;
+    color: $color-accent;
   }
 }
 
 .crumb {
-  color: #8c745e;
+  color: $color-text-muted;
   font-size: 13px;
   font-weight: 600;
   padding-left: 12px;
   margin-left: 2px;
-  border-left: 1px solid #46342b;
+  border-left: 1px solid $color-border;
 }
 
 .top-right {
@@ -101,10 +103,10 @@
   gap: 8px;
   height: 36px;
   padding: 0 16px;
-  border: 1px solid #5e4a3e;
+  border: 1px solid $color-border-input;
   border-radius: 11px;
   background: transparent;
-  color: #d6c2a1;
+  color: $color-accent;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -115,7 +117,7 @@
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
-    color: #f5ebdd;
+    color: $color-text-main;
   }
 
   nz-icon {
@@ -127,9 +129,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #5a4439;
-  border: 1px solid #5e4a3e;
-  color: #f5ebdd;
+  background: $color-bg-overlay-avatar;
+  border: 1px solid $color-border-input;
+  color: $color-text-main;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -154,8 +156,8 @@
 
 // ── Sidebar (Desktop: 256px width) ───────────────────────────────────────────
 .side {
-  background: #3a2a23;
-  border-right: 1px solid #46342b;
+  background: $color-bg-card;
+  border-right: 1px solid $color-border;
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
@@ -166,7 +168,7 @@
 
 // ── Main Content Area ────────────────────────────────────────────────────────
 .main {
-  background: #2e211c;
+  background: $color-bg-main;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

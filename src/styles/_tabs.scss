@@ -1,7 +1,7 @@
-@use "variables" as *;
+@use "tokens" as *;
 
-$tab-track-bg: #271b17;
-$tab-pill-bg: linear-gradient(180deg, #4b362f, #3f2d26);
+$tab-track-bg: $color-track;
+$tab-pill-bg: linear-gradient(180deg, $color-accent-dark, #3f2d26);
 
 // Segmented "pill" tab bar: a sunken track holding a raised, cream-rimmed active pill.
 // Replaces ng-zorro's full-width underline + ink bar.

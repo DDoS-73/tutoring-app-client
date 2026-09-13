@@ -1,4 +1,4 @@
-@use "../../../../../../styles/variables" as *;
+@use "../../../../../../styles/tokens" as *;
 @use "../../../../../../styles/tabs" as tabs;
 
 // Deliberately plain/auto-height on desktop: .right-panel (participants.component.scss)
@@ -59,7 +59,7 @@
   justify-content: center;
   font-size: 18px;
   font-weight: 700;
-  color: #4b362f;
+  color: $color-accent-dark;
   flex-shrink: 0;
   box-sizing: border-box;
 

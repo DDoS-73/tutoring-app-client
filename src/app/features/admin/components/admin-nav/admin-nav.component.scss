@@ -1,3 +1,5 @@
+@use "../../../../../styles/tokens" as *;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -17,13 +19,13 @@
   font-weight: 700;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: #8c745e;
+  color: $color-text-muted;
   padding: 0 12px 6px;
 }
 
 .side-divider {
   border: none;
-  border-top: 1px solid #46342b;
+  border-top: 1px solid $color-border;
   margin: 8px 0;
 }
 
@@ -37,7 +39,7 @@
   gap: 12px;
   padding: 10px 12px;
   border-radius: 10px;
-  color: #d6c2a1;
+  color: $color-accent;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -58,31 +60,31 @@
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
-    color: #f5ebdd;
+    color: $color-text-main;
   }
 
   &.active {
     background: rgba(214, 194, 161, 0.15);
-    color: #f5ebdd;
+    color: $color-text-main;
     border: 1px solid rgba(214, 194, 161, 0.3);
   }
 
   &.disabled {
-    color: #8c745e;
+    color: $color-text-muted;
     cursor: not-allowed;
 
     &:hover {
       background: transparent;
-      color: #8c745e;
+      color: $color-text-muted;
     }
   }
 
   &.danger {
-    color: #e0857c;
+    color: $color-error;
 
     &:hover {
       background: rgba(224, 133, 124, 0.08);
-      color: #ff9e96;
+      color: $color-danger-hover;
     }
   }
 }
@@ -101,9 +103,9 @@
 .soon {
   font-size: 9px;
   font-weight: 700;
-  color: #d6c2a1;
-  background: #5a4439;
-  border: 1px solid #5e4a3e;
+  color: $color-accent;
+  background: $color-bg-overlay-avatar;
+  border: 1px solid $color-border-input;
   padding: 2px 8px;
   border-radius: 999px;
   letter-spacing: 0.05em;
@@ -114,7 +116,7 @@
 .side-bottom {
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid #46342b;
+  border-top: 1px solid $color-border;
   display: flex;
   flex-direction: column;
   gap: 4px;

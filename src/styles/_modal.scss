@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "tokens" as *;
 
 .ant-modal:not(.ant-modal-confirm) {
   width: 60vw !important;
@@ -241,7 +241,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    color: #8c745e;
+    color: $color-text-muted;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -252,13 +252,13 @@
 
     &:hover {
       background: rgba(214, 194, 161, 0.08);
-      color: #f5ebdd;
+      color: $color-text-main;
     }
   }
 
   .modal-body {
     padding: 24px;
-    background: #2e211c;
+    background: $color-bg-main;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -268,7 +268,7 @@
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    color: #8c745e;
+    color: $color-text-muted;
     letter-spacing: 1.32px;
     margin-bottom: 4px;
   }
@@ -286,20 +286,20 @@
     display: block;
     font-size: 13.5px;
     font-weight: 600;
-    color: #f5ebdd;
+    color: $color-text-main;
     margin-bottom: 8px;
 
     .required {
-      color: #e0857c;
+      color: $color-error;
       font-weight: 700;
       margin-left: 2px;
     }
   }
 
   .input-wrap {
-    border: 1px solid #5e4a3e;
+    border: 1px solid $color-border-input;
     border-radius: 12px;
-    background: #3a2a23;
+    background: $color-bg-card;
     padding: 10px 14px;
     display: flex;
     align-items: center;
@@ -314,7 +314,7 @@
       background: transparent !important;
       width: 100%;
       font-size: 14px;
-      color: #f5ebdd !important;
+      color: $color-text-main !important;
       font-weight: 500;
       outline: none !important;
       padding: 0 !important;
@@ -322,7 +322,7 @@
       box-shadow: none !important;
 
       &::placeholder {
-        color: #8c745e !important;
+        color: $color-text-muted !important;
       }
     }
 
@@ -331,12 +331,12 @@
     }
 
     &:focus-within {
-      border-color: #d6c2a1;
+      border-color: $color-accent;
       box-shadow: 0 0 0 2px rgba(214, 194, 161, 0.15);
     }
 
     &.error {
-      border-color: #e0857c;
+      border-color: $color-error;
       &:focus-within {
         box-shadow: 0 0 0 2px rgba(224, 133, 124, 0.15);
       }
@@ -346,8 +346,8 @@
   // Segmented Control / Radio-Group styling
   .segmented-control {
     display: flex;
-    background: #3a2a23;
-    border: 1px solid #46342b;
+    background: $color-bg-card;
+    border: 1px solid $color-border;
     border-radius: 12px;
     padding: 4px;
     gap: 4px;
@@ -364,7 +364,7 @@
       gap: 8px;
       font-size: 13.5px;
       font-weight: 600;
-      color: #a67b5b;
+      color: $color-text-muted-light;
       cursor: pointer;
       transition:
         background 0.15s,
@@ -376,14 +376,14 @@
       }
 
       &:hover:not(.active) {
-        color: #f5ebdd;
+        color: $color-text-main;
         background: rgba(214, 194, 161, 0.08);
       }
 
       &.active {
-        background: #5a4439;
-        border-color: #5e4a3e;
-        color: #f5ebdd;
+        background: $color-bg-overlay-avatar;
+        border-color: $color-border-input;
+        color: $color-text-main;
         font-weight: 700;
       }
     }
@@ -391,15 +391,15 @@
 
   .divider {
     border: none;
-    border-top: 1px solid #46342b;
+    border-top: 1px solid $color-border;
     margin: 4px 0;
     background-color: transparent;
   }
 
   .price-input-container {
-    border: 1px solid #5e4a3e;
+    border: 1px solid $color-border-input;
     border-radius: 12px;
-    background: #3a2a23;
+    background: $color-bg-card;
     padding: 10px 14px;
     display: flex;
     align-items: center;
@@ -409,7 +409,7 @@
 
     .currency-symbol {
       font-size: 14px;
-      color: #8c745e;
+      color: $color-text-muted;
       margin-right: 8px;
       user-select: none;
       font-weight: 600;
@@ -420,19 +420,19 @@
       background: transparent !important;
       width: 100%;
       font-size: 14px;
-      color: #f5ebdd !important;
+      color: $color-text-main !important;
       font-weight: 500;
       outline: none !important;
       padding: 0 !important;
       margin: 0 !important;
 
       &::placeholder {
-        color: #8c745e !important;
+        color: $color-text-muted !important;
       }
     }
 
     &:focus-within {
-      border-color: #d6c2a1;
+      border-color: $color-accent;
       box-shadow: 0 0 0 2px rgba(214, 194, 161, 0.15);
     }
   }
@@ -443,19 +443,19 @@
     gap: 8px;
     margin-top: 8px;
     font-size: 12.5px;
-    color: #a67b5b;
+    color: $color-text-muted-light;
     line-height: 1.4;
 
     nz-icon {
       font-size: 14px;
       margin-top: 2px;
-      color: #8c745e;
+      color: $color-text-muted;
     }
   }
 
   .error-msg {
     font-size: 12px;
-    color: #e0857c;
+    color: $color-error;
     margin-top: 6px;
     font-weight: 500;
   }
@@ -465,8 +465,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
-    border-top: 1px solid #46342b;
-    background: #3a2a23;
+    border-top: 1px solid $color-border;
+    background: $color-bg-card;
   }
 
   .footer-right {
@@ -476,8 +476,8 @@
   }
 
   .save-btn {
-    background: linear-gradient(to bottom, #ebdcc4, #d6c2a1);
-    color: #4b362f;
+    background: linear-gradient(to bottom, $color-primary-hover, $color-accent);
+    color: $color-accent-dark;
     border: none;
     border-radius: 11px;
     height: 40px;
@@ -506,13 +506,13 @@
 
   .cancel-btn {
     background: transparent;
-    border: 1px solid #5e4a3e;
+    border: 1px solid $color-border-input;
     border-radius: 11px;
     height: 40px;
     padding: 0 20px;
     font-size: 13.5px;
     font-weight: 600;
-    color: #d6c2a1;
+    color: $color-accent;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -523,19 +523,19 @@
 
     &:hover {
       background: rgba(214, 194, 161, 0.08);
-      color: #f5ebdd;
+      color: $color-text-main;
     }
   }
 
   .delete-btn {
     background: transparent;
-    border: 1px solid #5e4a3e;
+    border: 1px solid $color-border-input;
     border-radius: 11px;
     height: 40px;
     padding: 0 16px;
     font-size: 13.5px;
     font-weight: 600;
-    color: #e0857c;
+    color: $color-error;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -547,7 +547,7 @@
 
     &:hover {
       background: rgba(224, 133, 124, 0.08);
-      color: #ff9e96;
+      color: $color-danger-hover;
     }
 
     @media (max-width: 500px) {

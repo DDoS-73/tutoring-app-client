@@ -1,3 +1,5 @@
+@use "../../../../../../styles/tokens" as *;
+
 :host {
   display: block;
 }
@@ -9,8 +11,8 @@
 }
 
 .detail-card {
-  background: #3a2a23;
-  border: 1px solid #46342b;
+  background: $color-bg-card;
+  border: 1px solid $color-border;
   border-radius: 14px;
   padding: 21px;
   box-sizing: border-box;
@@ -21,7 +23,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.32px;
-  color: #8c745e;
+  color: $color-text-muted;
   margin-bottom: 14px;
 }
 
@@ -30,7 +32,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #46342b;
+  border-bottom: 1px solid $color-border;
   box-sizing: border-box;
 
   &:last-child {
@@ -41,21 +43,21 @@
 .row-label {
   font-size: 13.5px;
   font-weight: 400;
-  color: #a67b5b;
+  color: $color-text-muted-light;
 }
 
 .row-value {
   font-size: 13.5px;
   font-weight: 600;
-  color: #f5ebdd;
+  color: $color-text-main;
 }
 
 .info-card {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #3a2a23;
-  border: 1px solid #46342b;
+  background: $color-bg-card;
+  border: 1px solid $color-border;
   border-radius: 14px;
   padding: 21px;
   box-sizing: border-box;
@@ -64,7 +66,7 @@
 .info-card-left {
   flex-shrink: 0;
   font-size: 18px;
-  color: #d6c2a1;
+  color: $color-accent;
   display: flex;
   align-items: center;
 }
@@ -72,10 +74,10 @@
 .info-card-right {
   font-size: 13px;
   line-height: 1.5;
-  color: #a67b5b;
+  color: $color-text-muted-light;
 
   .payments-highlight {
-    color: #d6c2a1;
+    color: $color-accent;
     font-weight: 700;
   }
 }

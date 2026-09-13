@@ -1,4 +1,4 @@
-@use "./variables" as *;
+@use "./tokens" as *;
 
 form {
   display: flex;
@@ -99,7 +99,7 @@ form {
 
   &.has-error {
     .form-input {
-      border-color: #ff8a80 !important;
+      border-color: $color-error-field !important;
 
       &:focus {
         box-shadow: 0 0 0 4px rgba(255, 138, 128, 0.15) !important;
@@ -107,14 +107,14 @@ form {
     }
 
     .input-icon {
-      color: #ff8a80 !important;
+      color: $color-error-field !important;
     }
   }
 
   .error-msg {
     font-size: 12px;
     font-weight: 500;
-    color: #ff8a80;
+    color: $color-error-field;
     margin-top: 4px;
     animation: slideDown 0.2s ease-out;
   }

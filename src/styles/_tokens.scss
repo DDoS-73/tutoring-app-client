@@ -1,0 +1,33 @@
+@forward "./variables";
+@use "./variables" as *;
+
+// Status colors without an existing palette entry
+$color-danger-hover: #ff9e96;
+$color-error-field: #ff8a80;
+$color-track: #271b17;
+
+// Radii
+$radius-input: 12px;
+$radius-btn: 11px;
+$radius-nav: 10px;
+$radius-card: 14px;
+$radius-pill: 999px;
+
+// Layout
+$header-height: 65px;
+$sidebar-width: 256px;
+$drawer-width: 280px;
+
+// Breakpoints
+$bp-desktop: 1024px;
+$bp-tablet: 768px;
+$bp-small: 767px;
+$bp-mobile: 500px;
+
+// Elevation & motion
+$z-overlay: 1050;
+$transition-fast: 0.15s;
+$transition-base: 0.2s;
+
+// Typography
+$font-main: "Montserrat", sans-serif;

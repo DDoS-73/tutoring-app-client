@@ -1,11 +1,13 @@
+@use "../../../../../styles/tokens" as *;
+
 @use "../../../../../styles/tabs" as tabs;
 
 :host {
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: #2e211c;
-  color: #f5ebdd;
+  background: $color-bg-main;
+  color: $color-text-main;
   font-family: "Montserrat", sans-serif;
   height: 100%;
 }
@@ -24,8 +26,8 @@
   flex-direction: column;
   width: 100%;
   max-width: 400px;
-  background: #2e211c;
-  border-right: 1px solid #46342b;
+  background: $color-bg-main;
+  border-right: 1px solid $color-border;
   flex-shrink: 0;
   box-sizing: border-box;
   height: 100%;
@@ -38,7 +40,7 @@
   justify-content: space-between;
   height: 92px;
   padding: 0 24px;
-  border-bottom: 1px solid #46342b;
+  border-bottom: 1px solid $color-border;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -52,7 +54,7 @@
 .pane-title {
   font-size: 23px;
   font-weight: 700;
-  color: #f5ebdd;
+  color: $color-text-main;
   margin: 0;
   letter-spacing: -0.24px;
 }
@@ -64,17 +66,17 @@
   min-width: 20px;
   height: 20px;
   border-radius: 999px;
-  background: #3a2a23;
-  border: 1px solid #5e4a3e;
+  background: $color-bg-card;
+  border: 1px solid $color-border-input;
   font-size: 11px;
   font-weight: 600;
-  color: #a67b5b;
+  color: $color-text-muted-light;
   padding: 0 6px;
 }
 
 .pane-sub {
   font-size: 13px;
-  color: #a67b5b;
+  color: $color-text-muted-light;
   margin: 4px 0 0;
   line-height: 1.4;
   font-weight: 400;
@@ -88,8 +90,8 @@
   gap: 8px;
   height: 38px;
   padding: 0 16px;
-  background: linear-gradient(to bottom, #ebdcc4, #d6c2a1);
-  color: #4b362f;
+  background: linear-gradient(to bottom, $color-primary-hover, $color-accent);
+  color: $color-accent-dark;
   border: none;
   border-radius: 11px;
   font-size: 13px;
@@ -131,29 +133,29 @@
   align-items: center;
   gap: 10px;
   height: 42px;
-  background: #3a2a23;
-  border: 1px solid #5e4a3e;
+  background: $color-bg-card;
+  border: 1px solid $color-border-input;
   border-radius: 12px;
   padding: 0 14px;
   box-sizing: border-box;
 
   .search-icon {
     font-size: 14px;
-    color: #8c745e;
+    color: $color-text-muted;
   }
 
   input {
     border: none;
     background: transparent;
     width: 100%;
-    color: #f5ebdd;
+    color: $color-text-main;
     font-size: 14px;
     font-weight: 500;
     outline: none;
     padding: 0;
 
     &::placeholder {
-      color: #8c745e;
+      color: $color-text-muted;
     }
   }
 }
@@ -204,15 +206,15 @@
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
-  color: #a67b5b;
+  color: $color-text-muted-light;
   transition:
     background 0.18s ease,
     color 0.18s ease;
 }
 
 .ant-tabs-tab-active .tab-count {
-  background: linear-gradient(180deg, #ebdcc4, #d6c2a1);
-  color: #4b362f;
+  background: linear-gradient(180deg, $color-primary-hover, $color-accent);
+  color: $color-accent-dark;
 }
 
 // Scrollable Area & Custom Scrollbar
@@ -229,11 +231,11 @@
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #46342b;
+    background: $color-border;
     border-radius: 3px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: #5e4a3e;
+    background: $color-border-input;
   }
 }
 
@@ -245,7 +247,7 @@
   align-items: center;
   padding: 48px 24px;
   text-align: center;
-  color: #a67b5b;
+  color: $color-text-muted-light;
   font-size: 13.5px;
 }
 
@@ -255,7 +257,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.32px;
-  color: #8c745e;
+  color: $color-text-muted;
   padding: 16px 24px 8px;
 }
 
@@ -300,13 +302,13 @@
 
   &--archived {
     .av {
-      background: #5a4439 !important;
-      border: 1px solid #5e4a3e;
-      color: #8c745e !important;
+      background: $color-bg-overlay-avatar !important;
+      border: 1px solid $color-border-input;
+      color: $color-text-muted !important;
     }
 
     .pname {
-      color: #8c745e;
+      color: $color-text-muted;
     }
   }
 }
@@ -338,22 +340,22 @@
   justify-content: center;
   font-size: 12.5px;
   font-weight: 700;
-  color: #4b362f;
+  color: $color-accent-dark;
   flex-shrink: 0;
   box-sizing: border-box;
 
   &--group {
     border-radius: 10px;
-    background: #5a4439;
-    border: 1px solid #5e4a3e;
-    color: #d6c2a1;
+    background: $color-bg-overlay-avatar;
+    border: 1px solid $color-border-input;
+    color: $color-accent;
   }
 }
 
 .pname {
   font-size: 14.5px;
   font-weight: 600;
-  color: #f5ebdd;
+  color: $color-text-main;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -369,7 +371,7 @@
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
-  color: #8c745e;
+  color: $color-text-muted;
   cursor: pointer;
   opacity: 0;
   transition:
@@ -390,29 +392,29 @@
 
   &:hover {
     background: rgba(214, 194, 161, 0.08);
-    color: #d6c2a1;
+    color: $color-accent;
   }
 
   &--archive:hover {
     background: rgba(224, 133, 124, 0.08);
-    color: #e0857c;
+    color: $color-error;
   }
 
   &--unarchive:hover {
     background: rgba(214, 194, 161, 0.08);
-    color: #d6c2a1;
+    color: $color-accent;
   }
 
   &--delete:hover {
     background: rgba(224, 133, 124, 0.08);
-    color: #e0857c;
+    color: $color-error;
   }
 }
 
 // ──────────────── RIGHT PANEL (Desktop details panel) ────────────────
 .right-panel {
   flex: 1;
-  background: #2e211c;
+  background: $color-bg-main;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -430,20 +432,20 @@
 
   .info-icon {
     font-size: 36px;
-    color: #8c745e;
+    color: $color-text-muted;
     margin-bottom: 16px;
   }
 
   h3 {
     font-size: 18px;
     font-weight: 700;
-    color: #f5ebdd;
+    color: $color-text-main;
     margin: 0 0 8px;
   }
 
   p {
     font-size: 13.5px;
-    color: #a67b5b;
+    color: $color-text-muted-light;
     max-width: 340px;
     line-height: 1.5;
   }
@@ -470,7 +472,7 @@
     top: 65px; // matches header height
     left: 0; // full width — the global sidebar is already hidden at this breakpoint
     bottom: 0;
-    background: #2e211c;
+    background: $color-bg-main;
     z-index: 1000;
     overflow-y: auto;
     width: 100%;

@@ -1,0 +1,112 @@
+@use "tokens" as *;
+
+.modal-wrapper {
+  .ant-select-selector {
+    background-color: $color-bg-overlay !important;
+    border: 1px solid $color-border-input !important;
+    color: $color-text-main-light !important;
+    border-radius: 12px !important;
+    height: 44px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+
+    .ant-select-selection-item,
+    .ant-select-selection-placeholder {
+      display: flex !important;
+      align-items: center !important;
+      line-height: normal !important;
+    }
+
+    &:focus,
+    &:active,
+    &.ant-select-focused {
+      border-color: $color-accent !important;
+    }
+  }
+
+  .ant-select {
+    color: $color-text-main-light !important;
+    width: 100% !important;
+
+    &.error {
+      .ant-select-selector {
+        border-color: $color-error !important;
+      }
+
+      &.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+        border-color: $color-error !important;
+        box-shadow: 0 0 0 2px rgba($color-error, 0.15) !important;
+      }
+    }
+
+    &.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+      border-color: $color-accent !important;
+      box-shadow: 0 0 0 2px rgba($color-accent, 0.15) !important;
+    }
+  }
+
+  .ant-select-arrow {
+    color: $color-text-placeholder !important;
+  }
+
+  .ant-picker {
+    background-color: $color-bg-overlay !important;
+    border: 1px solid $color-border-input !important;
+    color: $color-text-main-light !important;
+    border-radius: 12px !important;
+    height: 44px !important;
+    padding: 10px 14px !important;
+    width: 100% !important;
+
+    input {
+      color: $color-text-main-light !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      height: auto !important;
+
+      &::placeholder {
+        color: $color-text-placeholder !important;
+      }
+    }
+
+    .ant-picker-suffix {
+      color: $color-text-placeholder !important;
+    }
+
+    &.ant-picker-focused {
+      border-color: $color-accent !important;
+      box-shadow: 0 0 0 2px rgba($color-accent, 0.15) !important;
+    }
+  }
+
+  .ant-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .ant-radio-wrapper {
+    color: $color-text-main-light !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin-right: 0 !important;
+  }
+
+  .ant-radio-inner {
+    background-color: $color-bg-overlay !important;
+    border-color: $color-border-input !important;
+
+    &::after {
+      background-color: $color-accent !important;
+    }
+  }
+
+  .ant-radio-checked {
+    .ant-radio-inner {
+      border-color: $color-accent !important;
+      background-color: $color-bg-overlay !important;
+    }
+  }
+}

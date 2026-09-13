@@ -1,0 +1,86 @@
+@use "tokens" as *;
+
+.modal-wrapper {
+  background: $color-bg-overlay;
+  border: 1px solid $color-border-overlay;
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+  color: $color-text-main-light;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid $color-border-overlay;
+    background: $color-bg-overlay;
+    position: relative;
+  }
+
+  .avatar-wrap {
+    margin-right: 14px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: $color-bg-overlay-avatar;
+    border: 1px solid $color-border-input;
+    color: $color-accent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+
+    nz-icon {
+      font-size: 18px;
+    }
+  }
+
+  .header-info {
+    flex: 1;
+  }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $color-text-main-light;
+    margin: 0 0 2px 0 !important;
+    line-height: 1.2;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: $color-text-muted-light;
+    margin: 0 !important;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px;
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: $color-text-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      color 0.15s;
+
+    &:hover {
+      background: rgba(214, 194, 161, 0.08);
+      color: $color-text-main;
+    }
+  }
+}

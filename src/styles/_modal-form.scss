@@ -1,0 +1,207 @@
+@use "tokens" as *;
+
+.modal-wrapper {
+  .modal-body {
+    padding: 24px;
+    background: $color-bg-main;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-text-muted;
+    letter-spacing: 1.32px;
+    margin-bottom: 4px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .field-label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: $color-text-main;
+    margin-bottom: 8px;
+
+    .required {
+      color: $color-error;
+      font-weight: 700;
+      margin-left: 2px;
+    }
+  }
+
+  .input-wrap {
+    border: 1px solid $color-border-input;
+    border-radius: 12px;
+    background: $color-bg-card;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+    height: 44px;
+
+    input,
+    textarea {
+      border: none !important;
+      background: transparent !important;
+      width: 100%;
+      font-size: 14px;
+      color: $color-text-main !important;
+      font-weight: 500;
+      outline: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+
+      &::placeholder {
+        color: $color-text-muted !important;
+      }
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    &:focus-within {
+      border-color: $color-accent;
+      box-shadow: 0 0 0 2px rgba(214, 194, 161, 0.15);
+    }
+
+    &.error {
+      border-color: $color-error;
+      &:focus-within {
+        box-shadow: 0 0 0 2px rgba(224, 133, 124, 0.15);
+      }
+    }
+  }
+
+  // Segmented Control / Radio-Group styling
+  .segmented-control {
+    display: flex;
+    background: $color-bg-card;
+    border: 1px solid $color-border;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+
+    button {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: $color-text-muted-light;
+      cursor: pointer;
+      transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+
+      nz-icon {
+        font-size: 14px;
+      }
+
+      &:hover:not(.active) {
+        color: $color-text-main;
+        background: rgba(214, 194, 161, 0.08);
+      }
+
+      &.active {
+        background: $color-bg-overlay-avatar;
+        border-color: $color-border-input;
+        color: $color-text-main;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid $color-border;
+    margin: 4px 0;
+    background-color: transparent;
+  }
+
+  .price-input-container {
+    border: 1px solid $color-border-input;
+    border-radius: 12px;
+    background: $color-bg-card;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+
+    .currency-symbol {
+      font-size: 14px;
+      color: $color-text-muted;
+      margin-right: 8px;
+      user-select: none;
+      font-weight: 600;
+    }
+
+    input {
+      border: none !important;
+      background: transparent !important;
+      width: 100%;
+      font-size: 14px;
+      color: $color-text-main !important;
+      font-weight: 500;
+      outline: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+
+      &::placeholder {
+        color: $color-text-muted !important;
+      }
+    }
+
+    &:focus-within {
+      border-color: $color-accent;
+      box-shadow: 0 0 0 2px rgba(214, 194, 161, 0.15);
+    }
+  }
+
+  .helper-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: $color-text-muted-light;
+    line-height: 1.4;
+
+    nz-icon {
+      font-size: 14px;
+      margin-top: 2px;
+      color: $color-text-muted;
+    }
+  }
+
+  .error-msg {
+    font-size: 12px;
+    color: $color-error;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+}

@@ -1,9 +1,9 @@
 <ng-template #archiveConfirmTpl>
-  <app-confirm-body [name]="archivingName()" action="archive" />
+  <app-confirm-body [name]="commands.archivingName()" action="archive" />
 </ng-template>
 
 <ng-template #deleteConfirmTpl>
-  <app-confirm-body [name]="deletingName()" action="delete" />
+  <app-confirm-body [name]="commands.deletingName()" action="delete" />
 </ng-template>
 
 <ng-template #activeTitleTpl>

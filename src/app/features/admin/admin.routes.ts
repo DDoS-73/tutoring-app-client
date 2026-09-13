@@ -1,14 +1,17 @@
 import { Routes } from '@angular/router';
+import { AdminPages, ParticipantTabs } from '../../shared/models/pages';
 import { AdminComponent } from './admin.component';
+import { ParticipantCommandsService } from './services/participant-commands.service';
 
 export const adminRoutes: Routes = [
   {
     path: '',
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'participants', pathMatch: 'full' },
+      { path: '', redirectTo: AdminPages.Participants, pathMatch: 'full' },
       {
-        path: 'participants',
+        path: AdminPages.Participants,
+        providers: [ParticipantCommandsService],
         loadComponent: () =>
           import('./components/participants/participants.component').then((c) => c.ParticipantsComponent),
         children: [
@@ -19,16 +22,16 @@ export const adminRoutes: Routes = [
                 (c) => c.ParticipantDetailComponent
               ),
             children: [
-              { path: '', redirectTo: 'general', pathMatch: 'full' },
+              { path: '', redirectTo: ParticipantTabs.General, pathMatch: 'full' },
               {
-                path: 'general',
+                path: ParticipantTabs.General,
                 loadComponent: () =>
                   import('./components/participants/participant-general/participant-general.component').then(
                     (c) => c.ParticipantGeneralComponent
                   ),
               },
               {
-                path: 'payments',
+                path: ParticipantTabs.Payments,
                 loadComponent: () =>
                   import('./components/participants/participant-payments/participant-payments.component').then(
                     (c) => c.ParticipantPaymentsComponent

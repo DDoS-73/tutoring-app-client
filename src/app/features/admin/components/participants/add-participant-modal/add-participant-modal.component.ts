@@ -1,39 +1,36 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { ParticipantDto } from '../../../../../core/api/participant.api';
 import { ParticipantService } from '../../../../../core/services/participant.service';
-import {
-  DEFAULT_PARTICIPANT_PRICE,
-  EventParticipantType,
-  Participant,
-} from '../../../../../shared/models/participant.model';
+import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
+import { EventParticipantType } from '../../../../../shared/models/participant.model';
 import { toInitials } from '../../../../../shared/utils';
+import { ParticipantModalResult } from '../../../models/participant-modal.model';
+import { buildParticipantForm, toParticipantDto } from '../../../utils/participant-form';
+import { ParticipantFormComponent } from './participant-form/participant-form.component';
 
 @Component({
   selector: 'app-add-participant-modal',
   templateUrl: './add-participant-modal.component.html',
   styleUrl: './add-participant-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, NzIconModule, NzButtonModule],
+  imports: [NzIconModule, NzButtonModule, ParticipantFormComponent],
 })
 export class AddParticipantModalComponent {
-  private readonly modalRef = inject(NzModalRef);
+  private readonly modalRef = inject<NzModalRef<AddParticipantModalComponent, ParticipantModalResult>>(NzModalRef);
   private readonly participantService = inject(ParticipantService);
   private readonly notification = inject(NzNotificationService);
 
-  protected readonly editData = inject<Participant | null>(NZ_MODAL_DATA, { optional: true });
+  protected readonly editData = inject<ParticipantRow | null>(NZ_MODAL_DATA, { optional: true });
   protected readonly isEdit = !!this.editData;
 
   protected readonly EventParticipantType = EventParticipantType;
 
-  protected readonly form = inject(FormBuilder).nonNullable.group({
-    name: [this.editData?.name || '', [Validators.required, Validators.minLength(2), Validators.maxLength(24)]],
-    type: [this.editData?.type ?? EventParticipantType.Student, [Validators.required]],
-    price: [this.editData?.price ?? DEFAULT_PARTICIPANT_PRICE, [Validators.required, Validators.min(0)]],
-  });
+  protected readonly form = buildParticipantForm(inject(FormBuilder), this.editData);
 
   protected readonly isPending = computed(() =>
     this.isEdit
@@ -42,12 +39,7 @@ export class AddParticipantModalComponent {
   );
 
   protected get initials(): string {
-    return toInitials(this.form?.get('name')?.value || '');
-  }
-
-  protected setType(type: EventParticipantType): void {
-    if (this.isPending()) return;
-    this.form.patchValue({ type });
+    return toInitials(this.form?.controls.name.value || '');
   }
 
   protected onClose(): void {
@@ -67,33 +59,38 @@ export class AddParticipantModalComponent {
       return;
     }
 
-    const value = this.form.getRawValue();
+    const dto = toParticipantDto(this.form);
     if (this.isEdit && this.editData?.id) {
-      this.participantService.updateMutation.mutate(
-        {
-          id: this.editData.id,
-          dto: value,
-        },
-        {
-          onSuccess: () => {
-            this.notification.success('Success', 'Changes saved successfully.');
-            this.modalRef.close({ updated: value });
-          },
-          onError: () => {
-            this.notification.error('Error', 'Failed to save changes. Please try again.');
-          },
-        }
-      );
+      this.saveEdit(this.editData.id, dto);
     } else {
-      this.participantService.createMutation.mutate(value, {
+      this.saveCreate(dto);
+    }
+  }
+
+  private saveEdit(id: string | number, dto: ParticipantDto): void {
+    this.participantService.updateMutation.mutate(
+      { id, dto },
+      {
         onSuccess: () => {
-          this.notification.success('Success', 'Participant added successfully.');
-          this.modalRef.close(true);
+          this.notification.success('Success', 'Changes saved successfully.');
+          this.modalRef.close({ updated: dto });
         },
         onError: () => {
-          this.notification.error('Error', 'Failed to add participant. Please try again.');
+          this.notification.error('Error', 'Failed to save changes. Please try again.');
         },
-      });
-    }
+      }
+    );
+  }
+
+  private saveCreate(dto: ParticipantDto): void {
+    this.participantService.createMutation.mutate(dto, {
+      onSuccess: () => {
+        this.notification.success('Success', 'Participant added successfully.');
+        this.modalRef.close(true);
+      },
+      onError: () => {
+        this.notification.error('Error', 'Failed to add participant. Please try again.');
+      },
+    });
   }
 }

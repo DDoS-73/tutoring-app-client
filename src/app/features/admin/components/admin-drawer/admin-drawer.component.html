@@ -18,52 +18,7 @@
     </div>
 
     <div class="drawer-content">
-      <div class="side-group">
-        <span class="side-label">MANAGE</span>
-        <a
-          class="nav-item"
-          routerLink="participants"
-          routerLinkActive="active"
-          (click)="closeDrawer()"
-          title="Participants"
-        >
-          <nz-icon nzType="team" />
-          <span class="label">Participants</span>
-        </a>
-        <span class="nav-item disabled" title="Event Settings (Soon)">
-          <span class="nav-item-icon-wrap">
-            <nz-icon nzType="calendar" />
-            <span class="soon-dot"></span>
-          </span>
-          <span class="label">Event settings</span>
-          <span class="soon">Soon</span>
-        </span>
-      </div>
-
-      <hr class="side-divider" />
-
-      <div class="side-group">
-        <span class="side-label">INSIGHTS</span>
-        <span class="nav-item disabled" title="Statistics (Soon)">
-          <span class="nav-item-icon-wrap">
-            <nz-icon nzType="bar-chart" />
-            <span class="soon-dot"></span>
-          </span>
-          <span class="label">Statistics</span>
-          <span class="soon">Soon</span>
-        </span>
-      </div>
-
-      <div class="side-bottom">
-        <button class="nav-item nav-item-account" type="button" title="Account">
-          <nz-icon nzType="user" />
-          <span class="label">Account</span>
-        </button>
-        <button class="nav-item danger" type="button" (click)="signOut()" title="Sign out">
-          <nz-icon nzType="logout" />
-          <span class="label">Sign out</span>
-        </button>
-      </div>
+      <app-admin-nav variant="drawer" (navigated)="closeDrawer()" (signOut)="signOut()" />
     </div>
   </ng-container>
 </nz-drawer>

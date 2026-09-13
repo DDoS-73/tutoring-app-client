@@ -1,25 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  TemplateRef,
-  effect,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, TemplateRef, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { ParticipantService } from '../../../../../core/services/participant.service';
 import { ConfirmBodyComponent } from '../../../../../shared/components/confirm-body/confirm-body.component';
-import { DEFAULT_PARTICIPANT_PRICE, EventParticipantType } from '../../../../../shared/models/participant.model';
-import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
+import { ParticipantRow, resolvePrice } from '../../../../../shared/models/participant-row.model';
+import { EventParticipantType } from '../../../../../shared/models/participant.model';
 import { AppModalService } from '../../../../../shared/services/app-modal.service';
+import { ADMIN_PARTICIPANTS_PATH } from '../../../admin.paths';
+import { isDeleteRequested, ParticipantModalResult } from '../../../models/participant-modal.model';
+import { ParticipantCommandsService } from '../../../services/participant-commands.service';
 import { AddParticipantModalComponent } from '../add-participant-modal/add-participant-modal.component';
 import { ParticipantDetailService } from './participant-detail.service';
 
@@ -45,18 +37,15 @@ import { ParticipantDetailService } from './participant-detail.service';
 export class ParticipantDetailComponent {
   private readonly router = inject(Router);
   private readonly participantDetail = inject(ParticipantDetailService);
-  private readonly participantService = inject(ParticipantService);
   private readonly modal = inject(AppModalService);
-  private readonly message = inject(NzMessageService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly deleteConfirmTpl = viewChild.required<TemplateRef<void>>('deleteConfirmTpl');
 
+  protected readonly commands = inject(ParticipantCommandsService);
+
   protected readonly EventParticipantType = EventParticipantType;
-  protected readonly DEFAULT_PARTICIPANT_PRICE = DEFAULT_PARTICIPANT_PRICE;
-
-  private readonly deleteMutation = this.participantService.deleteMutation;
-
-  protected readonly deletingName = signal('');
+  protected readonly resolvePrice = resolvePrice;
+  protected readonly participantsPath = ADMIN_PARTICIPANTS_PATH;
 
   protected readonly isResolving = this.participantDetail.isResolving;
   protected readonly participant = this.participantDetail.participant;
@@ -64,43 +53,25 @@ export class ParticipantDetailComponent {
   constructor() {
     effect(() => {
       if (!this.isResolving() && this.participant() === null) {
-        this.router.navigateByUrl('/admin/participants');
+        this.router.navigateByUrl(ADMIN_PARTICIPANTS_PATH);
       }
     });
   }
 
   protected onEdit(participant: ParticipantRow): void {
-    const modalRef = this.modal.openForm(AddParticipantModalComponent, participant);
+    const modalRef = this.modal.openForm<AddParticipantModalComponent, ParticipantModalResult>(
+      AddParticipantModalComponent,
+      participant
+    );
 
     modalRef.afterClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
-      if (result?.action === 'delete') {
+      if (isDeleteRequested(result)) {
         this.onDelete(participant);
       }
     });
   }
 
   private onDelete(participant: ParticipantRow): void {
-    const id = participant.id;
-    if (id == null) return;
-    this.deletingName.set(participant.name);
-    this.modal.confirmDanger({
-      title: 'Delete Participant?',
-      content: this.deleteConfirmTpl(),
-      okText: 'Delete',
-      iconType: 'delete',
-      onOk: () =>
-        new Promise((resolve, reject) => {
-          this.deleteMutation.mutate(id, {
-            onSuccess: () => {
-              this.router.navigateByUrl('/admin/participants');
-              resolve(true);
-            },
-            onError: () => {
-              this.message.error('Failed to delete participant. Please try again.');
-              reject();
-            },
-          });
-        }),
-    });
+    this.commands.delete(participant, this.deleteConfirmTpl(), 'always');
   }
 }

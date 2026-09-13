@@ -15,35 +15,35 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <span class="metric-label">Classes</span>
-        <div class="metric-value">{{ completedClasses() }} / {{ totalClasses() }}</div>
+        <div class="metric-value">{{ summary().completedClasses }} / {{ summary().totalClasses }}</div>
         <span class="metric-sub">scheduled this month</span>
       </div>
 
       <div class="metric-card">
         <span class="metric-label">Paid</span>
-        <div class="metric-value">{{ paidCount() }} / {{ totalClasses() }}</div>
+        <div class="metric-value">{{ summary().paidCount }} / {{ summary().totalClasses }}</div>
         <div class="progress-bar-container">
-          <div class="progress-bar" [style.width.%]="paidPercentage()"></div>
+          <div class="progress-bar" [style.width.%]="summary().paidPercentage"></div>
         </div>
       </div>
 
       <div class="metric-card">
         <span class="metric-label">Received</span>
-        <div class="metric-value positive">₴{{ receivedAmount() }}</div>
+        <div class="metric-value positive">₴{{ summary().receivedAmount }}</div>
         <span class="metric-sub">collected this month</span>
       </div>
 
-      @if (loanAmount() > 0) {
+      @if (summary().loanAmount > 0) {
         <div class="metric-card">
           <span class="metric-label">Debt</span>
-          <div class="metric-value negative">₴{{ loanAmount() }}</div>
-          <span class="metric-sub">{{ loanCount() }} missed / loans</span>
+          <div class="metric-value negative">₴{{ summary().loanAmount }}</div>
+          <span class="metric-sub">{{ summary().loanCount }} missed / loans</span>
         </div>
       } @else {
         <div class="metric-card">
           <span class="metric-label">To receive</span>
-          <div class="metric-value">₴{{ toReceiveAmount() }}</div>
-          <span class="metric-sub">{{ upcomingCount() }} upcoming</span>
+          <div class="metric-value">₴{{ summary().toReceiveAmount }}</div>
+          <span class="metric-sub">{{ summary().upcomingCount }} upcoming</span>
         </div>
       }
     </div>

@@ -1,0 +1,121 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.side-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.side-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #8c745e;
+  padding: 0 12px 6px;
+}
+
+.side-divider {
+  border: none;
+  border-top: 1px solid #46342b;
+  margin: 8px 0;
+}
+
+:host(.variant-drawer) .side-divider {
+  width: 100%;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #d6c2a1;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+
+  nz-icon {
+    font-size: 14px;
+  }
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+    color: #f5ebdd;
+  }
+
+  &.active {
+    background: rgba(214, 194, 161, 0.15);
+    color: #f5ebdd;
+    border: 1px solid rgba(214, 194, 161, 0.3);
+  }
+
+  &.disabled {
+    color: #8c745e;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+      color: #8c745e;
+    }
+  }
+
+  &.danger {
+    color: #e0857c;
+
+    &:hover {
+      background: rgba(224, 133, 124, 0.08);
+      color: #ff9e96;
+    }
+  }
+}
+
+:host(:not(.variant-drawer)) .nav-item {
+  .nav-item-icon-wrap {
+    display: inline-flex;
+    position: relative;
+  }
+
+  .soon-dot {
+    display: none;
+  }
+}
+
+.soon {
+  font-size: 9px;
+  font-weight: 700;
+  color: #d6c2a1;
+  background: #5a4439;
+  border: 1px solid #5e4a3e;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+.side-bottom {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #46342b;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

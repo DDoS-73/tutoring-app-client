@@ -1,4 +1,5 @@
 @use "../../../../../../styles/variables" as *;
+@use "../../../../../../styles/tabs" as tabs;
 
 // Deliberately plain/auto-height on desktop: .right-panel (participants.component.scss)
 // is already the scroll container here, same as the pre-routing .details-container did.
@@ -139,37 +140,11 @@
 }
 
 .detail-tabs {
-  margin-bottom: 20px;
+  display: block;
+  margin: 24px 0 20px;
 
   ::ng-deep {
-    .ant-tabs-nav {
-      margin: 0 0 20px;
-    }
-
-    .ant-tabs-tab {
-      padding: 10px 0;
-      margin: 0 20px 0 0;
-    }
-
-    .ant-tabs-tab-btn a {
-      color: $color-text-muted-light;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        color: $color-text-main;
-      }
-    }
-
-    .ant-tabs-tab-active .ant-tabs-tab-btn a {
-      color: $color-text-main;
-    }
-
-    .ant-tabs-ink-bar {
-      background: $color-accent;
-      height: 2px;
-    }
+    @include tabs.segmented-tabs($nav-margin: 0);
   }
 }
 

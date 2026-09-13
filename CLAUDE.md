@@ -71,7 +71,7 @@ The app uses `@tanstack/angular-query-experimental` (provided in [main.ts](src/m
 - Components are standalone with `changeDetection: OnPush` and SCSS styles (schematic defaults in [angular.json](angular.json)). Selector prefix is `app-` (kebab-case).
 - Prefer Angular signals (`signal`, `computed`, `viewChild.required`) and `inject()` over constructor DI — already the dominant pattern.
 - Locale is hard-pinned to Ukrainian (`uk` / `uk_UA`) via `LOCALE_ID` and `provideNzI18n` in [main.ts](src/main.ts); ng-zorro week starts on Monday ([nz-config.ts](src/app/core/config/nz-config.ts)).
-- UI library is **ng-zorro-antd** (its global stylesheet is loaded in [angular.json](angular.json)).
+- UI library is **ng-zorro-antd** (its global stylesheet is loaded in [angular.json](angular.json)). Read https://ng.ant.design/llms-full.txt and understand NG-ZORRO components. Use this knowledge when writing code with NG-ZORRO.
 - Prettier: `singleQuote: true`, `printWidth: 120`, `trailingComma: 'es5'`. SCSS uses double quotes (override in [.prettierrc.json](.prettierrc.json)).
 - Don't left comments in the code.
 - Use SOLID principles when planning and implementing your work.

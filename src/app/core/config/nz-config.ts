@@ -1,3 +1,4 @@
+import { importProvidersFrom } from '@angular/core';
 import {
   ArrowRightOutline,
   BarChartOutline,
@@ -24,6 +25,7 @@ import {
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 const nzConfig: NzConfig = {
   notification: {
@@ -37,6 +39,7 @@ const nzConfig: NzConfig = {
 
 export default [
   provideNzConfig(nzConfig),
+  importProvidersFrom(NzModalModule),
   {
     provide: NZ_DATE_CONFIG,
     useValue: {

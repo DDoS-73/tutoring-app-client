@@ -37,8 +37,4 @@ export class DateService {
     current7DaysStartingFromMonday[6].setHours(23, 59, 59, 999);
     return current7DaysStartingFromMonday;
   }
-
-  public getWeekDayByIndex(index: number) {
-    return this.currentWeekDays()[index];
-  }
 }

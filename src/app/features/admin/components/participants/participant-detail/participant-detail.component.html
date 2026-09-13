@@ -1,6 +1,5 @@
 <ng-template #deleteConfirmTpl>
-  <b>{{ deletingName() }}</b> will be deleted forever. Past events will remain; future events with this participant will
-  be cancelled.
+  <app-confirm-body [name]="deletingName()" action="delete" />
 </ng-template>
 
 @if (isResolving()) {

@@ -3,12 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { ParticipantService } from '../../../../core/services/participant.service';
+import { ConfirmBodyComponent } from '../../../../shared/components/confirm-body/confirm-body.component';
 import { ParticipantRow, toParticipantRows } from '../../../../shared/models/participant-row.model';
 import { EventParticipantType } from '../../../../shared/models/participant.model';
+import { AppModalService } from '../../../../shared/services/app-modal.service';
 import { AddParticipantModalComponent } from './add-participant-modal/add-participant-modal.component';
 
 @Component({
@@ -25,11 +27,12 @@ import { AddParticipantModalComponent } from './add-participant-modal/add-partic
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
+    ConfirmBodyComponent,
   ],
 })
 export class ParticipantsComponent {
   private readonly participantService = inject(ParticipantService);
-  private readonly modal = inject(NzModalService);
+  private readonly modal = inject(AppModalService);
   private readonly message = inject(NzMessageService);
   private readonly router = inject(Router);
   private readonly archiveConfirmTpl = viewChild.required<TemplateRef<void>>('archiveConfirmTpl');
@@ -89,17 +92,12 @@ export class ParticipantsComponent {
     const id = participant.id;
     if (id == null) return;
     this.archivingName.set(participant.name);
-    this.modal.confirm({
-      nzTitle: 'Archive Participant?',
-      nzContent: this.archiveConfirmTpl(),
-      nzOkText: 'Archive',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzCancelText: 'Cancel',
-      nzIconType: 'container',
-      nzCentered: true,
-      nzClassName: 'teachup-confirm-modal',
-      nzOnOk: () =>
+    this.modal.confirmDanger({
+      title: 'Archive Participant?',
+      content: this.archiveConfirmTpl(),
+      okText: 'Archive',
+      iconType: 'container',
+      onOk: () =>
         new Promise((resolve, reject) => {
           this.archiveMutation.mutate(id, {
             onSuccess: () => {
@@ -134,17 +132,12 @@ export class ParticipantsComponent {
     const id = participant.id;
     if (id == null) return;
     this.deletingName.set(participant.name);
-    this.modal.confirm({
-      nzTitle: 'Delete Participant?',
-      nzContent: this.deleteConfirmTpl(),
-      nzOkText: 'Delete',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzCancelText: 'Cancel',
-      nzIconType: 'delete',
-      nzCentered: true,
-      nzClassName: 'teachup-confirm-modal',
-      nzOnOk: () =>
+    this.modal.confirmDanger({
+      title: 'Delete Participant?',
+      content: this.deleteConfirmTpl(),
+      okText: 'Delete',
+      iconType: 'delete',
+      onOk: () =>
         new Promise((resolve, reject) => {
           this.deleteMutation.mutate(id, {
             onSuccess: () => {
@@ -163,15 +156,7 @@ export class ParticipantsComponent {
   }
 
   protected onAddParticipant(): void {
-    this.modal.create<AddParticipantModalComponent>({
-      nzContent: AddParticipantModalComponent,
-      nzFooter: null,
-      nzTitle: undefined,
-      nzClosable: false,
-      nzCentered: true,
-      nzWidth: 560,
-      nzClassName: 'teachup-modal',
-    });
+    this.modal.openForm(AddParticipantModalComponent);
   }
 
   private isParticipantRouteActive(id: string | number): boolean {

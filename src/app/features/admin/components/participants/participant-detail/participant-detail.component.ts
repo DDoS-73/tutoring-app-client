@@ -12,12 +12,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { ParticipantService } from '../../../../../core/services/participant.service';
+import { ConfirmBodyComponent } from '../../../../../shared/components/confirm-body/confirm-body.component';
 import { DEFAULT_PARTICIPANT_PRICE, EventParticipantType } from '../../../../../shared/models/participant.model';
 import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
+import { AppModalService } from '../../../../../shared/services/app-modal.service';
 import { AddParticipantModalComponent } from '../add-participant-modal/add-participant-modal.component';
 import { ParticipantDetailService } from './participant-detail.service';
 
@@ -26,7 +28,16 @@ import { ParticipantDetailService } from './participant-detail.service';
   templateUrl: './participant-detail.component.html',
   styleUrl: './participant-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzModalModule, NzSpinModule, NzTabsModule, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [
+    NzIconModule,
+    NzModalModule,
+    NzSpinModule,
+    NzTabsModule,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    ConfirmBodyComponent,
+  ],
   // Provided here (the :id route) so the routed General/Payments tabs can inject the same
   // instance and read the participant it already resolved, instead of re-deriving it.
   providers: [ParticipantDetailService],
@@ -35,7 +46,7 @@ export class ParticipantDetailComponent {
   private readonly router = inject(Router);
   private readonly participantDetail = inject(ParticipantDetailService);
   private readonly participantService = inject(ParticipantService);
-  private readonly modal = inject(NzModalService);
+  private readonly modal = inject(AppModalService);
   private readonly message = inject(NzMessageService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly deleteConfirmTpl = viewChild.required<TemplateRef<void>>('deleteConfirmTpl');
@@ -59,16 +70,7 @@ export class ParticipantDetailComponent {
   }
 
   protected onEdit(participant: ParticipantRow): void {
-    const modalRef = this.modal.create<AddParticipantModalComponent>({
-      nzContent: AddParticipantModalComponent,
-      nzFooter: null,
-      nzTitle: undefined,
-      nzClosable: false,
-      nzCentered: true,
-      nzWidth: 560,
-      nzData: participant,
-      nzClassName: 'teachup-modal',
-    });
+    const modalRef = this.modal.openForm(AddParticipantModalComponent, participant);
 
     modalRef.afterClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
       if (result?.action === 'delete') {
@@ -81,17 +83,12 @@ export class ParticipantDetailComponent {
     const id = participant.id;
     if (id == null) return;
     this.deletingName.set(participant.name);
-    this.modal.confirm({
-      nzTitle: 'Delete Participant?',
-      nzContent: this.deleteConfirmTpl(),
-      nzOkText: 'Delete',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzCancelText: 'Cancel',
-      nzIconType: 'delete',
-      nzCentered: true,
-      nzClassName: 'teachup-confirm-modal',
-      nzOnOk: () =>
+    this.modal.confirmDanger({
+      title: 'Delete Participant?',
+      content: this.deleteConfirmTpl(),
+      okText: 'Delete',
+      iconType: 'delete',
+      onOk: () =>
         new Promise((resolve, reject) => {
           this.deleteMutation.mutate(id, {
             onSuccess: () => {

@@ -213,7 +213,7 @@
     color 0.18s ease;
 }
 
-.ant-tabs-tab-active .tab-count {
+::ng-deep .ant-tabs-tab-active .tab-count {
   background: linear-gradient(180deg, $color-primary-hover, $color-accent);
   color: $color-accent-dark;
 }

@@ -1,11 +1,10 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Option } from '../../../../shared/models/option';
-import { isSameDate } from '../../../../shared/utils';
 import { ChangeEventMode } from '../../const/change-event-mode';
 import { DELETE_EVENT_MODE_OPTIONS } from '../../const/delete-event-mode-options';
 import { UPDATE_EVENT_MODE_OPTIONS } from '../../const/update-event-mode-options';
@@ -82,11 +81,6 @@ export class UpdateEventModalComponent {
       return;
     }
 
-    const isSameEventDate = isSameDate(event.startTime, formValue.startTime!);
-    const updateEventModeOptions = isSameEventDate
-      ? UPDATE_EVENT_MODE_OPTIONS
-      : UPDATE_EVENT_MODE_OPTIONS.filter((option) => option.value !== ChangeEventMode.ALL);
-
     const modalRef = this.dialog.create<ChangeEventModeModalComponent, Option<ChangeEventMode>[], ChangeEventMode>({
       nzTitle: undefined,
       nzClosable: false,
@@ -94,7 +88,7 @@ export class UpdateEventModalComponent {
       nzFooter: null,
       nzCentered: true,
       nzWidth: '30vw',
-      nzData: updateEventModeOptions,
+      nzData: UPDATE_EVENT_MODE_OPTIONS,
       nzClassName: 'teachup-modal',
     });
     modalRef.afterClose.pipe(take(1)).subscribe((mode) => {

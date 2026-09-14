@@ -65,6 +65,7 @@
         [placeholder]="pricePlaceholder"
         min="0"
         [readonly]="isPending()"
+        (focus)="onPriceFocus($event)"
       />
     </div>
     @if (form().controls.price.invalid && form().controls.price.touched) {

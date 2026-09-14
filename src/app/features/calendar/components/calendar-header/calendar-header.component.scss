@@ -76,11 +76,13 @@ button:focus-visible {
   background: transparent;
   color: $color-text-main;
 }
-.arrow-btn:hover,
-.today-btn:hover {
-  background: rgba($color-primary, 0.08);
-  color: $color-primary-hover;
-  border-color: $color-border-active;
+@media (hover: hover) {
+  .arrow-btn:hover,
+  .today-btn:hover {
+    background: rgba($color-primary, 0.08);
+    color: $color-primary-hover;
+    border-color: $color-border-active;
+  }
 }
 .arrow-btn {
   width: 36px;
@@ -106,8 +108,14 @@ button:focus-visible {
   white-space: nowrap;
   margin: 0 4px;
 
-  &.open,
-  &:hover {
+  &.open {
+    background: rgba($color-primary, 0.08);
+    border-color: $color-border-active;
+    color: $color-primary-hover;
+  }
+}
+@media (hover: hover) {
+  .week-pill:hover {
     background: rgba($color-primary, 0.08);
     border-color: $color-border-active;
     color: $color-primary-hover;
@@ -122,10 +130,12 @@ button:focus-visible {
   background: $color-bg-input;
   color: $color-primary;
 }
-.profile-btn:hover {
-  background: rgba($color-primary, 0.08);
-  color: $color-primary-hover;
-  border-color: $color-border-active;
+@media (hover: hover) {
+  .profile-btn:hover {
+    background: rgba($color-primary, 0.08);
+    color: $color-primary-hover;
+    border-color: $color-border-active;
+  }
 }
 
 nz-icon {

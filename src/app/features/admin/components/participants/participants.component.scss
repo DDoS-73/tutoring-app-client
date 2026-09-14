@@ -159,6 +159,23 @@
       color: $color-text-muted;
     }
   }
+
+  .clear-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    color: $color-text-muted;
+    font-size: 14px;
+    flex-shrink: 0;
+
+    &:hover {
+      color: $color-text-main;
+    }
+  }
 }
 
 // Tabs

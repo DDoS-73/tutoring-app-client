@@ -28,4 +28,8 @@ export class ParticipantFormComponent {
     if (this.isPending()) return;
     this.form().patchValue({ type });
   }
+
+  protected onPriceFocus(event: FocusEvent): void {
+    (event.target as HTMLInputElement).select();
+  }
 }

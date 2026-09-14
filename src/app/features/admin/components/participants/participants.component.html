@@ -49,6 +49,16 @@
           [ngModel]="searchQuery()"
           (ngModelChange)="searchQuery.set($event)"
         />
+        @if (searchQuery()) {
+          <button
+            class="clear-btn"
+            type="button"
+            (click)="searchQuery.set('')"
+            aria-label="Clear search"
+          >
+            <nz-icon nzType="close-circle" nzTheme="fill" />
+          </button>
+        }
       </div>
     </div>
 

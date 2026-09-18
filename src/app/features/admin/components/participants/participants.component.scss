@@ -83,6 +83,11 @@
   font-weight: 400;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
 // Add button
 .add-btn {
   display: inline-flex;
@@ -275,7 +280,7 @@
   padding: 16px 24px 8px;
 }
 
-// List & Row Items
+// List (row items are rendered by app-participant-row, styled in its own component)
 .list {
   list-style: none;
   margin: 0;
@@ -285,144 +290,52 @@
   gap: 4px;
 }
 
-.row-item {
-  position: relative; // containing block for .row-link's stretched inset:0
-  display: grid;
-  grid-template-columns: 40px 1fr auto;
-  align-items: center;
-  gap: 12px;
-  height: 62px;
-  padding: 0 12px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition:
-    background 0.15s,
-    border-color 0.15s;
-
-  &:hover {
-    background: rgba(214, 194, 161, 0.08);
-
-    .action-btn {
-      opacity: 1;
-    }
-  }
-
-  &.selected {
-    background: rgba(214, 194, 161, 0.13);
-    border: 1px solid rgba(214, 194, 161, 0.28);
-  }
-
-  &--archived {
-    .av {
-      background: $color-bg-overlay-avatar !important;
-      border: 1px solid $color-border-input;
-      color: $color-text-muted !important;
-    }
-
-    .pname {
-      color: $color-text-muted;
-    }
-  }
-}
-
-// Stretched-link pattern: covers the whole row for click/keyboard/screen-reader navigation
-// (position:absolute also removes it from .row-item's grid auto-placement automatically),
-// while sitting behind the action buttons so they stay independently clickable.
-.row-link {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.row-actions {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-// Avatar
-.av {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+// Select / Cancel (selection-mode toggle in the header)
+.select-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  background: transparent;
+  color: $color-primary;
+  border: 1px solid $color-border-input;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: none;
+  color: $color-text-muted-light;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0 4px;
+}
+
+.selecting-subtitle {
+  font-size: 13px;
+  color: $color-primary;
+  margin: 4px 0 0;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+// Select-all — rendered via [nzTabBarExtraContent], sits at the end of the tab nav row
+.select-all-btn {
+  background: transparent;
+  border: none;
+  color: $color-primary;
   font-size: 12.5px;
   font-weight: 700;
-  color: $color-accent-dark;
-  flex-shrink: 0;
-  box-sizing: border-box;
-
-  &--group {
-    border-radius: 10px;
-    background: $color-bg-overlay-avatar;
-    border: 1px solid $color-border-input;
-    color: $color-accent;
-  }
-}
-
-.pname {
-  font-size: 14.5px;
-  font-weight: 600;
-  color: $color-text-main;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// Action Button
-.action-btn {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: transparent;
-  color: $color-text-muted;
   cursor: pointer;
-  opacity: 0;
-  transition:
-    opacity 0.15s,
-    background 0.15s,
-    color 0.15s;
-
-  @media (hover: none) {
-    &:not(:disabled) {
-      opacity: 1;
-    }
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
-  }
-
-  &:hover {
-    background: rgba(214, 194, 161, 0.08);
-    color: $color-accent;
-  }
-
-  &--archive:hover {
-    background: rgba(224, 133, 124, 0.08);
-    color: $color-error;
-  }
-
-  &--unarchive:hover {
-    background: rgba(214, 194, 161, 0.08);
-    color: $color-accent;
-  }
-
-  &--delete:hover {
-    background: rgba(224, 133, 124, 0.08);
-    color: $color-error;
-  }
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 // ──────────────── RIGHT PANEL (Desktop details panel) ────────────────
@@ -511,5 +424,10 @@
 
   ::ng-deep .ant-tabs-nav {
     margin: 0 16px 14px !important;
+  }
+
+  // Room for the fixed bulk-action bar so it doesn't cover the last row
+  .scroll-area.has-bulk-bar {
+    padding-bottom: 84px;
   }
 }

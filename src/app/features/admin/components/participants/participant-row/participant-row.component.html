@@ -1,0 +1,55 @@
+@if (selection.selectMode()) {
+  <label class="checkbox-container" (click)="onCheckboxLabelClick($event)">
+    <input type="checkbox" [checked]="checked()" (change)="selection.toggle(participant().id)" />
+    <span class="checkmark"></span>
+  </label>
+} @else {
+  <a class="row-link" [routerLink]="[participant().id]" [attr.aria-label]="participant().name"></a>
+}
+
+@if (group()) {
+  <span class="av av--group">
+    <nz-icon nzType="team" nzTheme="outline" />
+  </span>
+} @else {
+  <span class="av" [style.background-color]="participant().avatarColor">
+    {{ participant().initials }}
+  </span>
+}
+
+<span class="pname">{{ participant().name }}</span>
+
+@if (!selection.selectMode()) {
+  <div class="row-actions">
+    @if (archived()) {
+      <button
+        class="action-btn action-btn--unarchive"
+        type="button"
+        [disabled]="unarchivePending()"
+        (click)="onUnarchiveClick($event)"
+        aria-label="Restore participant"
+      >
+        <nz-icon nzType="container" nzTheme="outline" />
+      </button>
+    } @else {
+      <button
+        class="action-btn action-btn--archive"
+        type="button"
+        [disabled]="archivePending()"
+        (click)="onArchiveClick($event)"
+        aria-label="Archive participant"
+      >
+        <nz-icon nzType="container" nzTheme="outline" />
+      </button>
+    }
+    <button
+      class="action-btn action-btn--delete"
+      type="button"
+      [disabled]="deletePending()"
+      (click)="onDeleteClick($event)"
+      aria-label="Delete participant"
+    >
+      <nz-icon nzType="delete" nzTheme="outline" />
+    </button>
+  </div>
+}

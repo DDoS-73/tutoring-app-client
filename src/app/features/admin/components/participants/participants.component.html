@@ -6,6 +6,18 @@
   <app-confirm-body [name]="commands.deletingName()" action="delete" />
 </ng-template>
 
+<ng-template #bulkArchiveConfirmTpl>
+  <app-confirm-body [count]="commands.bulkCount()" action="archive" />
+</ng-template>
+
+<ng-template #bulkUnarchiveConfirmTpl>
+  <app-confirm-body [count]="commands.bulkCount()" action="unarchive" />
+</ng-template>
+
+<ng-template #bulkDeleteConfirmTpl>
+  <app-confirm-body [count]="commands.bulkCount()" action="delete" />
+</ng-template>
+
 <ng-template #activeTitleTpl>
   Active
   @if (activeQuery.data(); as data) {
@@ -20,6 +32,14 @@
   }
 </ng-template>
 
+<ng-template #selectAllTpl>
+  @if (selection.selectMode()) {
+    <button class="select-all-btn" type="button" (click)="onToggleSelectAll()">
+      {{ selection.allSelected() ? 'Deselect all' : 'Select all' }}
+    </button>
+  }
+</ng-template>
+
 <div class="dashboard-container" [class.has-selection]="hasSelection()">
   <!-- ──────────────── MIDDLE PANEL: PARTICIPANT LIST ──────────────── -->
   <div class="middle-panel">
@@ -31,12 +51,27 @@
             <span class="count-badge">{{ data.length }}</span>
           }
         </div>
-        <p class="pane-sub">Pick a participant to see details.</p>
+        @if (selection.selectMode()) {
+          <p class="selecting-subtitle">{{ selection.selectedCount() }} selected</p>
+        } @else {
+          <p class="pane-sub">Pick a participant to see details.</p>
+        }
       </div>
-      <button class="add-btn" type="button" [disabled]="createMutation.isPending()" (click)="onAddParticipant()">
-        <nz-icon nzType="plus" />
-        <span>Add</span>
-      </button>
+      @if (selection.selectMode()) {
+        <button class="cancel-btn" type="button" (click)="onCancelSelectMode()">
+          <span>Cancel</span>
+        </button>
+      } @else {
+        <div class="header-actions">
+          <button class="select-btn" type="button" (click)="onEnterSelectMode()">
+            <span>Select</span>
+          </button>
+          <button class="add-btn" type="button" [disabled]="createMutation.isPending()" (click)="onAddParticipant()">
+            <nz-icon nzType="plus" />
+            <span>Add</span>
+          </button>
+        </div>
+      }
     </header>
 
     <!-- Search Bar -->
@@ -50,12 +85,7 @@
           (ngModelChange)="searchQuery.set($event)"
         />
         @if (searchQuery()) {
-          <button
-            class="clear-btn"
-            type="button"
-            (click)="searchQuery.set('')"
-            aria-label="Clear search"
-          >
+          <button class="clear-btn" type="button" (click)="searchQuery.set('')" aria-label="Clear search">
             <nz-icon nzType="close-circle" nzTheme="fill" />
           </button>
         }
@@ -63,10 +93,15 @@
     </div>
 
     <!-- Active/Archived Tabs -->
-    <nz-tabset class="tabs">
+    <nz-tabset
+      class="tabs"
+      [nzSelectedIndex]="selectedTabIndex()"
+      (nzSelectedIndexChange)="onTabIndexChange($event)"
+      [nzTabBarExtraContent]="selectAllTpl"
+    >
       <!-- Active Tab -->
       <nz-tab [nzTitle]="activeTitleTpl">
-        <div class="scroll-area">
+        <div class="scroll-area" [class.has-bulk-bar]="selection.selectMode() && selection.selectedCount() > 0">
           @if (activeQuery.isLoading()) {
             <div class="spinner-wrap">
               <nz-spin nzSimple />
@@ -81,33 +116,14 @@
               <div class="section-header">STUDENTS · {{ activeStudents().length }}</div>
               <ul class="list">
                 @for (participant of activeStudents(); track participant.id) {
-                  <li class="row-item" routerLinkActive="selected">
-                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
-                    <span class="av" [style.background-color]="participant.avatarColor">
-                      {{ participant.initials }}
-                    </span>
-                    <span class="pname">{{ participant.name }}</span>
-                    <div class="row-actions">
-                      <button
-                        class="action-btn action-btn--archive"
-                        type="button"
-                        [disabled]="archiveMutation.isPending()"
-                        (click)="onArchive(participant); $event.stopPropagation()"
-                        aria-label="Archive participant"
-                      >
-                        <nz-icon nzType="container" nzTheme="outline" />
-                      </button>
-                      <button
-                        class="action-btn action-btn--delete"
-                        type="button"
-                        [disabled]="deleteMutation.isPending()"
-                        (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Delete participant"
-                      >
-                        <nz-icon nzType="delete" nzTheme="outline" />
-                      </button>
-                    </div>
-                  </li>
+                  <li
+                    app-participant-row
+                    [participant]="participant"
+                    [archivePending]="archiveMutation.isPending()"
+                    [deletePending]="deleteMutation.isPending()"
+                    (archive)="onArchive(participant)"
+                    (delete)="onDelete(participant)"
+                  ></li>
                 }
               </ul>
             }
@@ -117,33 +133,15 @@
               <div class="section-header">GROUPS · {{ activeGroups().length }}</div>
               <ul class="list">
                 @for (participant of activeGroups(); track participant.id) {
-                  <li class="row-item" routerLinkActive="selected">
-                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
-                    <span class="av av--group">
-                      <nz-icon nzType="team" nzTheme="outline" />
-                    </span>
-                    <span class="pname">{{ participant.name }}</span>
-                    <div class="row-actions">
-                      <button
-                        class="action-btn action-btn--archive"
-                        type="button"
-                        [disabled]="archiveMutation.isPending()"
-                        (click)="onArchive(participant); $event.stopPropagation()"
-                        aria-label="Archive participant"
-                      >
-                        <nz-icon nzType="container" nzTheme="outline" />
-                      </button>
-                      <button
-                        class="action-btn action-btn--delete"
-                        type="button"
-                        [disabled]="deleteMutation.isPending()"
-                        (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Delete participant"
-                      >
-                        <nz-icon nzType="delete" nzTheme="outline" />
-                      </button>
-                    </div>
-                  </li>
+                  <li
+                    app-participant-row
+                    [participant]="participant"
+                    [group]="true"
+                    [archivePending]="archiveMutation.isPending()"
+                    [deletePending]="deleteMutation.isPending()"
+                    (archive)="onArchive(participant)"
+                    (delete)="onDelete(participant)"
+                  ></li>
                 }
               </ul>
             }
@@ -159,7 +157,7 @@
 
       <!-- Archived Tab -->
       <nz-tab [nzTitle]="archivedTitleTpl">
-        <div class="scroll-area">
+        <div class="scroll-area" [class.has-bulk-bar]="selection.selectMode() && selection.selectedCount() > 0">
           @if (archivedQuery.isLoading()) {
             <div class="spinner-wrap">
               <nz-spin nzSimple />
@@ -174,33 +172,15 @@
               <div class="section-header">STUDENTS · {{ archivedStudents().length }}</div>
               <ul class="list">
                 @for (participant of archivedStudents(); track participant.id) {
-                  <li class="row-item row-item--archived" routerLinkActive="selected">
-                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
-                    <span class="av av--archived">
-                      {{ participant.initials }}
-                    </span>
-                    <span class="pname">{{ participant.name }}</span>
-                    <div class="row-actions">
-                      <button
-                        class="action-btn action-btn--unarchive"
-                        type="button"
-                        [disabled]="unarchiveMutation.isPending()"
-                        (click)="onUnarchive(participant); $event.stopPropagation()"
-                        aria-label="Restore participant"
-                      >
-                        <nz-icon nzType="container" nzTheme="outline" />
-                      </button>
-                      <button
-                        class="action-btn action-btn--delete"
-                        type="button"
-                        [disabled]="deleteMutation.isPending()"
-                        (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Delete participant"
-                      >
-                        <nz-icon nzType="delete" nzTheme="outline" />
-                      </button>
-                    </div>
-                  </li>
+                  <li
+                    app-participant-row
+                    [participant]="participant"
+                    [archived]="true"
+                    [unarchivePending]="unarchiveMutation.isPending()"
+                    [deletePending]="deleteMutation.isPending()"
+                    (unarchive)="onUnarchive(participant)"
+                    (delete)="onDelete(participant)"
+                  ></li>
                 }
               </ul>
             }
@@ -210,33 +190,16 @@
               <div class="section-header">GROUPS · {{ archivedGroups().length }}</div>
               <ul class="list">
                 @for (participant of archivedGroups(); track participant.id) {
-                  <li class="row-item row-item--archived" routerLinkActive="selected">
-                    <a class="row-link" [routerLink]="[participant.id]" [attr.aria-label]="participant.name"></a>
-                    <span class="av av--group av--archived">
-                      <nz-icon nzType="team" nzTheme="outline" />
-                    </span>
-                    <span class="pname">{{ participant.name }}</span>
-                    <div class="row-actions">
-                      <button
-                        class="action-btn action-btn--unarchive"
-                        type="button"
-                        [disabled]="unarchiveMutation.isPending()"
-                        (click)="onUnarchive(participant); $event.stopPropagation()"
-                        aria-label="Restore participant"
-                      >
-                        <nz-icon nzType="container" nzTheme="outline" />
-                      </button>
-                      <button
-                        class="action-btn action-btn--delete"
-                        type="button"
-                        [disabled]="deleteMutation.isPending()"
-                        (click)="onDelete(participant); $event.stopPropagation()"
-                        aria-label="Delete participant"
-                      >
-                        <nz-icon nzType="delete" nzTheme="outline" />
-                      </button>
-                    </div>
-                  </li>
+                  <li
+                    app-participant-row
+                    [participant]="participant"
+                    [archived]="true"
+                    [group]="true"
+                    [unarchivePending]="unarchiveMutation.isPending()"
+                    [deletePending]="deleteMutation.isPending()"
+                    (unarchive)="onUnarchive(participant)"
+                    (delete)="onDelete(participant)"
+                  ></li>
                 }
               </ul>
             }
@@ -264,3 +227,13 @@
     }
   </div>
 </div>
+
+@if (selection.selectMode() && selection.selectedCount() > 0) {
+  <app-bulk-action-bar
+    [count]="selection.selectedCount()"
+    [archived]="isArchivedTab()"
+    (archive)="onBulkArchive()"
+    (unarchive)="onBulkUnarchive()"
+    (delete)="onBulkDelete()"
+  />
+}

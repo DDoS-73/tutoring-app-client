@@ -7,6 +7,12 @@
       "skillPath": "angular-developer/SKILL.md",
       "computedHash": "c5958947eaf0e79954dcb7690eb09ed3dec546b009fe730681b937ad072d0b58"
     },
+    "caveman": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/caveman/SKILL.md",
+      "computedHash": "43ab924e4422a09c24d16dc81349771513bc801c1be21077c252952fe753e6b6"
+    },
     "grill-me": {
       "source": "mattpocock/skills",
       "sourceType": "github",

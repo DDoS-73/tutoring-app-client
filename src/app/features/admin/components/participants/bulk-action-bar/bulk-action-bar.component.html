@@ -1,0 +1,19 @@
+<span class="count-label">{{ count() }} selected</span>
+<div class="divider"></div>
+
+@if (archived()) {
+  <button class="bar-btn" type="button" (click)="unarchive.emit()">
+    <nz-icon nzType="container" nzTheme="outline" />
+    <span>Unarchive</span>
+  </button>
+} @else {
+  <button class="bar-btn" type="button" (click)="archive.emit()">
+    <nz-icon nzType="container" nzTheme="outline" />
+    <span>Archive</span>
+  </button>
+}
+
+<button class="bar-btn bar-btn--danger" type="button" (click)="delete.emit()">
+  <nz-icon nzType="delete" nzTheme="outline" />
+  <span>Delete</span>
+</button>

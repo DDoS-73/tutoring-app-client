@@ -13,3 +13,72 @@
   letter-spacing: 1.32px;
   color: $color-text-muted;
 }
+
+// Hand-rolled checkbox: hidden native input + .checkmark span sibling.
+// Markup: <label class="checkbox-container"><input type="checkbox" .../><span class="checkmark"></span></label>
+@mixin checkbox {
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: $color-bg-main;
+    border: 2px solid $color-border-input;
+    border-radius: 6px;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      transform 0.1s;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid $color-primary-text;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    border-color: $color-border-active;
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $color-primary;
+    border-color: $color-primary;
+
+    &:after {
+      display: block;
+    }
+  }
+
+  input:active ~ .checkmark {
+    transform: scale(0.92);
+  }
+
+  input:disabled ~ .checkmark {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

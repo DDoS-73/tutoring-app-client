@@ -1,0 +1,94 @@
+@use "../../../../../../styles/tokens" as *;
+
+:host {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: $color-bg-card;
+  border: 1px solid $color-border-input;
+  border-radius: 14px;
+  padding: 8px 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+
+.count-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-text-main;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  background: $color-border-input;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.bar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: $color-text-main;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 10px;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+  }
+
+  &--danger {
+    color: $color-error;
+
+    &:hover {
+      background: rgba(224, 133, 124, 0.08);
+    }
+  }
+}
+
+// Mobile: full-width sticky bottom bar instead of a floating pill
+@media (max-width: $bp-tablet) {
+  :host {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 10px 16px 16px;
+  }
+
+  .count-label,
+  .divider {
+    display: none;
+  }
+
+  .bar-btn {
+    flex: 1;
+    justify-content: center;
+    background: $color-bg-main;
+    border: 1px solid $color-border-input;
+    padding: 10px;
+  }
+
+  .bar-btn--danger {
+    background: rgba(224, 133, 124, 0.12);
+    border-color: rgba(224, 133, 124, 0.3);
+  }
+}

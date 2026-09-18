@@ -1,0 +1,153 @@
+@use "../../../../../../styles/tokens" as *;
+@use "../../../../../../styles/mixins" as mixins;
+
+// Host is the <li> itself (selector: li[app-participant-row]) — no wrapper element,
+// so `ul > app-participant-row` stays valid `ul > li` for list semantics.
+:host {
+  position: relative; // containing block for .row-link's stretched inset:0
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  height: 62px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+
+    .action-btn {
+      opacity: 1;
+    }
+  }
+
+  &.selected,
+  &.checked {
+    background: rgba(214, 194, 161, 0.13);
+    border: 1px solid rgba(214, 194, 161, 0.28);
+  }
+
+  &.is-selecting {
+    grid-template-columns: 24px 40px 1fr;
+  }
+
+  &.row-item--archived {
+    .av {
+      background: $color-bg-overlay-avatar !important;
+      border: 1px solid $color-border-input;
+      color: $color-text-muted !important;
+    }
+
+    .pname {
+      color: $color-text-muted;
+    }
+  }
+}
+
+// Stretched-link pattern: covers the whole row for click/keyboard/screen-reader navigation
+// (position:absolute also removes it from the grid auto-placement automatically),
+// while sitting behind the action buttons so they stay independently clickable.
+.row-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.checkbox-container {
+  @include mixins.checkbox;
+  position: relative;
+  z-index: 1;
+}
+
+.row-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $color-accent-dark;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  &--group {
+    border-radius: 10px;
+    background: $color-bg-overlay-avatar;
+    border: 1px solid $color-border-input;
+    color: $color-accent;
+  }
+}
+
+.pname {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: $color-text-main;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    color 0.15s;
+
+  @media (hover: none) {
+    &:not(:disabled) {
+      opacity: 1;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &:hover {
+    background: rgba(214, 194, 161, 0.08);
+    color: $color-accent;
+  }
+
+  &--archive:hover {
+    background: rgba(224, 133, 124, 0.08);
+    color: $color-error;
+  }
+
+  &--unarchive:hover {
+    background: rgba(214, 194, 161, 0.08);
+    color: $color-accent;
+  }
+
+  &--delete:hover {
+    background: rgba(224, 133, 124, 0.08);
+    color: $color-error;
+  }
+}

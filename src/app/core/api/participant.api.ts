@@ -11,6 +11,10 @@ export interface ParticipantDto {
   price: number;
 }
 
+export interface BulkParticipantsDto {
+  ids: string[];
+}
+
 function byName(a: Participant, b: Participant): number {
   return a.name.localeCompare(b.name);
 }
@@ -54,4 +58,20 @@ export class ParticipantApi {
   public delete(id: string | number): Promise<void> {
     return lastValueFrom(this.http.delete<void>(apiUrl(ApiEndpoints.Participants.delete(id))));
   }
+
+  public archiveMany(ids: (string | number)[]): Promise<void> {
+    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkArchive), toBulkDto(ids)));
+  }
+
+  public unarchiveMany(ids: (string | number)[]): Promise<void> {
+    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkUnarchive), toBulkDto(ids)));
+  }
+
+  public deleteMany(ids: (string | number)[]): Promise<void> {
+    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkDelete), toBulkDto(ids)));
+  }
+}
+
+function toBulkDto(ids: (string | number)[]): BulkParticipantsDto {
+  return { ids: ids.map(String) };
 }

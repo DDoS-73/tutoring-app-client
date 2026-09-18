@@ -30,5 +30,8 @@ export class ApiEndpoints {
     update: (id: string | number) => `${this.PARTICIPANTS}/${id}`,
     archive: (id: string | number) => `${this.PARTICIPANTS}/${id}/archive`,
     unarchive: (id: string | number) => `${this.PARTICIPANTS}/${id}/unarchive`,
+    bulkArchive: `${this.PARTICIPANTS}/archive`,
+    bulkUnarchive: `${this.PARTICIPANTS}/unarchive`,
+    bulkDelete: `${this.PARTICIPANTS}/delete`,
   } as const;
 }

@@ -77,4 +77,27 @@ export class ParticipantService {
       this.queryClient.invalidateQueries({ queryKey: QueryKeys.events.all() });
     },
   }));
+
+  public readonly bulkArchiveMutation = injectMutation(() => ({
+    mutationFn: (ids: (string | number)[]) => this.api.archiveMany(ids),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.events.all() });
+    },
+  }));
+
+  public readonly bulkUnarchiveMutation = injectMutation(() => ({
+    mutationFn: (ids: (string | number)[]) => this.api.unarchiveMany(ids),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
+    },
+  }));
+
+  public readonly bulkDeleteMutation = injectMutation(() => ({
+    mutationFn: (ids: (string | number)[]) => this.api.deleteMany(ids),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.participants.all() });
+      this.queryClient.invalidateQueries({ queryKey: QueryKeys.events.all() });
+    },
+  }));
 }

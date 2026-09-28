@@ -82,3 +82,43 @@
     cursor: not-allowed;
   }
 }
+
+@mixin detail-card {
+  .detail-card {
+    @include surface-card;
+    padding: 21px;
+    box-sizing: border-box;
+  }
+
+  .card-section-title {
+    @include section-label;
+    margin-bottom: 14px;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-border;
+    box-sizing: border-box;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .row-label {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: $color-text-muted-light;
+  }
+
+  .row-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: $color-text-main;
+    text-align: right;
+  }
+}

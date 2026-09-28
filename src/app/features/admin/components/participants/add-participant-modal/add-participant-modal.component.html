@@ -24,9 +24,12 @@
 
   <!-- Footer -->
   <footer class="modal-footer">
+    @if (showInvalidHint()) {
+      <span class="footer-hint" role="status">Fix the highlighted fields to save.</span>
+    }
     <div class="footer-right">
       <button class="cancel-btn" type="button" (click)="onClose()" [disabled]="isPending()">Cancel</button>
-      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending()">
+      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending() || isInvalid()">
         @if (isPending()) {
           <nz-icon nzType="loading" style="margin-right: 8px" />
         }

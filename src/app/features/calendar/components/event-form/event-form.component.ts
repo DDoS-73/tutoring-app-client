@@ -10,15 +10,7 @@ import {
   Signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -31,17 +23,7 @@ import { TILE_COLORS_OPTIONS } from '../../const/tile-colors.options';
 import { CalendarEvent, RecurrenceFrequency } from '../../models/calendar-event.model';
 import { CalendarConfig } from '../../models/calendar.config';
 import { EventFormControls, RecurrenceControls } from '../../models/event-form.model';
-
-function timeRangeValidator(control: AbstractControl): ValidationErrors | null {
-  const startTime = control.get('startTime')?.value;
-  const endTime = control.get('endTime')?.value;
-
-  if (!startTime || !endTime) {
-    return null;
-  }
-
-  return new Date(startTime) >= new Date(endTime) ? { invalidTimeRange: true } : null;
-}
+import { EventFormValidators } from '../../validators/event-form.validators';
 
 @Component({
   selector: 'app-event-form',
@@ -78,7 +60,7 @@ export class EventFormComponent implements OnInit {
       color: new FormControl<string | null>(null, [Validators.required]),
       note: new FormControl<string | null>(null, [Validators.maxLength(64)]),
     },
-    { validators: timeRangeValidator }
+    { validators: EventFormValidators.timeRange }
   );
 
   protected participantsInputValue = signal('');

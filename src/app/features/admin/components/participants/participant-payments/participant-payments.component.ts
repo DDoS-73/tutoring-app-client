@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { LessonLedger } from '../../../models/lesson-ledger.model';
 import { LessonRow } from '../../../models/lesson-row.model';
+import { MonthRange } from '../../../models/month-range.model';
 import { PaymentsService } from '../../../services/payments.service';
-import { toLessonRows, summarizeLessons } from '../../../utils/lesson-ledger';
-import { formatMonthLabel, monthRangeIso, shiftMonth } from '../../../utils/month-range.util';
 import { ParticipantDetailService } from '../participant-detail/participant-detail.service';
 
 @Component({
@@ -23,20 +23,16 @@ export class ParticipantPaymentsComponent {
 
   protected readonly participant = this.participantDetail.participant;
 
-  private readonly selectedDate = signal<Date>(new Date());
-  private readonly monthRange = computed(() => monthRangeIso(this.selectedDate()));
-  private readonly eventsQuery = this.paymentsService.createEventsQuery(this.monthRange);
+  private readonly selectedMonth = signal(MonthRange.current());
+  private readonly eventsQuery = this.paymentsService.createEventsQuery(this.selectedMonth);
 
-  protected readonly monthLabel = computed(() => formatMonthLabel(this.selectedDate()));
+  protected readonly monthLabel = computed(() => this.selectedMonth().label);
   protected readonly isDataLoading = computed(() => this.eventsQuery.isFetching());
 
-  protected readonly studentLessons = computed<LessonRow[]>(() => {
-    const student = this.participant();
-    if (!student) return [];
-    return toLessonRows(this.eventsQuery.data() ?? [], student);
-  });
+  private readonly ledger = computed(() => new LessonLedger(this.eventsQuery.data() ?? [], this.participant()));
 
-  protected readonly summary = computed(() => summarizeLessons(this.studentLessons()));
+  protected readonly studentLessons = computed<LessonRow[]>(() => this.ledger().rows);
+  protected readonly summary = computed(() => this.ledger().summary);
 
   protected readonly pendingEventId = computed(() => {
     const mutation = this.paymentsService.updateStatusMutation;
@@ -44,11 +40,11 @@ export class ParticipantPaymentsComponent {
   });
 
   protected prevMonth(): void {
-    this.selectedDate.set(shiftMonth(this.selectedDate(), -1));
+    this.selectedMonth.update((month) => month.shift(-1));
   }
 
   protected nextMonth(): void {
-    this.selectedDate.set(shiftMonth(this.selectedDate(), 1));
+    this.selectedMonth.update((month) => month.shift(1));
   }
 
   protected onTogglePaid(lesson: LessonRow): void {

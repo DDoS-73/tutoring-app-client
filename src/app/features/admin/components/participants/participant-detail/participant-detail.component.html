@@ -30,7 +30,7 @@
               <h2 class="student-name">{{ p.name }}</h2>
               <div class="meta-row">
                 <span class="role-badge">{{ p.type === EventParticipantType.Group ? 'Group' : 'Student' }}</span>
-                <span class="student-rate">₴{{ resolvePrice(p) }} / class</span>
+                <span class="student-rate">₴{{ p.pricePerClass }} / class</span>
               </div>
             </div>
           </div>

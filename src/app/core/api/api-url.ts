@@ -1,5 +1,7 @@
 import { environment } from '../../../environments/environment';
 
-export function apiUrl(path: string): string {
-  return `${environment.backendApi}${path}`;
+export class ApiUrl {
+  public static of(path: string): string {
+    return `${environment.backendApi}${path}`;
+  }
 }

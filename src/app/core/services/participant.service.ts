@@ -2,8 +2,8 @@ import { computed, inject, Injectable, Signal } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { ParticipantApi, ParticipantDto } from '../api/participant.api';
 import { QueryKeys } from '../api/query-keys';
-import { cachedForever } from '../api/query-options';
-import { ParticipantRow, toParticipantRows } from '../../shared/models/participant-row.model';
+import { QueryOptions } from '../api/query-options';
+import { ParticipantRow } from '../../shared/models/participant-row.model';
 
 @Injectable({ providedIn: 'root' })
 export class ParticipantService {
@@ -13,25 +13,24 @@ export class ParticipantService {
   public readonly participantsQuery = injectQuery(() => ({
     queryKey: QueryKeys.participants.active(),
     queryFn: () => this.api.getActive(),
-    ...cachedForever(),
+    ...QueryOptions.cachedForever(),
   }));
 
   public readonly archivedParticipantsQuery = injectQuery(() => ({
     queryKey: QueryKeys.participants.archived(),
     queryFn: () => this.api.getArchived(),
-    ...cachedForever(),
+    ...QueryOptions.cachedForever(),
   }));
 
-  public readonly activeRows = computed<ParticipantRow[]>(() => toParticipantRows(this.participantsQuery.data() ?? []));
-
-  public readonly archivedRows = computed<ParticipantRow[]>(() =>
-    toParticipantRows(this.archivedParticipantsQuery.data() ?? [])
+  public readonly activeRows = computed<ParticipantRow[]>(() =>
+    ParticipantRow.fromList(this.participantsQuery.data() ?? [])
   );
 
-  public readonly allRows = computed<ParticipantRow[]>(() => [
-    ...toParticipantRows(this.participantsQuery.data() ?? []),
-    ...toParticipantRows(this.archivedParticipantsQuery.data() ?? []),
-  ]);
+  public readonly archivedRows = computed<ParticipantRow[]>(() =>
+    ParticipantRow.fromList(this.archivedParticipantsQuery.data() ?? [])
+  );
+
+  public readonly allRows = computed<ParticipantRow[]>(() => [...this.activeRows(), ...this.archivedRows()]);
 
   public participantById(id: Signal<string | null | undefined>): Signal<ParticipantRow | null> {
     return computed(() => {

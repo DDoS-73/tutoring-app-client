@@ -16,7 +16,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { ParticipantService } from '../../../../core/services/participant.service';
 import { ConfirmBodyComponent } from '../../../../shared/components/confirm-body/confirm-body.component';
-import { filterByName, isGroup, isStudent, ParticipantRow } from '../../../../shared/models/participant-row.model';
+import { ParticipantRow } from '../../../../shared/models/participant-row.model';
 import { AppModalService } from '../../../../shared/services/app-modal.service';
 import { ParticipantCommandsService } from '../../services/participant-commands.service';
 import { ParticipantSelectionService } from '../../services/participant-selection.service';
@@ -68,17 +68,17 @@ export class ParticipantsComponent {
   protected readonly selectedTabIndex = signal(0);
 
   private readonly filteredActiveRows = computed(() =>
-    filterByName(this.participantService.activeRows(), this.searchQuery())
+    ParticipantRow.filterByName(this.participantService.activeRows(), this.searchQuery())
   );
 
   private readonly filteredArchivedRows = computed(() =>
-    filterByName(this.participantService.archivedRows(), this.searchQuery())
+    ParticipantRow.filterByName(this.participantService.archivedRows(), this.searchQuery())
   );
 
-  protected readonly activeStudents = computed(() => this.filteredActiveRows().filter(isStudent));
-  protected readonly activeGroups = computed(() => this.filteredActiveRows().filter(isGroup));
-  protected readonly archivedStudents = computed(() => this.filteredArchivedRows().filter(isStudent));
-  protected readonly archivedGroups = computed(() => this.filteredArchivedRows().filter(isGroup));
+  protected readonly activeStudents = computed(() => this.filteredActiveRows().filter((row) => row.isStudent));
+  protected readonly activeGroups = computed(() => this.filteredActiveRows().filter((row) => row.isGroup));
+  protected readonly archivedStudents = computed(() => this.filteredArchivedRows().filter((row) => row.isStudent));
+  protected readonly archivedGroups = computed(() => this.filteredArchivedRows().filter((row) => row.isGroup));
 
   protected readonly isArchivedTab = computed(() => this.selectedTabIndex() === 1);
 

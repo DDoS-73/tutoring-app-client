@@ -1,11 +1,19 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { lastValueFrom, map } from 'rxjs';
+import { BasicFieldKey, ParentContact } from '../../shared/models/basic-field.model';
 import { EventParticipantType, Participant } from '../../shared/models/participant.model';
-import { apiUrl } from './api-url';
+import { ApiUrl } from './api-url';
 import { ApiEndpoints } from './endpoints';
 
-export interface ParticipantDto {
+export interface AdditionalInfoDto {
+  dateOfBirth: string | null;
+  contact: string | null;
+  parentContact: ParentContact | null;
+  hiddenBasicFields: BasicFieldKey[];
+}
+
+export interface ParticipantDto extends AdditionalInfoDto {
   name: string;
   type: EventParticipantType;
   price: number;
@@ -15,63 +23,71 @@ export interface BulkParticipantsDto {
   ids: string[];
 }
 
-function byName(a: Participant, b: Participant): number {
-  return a.name.localeCompare(b.name);
-}
-
 @Injectable({ providedIn: 'root' })
 export class ParticipantApi {
   private readonly http = inject(HttpClient);
 
   public getActive(): Promise<Participant[]> {
     return lastValueFrom(
-      this.http.get<Participant[]>(apiUrl(ApiEndpoints.Participants.getAll)).pipe(map((ps) => ps.sort(byName)))
+      this.http
+        .get<Participant[]>(ApiUrl.of(ApiEndpoints.Participants.getAll))
+        .pipe(map((ps) => ps.sort(ParticipantApi.byName)))
     );
   }
 
   public getArchived(): Promise<Participant[]> {
     return lastValueFrom(
       this.http
-        .get<Participant[]>(apiUrl(ApiEndpoints.Participants.getAll), {
+        .get<Participant[]>(ApiUrl.of(ApiEndpoints.Participants.getAll), {
           params: new HttpParams().set('isArchived', 'true'),
         })
-        .pipe(map((ps) => ps.sort(byName)))
+        .pipe(map((ps) => ps.sort(ParticipantApi.byName)))
     );
   }
 
   public create(dto: ParticipantDto): Promise<Participant> {
-    return lastValueFrom(this.http.post<Participant>(apiUrl(ApiEndpoints.Participants.create), dto));
+    return lastValueFrom(this.http.post<Participant>(ApiUrl.of(ApiEndpoints.Participants.create), dto));
   }
 
   public update(id: string | number, dto: ParticipantDto): Promise<void> {
-    return lastValueFrom(this.http.patch<void>(apiUrl(ApiEndpoints.Participants.update(id)), dto));
+    return lastValueFrom(this.http.patch<void>(ApiUrl.of(ApiEndpoints.Participants.update(id)), dto));
   }
 
   public archive(id: string | number): Promise<void> {
-    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.archive(id)), null));
+    return lastValueFrom(this.http.post<void>(ApiUrl.of(ApiEndpoints.Participants.archive(id)), null));
   }
 
   public unarchive(id: string | number): Promise<void> {
-    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.unarchive(id)), null));
+    return lastValueFrom(this.http.post<void>(ApiUrl.of(ApiEndpoints.Participants.unarchive(id)), null));
   }
 
   public delete(id: string | number): Promise<void> {
-    return lastValueFrom(this.http.delete<void>(apiUrl(ApiEndpoints.Participants.delete(id))));
+    return lastValueFrom(this.http.delete<void>(ApiUrl.of(ApiEndpoints.Participants.delete(id))));
   }
 
   public archiveMany(ids: (string | number)[]): Promise<void> {
-    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkArchive), toBulkDto(ids)));
+    return lastValueFrom(
+      this.http.post<void>(ApiUrl.of(ApiEndpoints.Participants.bulkArchive), ParticipantApi.toBulkDto(ids))
+    );
   }
 
   public unarchiveMany(ids: (string | number)[]): Promise<void> {
-    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkUnarchive), toBulkDto(ids)));
+    return lastValueFrom(
+      this.http.post<void>(ApiUrl.of(ApiEndpoints.Participants.bulkUnarchive), ParticipantApi.toBulkDto(ids))
+    );
   }
 
   public deleteMany(ids: (string | number)[]): Promise<void> {
-    return lastValueFrom(this.http.post<void>(apiUrl(ApiEndpoints.Participants.bulkDelete), toBulkDto(ids)));
+    return lastValueFrom(
+      this.http.post<void>(ApiUrl.of(ApiEndpoints.Participants.bulkDelete), ParticipantApi.toBulkDto(ids))
+    );
   }
-}
 
-function toBulkDto(ids: (string | number)[]): BulkParticipantsDto {
-  return { ids: ids.map(String) };
+  private static byName(a: Participant, b: Participant): number {
+    return a.name.localeCompare(b.name);
+  }
+
+  private static toBulkDto(ids: (string | number)[]): BulkParticipantsDto {
+    return { ids: ids.map(String) };
+  }
 }

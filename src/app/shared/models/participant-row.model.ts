@@ -1,34 +1,53 @@
+import { StringUtils } from '../utils/string.utils';
+import { BasicFieldKey, ParentContact } from './basic-field.model';
 import { DEFAULT_PARTICIPANT_PRICE, EventParticipantType, Participant } from './participant.model';
-import { toInitials, getAvatarColor } from '../utils';
 
-export interface ParticipantRow extends Participant {
+export class ParticipantRow implements Participant {
+  id?: string | number;
+  name: string;
+  type?: EventParticipantType;
+  price?: number;
+  isArchived: boolean;
+  dateOfBirth?: string | null;
+  contact?: string | null;
+  parentContact?: ParentContact | null;
+  hiddenBasicFields?: BasicFieldKey[];
   initials: string;
   avatarColor: string;
-}
 
-export function toParticipantRows(data: Participant[]): ParticipantRow[] {
-  return data.map((p) => ({
-    ...p,
-    initials: toInitials(p.name),
-    avatarColor: getAvatarColor(p.name),
-    isArchived: p.isArchived ?? false,
-  }));
-}
+  constructor(participant: Participant) {
+    this.id = participant.id;
+    this.name = participant.name;
+    this.type = participant.type;
+    this.price = participant.price;
+    this.isArchived = participant.isArchived ?? false;
+    this.dateOfBirth = participant.dateOfBirth;
+    this.contact = participant.contact;
+    this.parentContact = participant.parentContact;
+    this.hiddenBasicFields = participant.hiddenBasicFields;
+    this.initials = StringUtils.toInitials(participant.name);
+    this.avatarColor = StringUtils.avatarColor(participant.name);
+  }
 
-export function filterByName<T extends { name: string }>(rows: T[], rawQuery: string): T[] {
-  const query = rawQuery.toLowerCase().trim();
-  if (!query) return rows;
-  return rows.filter((r) => r.name.toLowerCase().includes(query));
-}
+  public get isStudent(): boolean {
+    return this.type === EventParticipantType.Student || this.type == null;
+  }
 
-export function isStudent(row: Participant): boolean {
-  return row.type === EventParticipantType.Student || row.type === undefined || row.type === null;
-}
+  public get isGroup(): boolean {
+    return this.type === EventParticipantType.Group;
+  }
 
-export function isGroup(row: Participant): boolean {
-  return row.type === EventParticipantType.Group;
-}
+  public get pricePerClass(): number {
+    return this.price ?? DEFAULT_PARTICIPANT_PRICE;
+  }
 
-export function resolvePrice(row: Participant): number {
-  return row.price ?? DEFAULT_PARTICIPANT_PRICE;
+  public static fromList(participants: Participant[]): ParticipantRow[] {
+    return participants.map((participant) => new ParticipantRow(participant));
+  }
+
+  public static filterByName<T extends { name: string }>(rows: T[], rawQuery: string): T[] {
+    const query = rawQuery.toLowerCase().trim();
+    if (!query) return rows;
+    return rows.filter((r) => r.name.toLowerCase().includes(query));
+  }
 }

@@ -1,0 +1,10 @@
+<div class="field-head">
+  @if (inputId(); as id) {
+    <label class="field-label" [for]="id">{{ label() }}</label>
+  } @else {
+    <span class="field-label">{{ label() }}</span>
+  }
+  <ng-content select="app-hide-toggle" />
+</div>
+
+<ng-content />

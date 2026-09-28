@@ -2,11 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, Signal } from '@angular/core';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map } from 'rxjs';
-import { apiUrl } from '../../../core/api/api-url';
+import { ApiUrl } from '../../../core/api/api-url';
 import { ApiEndpoints } from '../../../core/api/endpoints';
 import { QueryKeys } from '../../../core/api/query-keys';
-import { cachedForeverRefetchOnMount } from '../../../core/api/query-options';
+import { QueryOptions } from '../../../core/api/query-options';
 import { CalendarEvent } from '../../calendar/models/calendar-event.model';
+import { MonthRange } from '../models/month-range.model';
 
 export interface PaymentStatusUpdate {
   studentId: string | number;
@@ -20,20 +21,20 @@ export class PaymentsService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
 
-  public createEventsQuery(range: Signal<{ from: string; to: string }>) {
+  public createEventsQuery(range: Signal<MonthRange>) {
     return injectQuery(() => {
       const { from, to } = range();
       return {
         queryKey: QueryKeys.events.month(from, to),
         queryFn: () => this.getEventsForRange(from, to),
-        ...cachedForeverRefetchOnMount(),
+        ...QueryOptions.cachedForeverRefetchOnMount(),
       };
     });
   }
 
   public readonly updateStatusMutation = injectMutation(() => ({
     mutationFn: (body: PaymentStatusUpdate) => {
-      const url = apiUrl(ApiEndpoints.Events.payments(body.eventId));
+      const url = ApiUrl.of(ApiEndpoints.Events.payments(body.eventId));
 
       if (body.isPaid) {
         return lastValueFrom(this.http.post<void>(url, { occurrenceDate: body.date }));
@@ -53,7 +54,7 @@ export class PaymentsService {
     const params = new HttpParams().set('from', from).set('to', to);
     return lastValueFrom(
       this.http
-        .get<CalendarEvent[]>(apiUrl(ApiEndpoints.Events.getAll), { params })
+        .get<CalendarEvent[]>(ApiUrl.of(ApiEndpoints.Events.getAll), { params })
         .pipe(map((events) => events.map((event) => new CalendarEvent(event))))
     );
   }

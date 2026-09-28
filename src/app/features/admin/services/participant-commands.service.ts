@@ -4,13 +4,9 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { ParticipantService } from '../../../core/services/participant.service';
 import { ParticipantRow } from '../../../shared/models/participant-row.model';
 import { AppModalService } from '../../../shared/services/app-modal.service';
-import { ADMIN_PARTICIPANTS_PATH, participantPath } from '../admin.paths';
+import { AdminPaths } from '../admin.paths';
 
 export type PostDeleteNavigation = 'if-active' | 'always';
-
-function pluralize(n: number): string {
-  return n === 1 ? 'participant' : 'participants';
-}
 
 @Injectable()
 export class ParticipantCommandsService {
@@ -87,7 +83,7 @@ export class ParticipantCommandsService {
   }
 
   public archiveMany(rows: ParticipantRow[], content: TemplateRef<void>, onSuccess?: () => void): void {
-    const ids = toIds(rows);
+    const ids = ParticipantCommandsService.toIds(rows);
     if (ids.length === 0) return;
     this.bulkCount.set(ids.length);
     this.modal.confirmDanger({
@@ -99,7 +95,10 @@ export class ParticipantCommandsService {
         new Promise((resolve, reject) => {
           this.participantService.bulkArchiveMutation.mutate(ids, {
             onSuccess: () => {
-              this.notification.success('Success', `Archived ${ids.length} ${pluralize(ids.length)}.`);
+              this.notification.success(
+                'Success',
+                `Archived ${ids.length} ${ParticipantCommandsService.pluralize(ids.length)}.`
+              );
               this.leaveIfAnyActive(ids);
               onSuccess?.();
               resolve(true);
@@ -114,7 +113,7 @@ export class ParticipantCommandsService {
   }
 
   public unarchiveMany(rows: ParticipantRow[], content: TemplateRef<void>, onSuccess?: () => void): void {
-    const ids = toIds(rows);
+    const ids = ParticipantCommandsService.toIds(rows);
     if (ids.length === 0) return;
     this.bulkCount.set(ids.length);
     this.modal.confirmDanger({
@@ -126,7 +125,10 @@ export class ParticipantCommandsService {
         new Promise((resolve, reject) => {
           this.participantService.bulkUnarchiveMutation.mutate(ids, {
             onSuccess: () => {
-              this.notification.success('Success', `Restored ${ids.length} ${pluralize(ids.length)}.`);
+              this.notification.success(
+                'Success',
+                `Restored ${ids.length} ${ParticipantCommandsService.pluralize(ids.length)}.`
+              );
               this.leaveIfAnyActive(ids);
               onSuccess?.();
               resolve(true);
@@ -141,7 +143,7 @@ export class ParticipantCommandsService {
   }
 
   public deleteMany(rows: ParticipantRow[], content: TemplateRef<void>, onSuccess?: () => void): void {
-    const ids = toIds(rows);
+    const ids = ParticipantCommandsService.toIds(rows);
     if (ids.length === 0) return;
     this.bulkCount.set(ids.length);
     this.modal.confirmDanger({
@@ -153,7 +155,10 @@ export class ParticipantCommandsService {
         new Promise((resolve, reject) => {
           this.participantService.bulkDeleteMutation.mutate(ids, {
             onSuccess: () => {
-              this.notification.success('Success', `Deleted ${ids.length} ${pluralize(ids.length)}.`);
+              this.notification.success(
+                'Success',
+                `Deleted ${ids.length} ${ParticipantCommandsService.pluralize(ids.length)}.`
+              );
               this.leaveIfAnyActive(ids);
               onSuccess?.();
               resolve(true);
@@ -168,22 +173,26 @@ export class ParticipantCommandsService {
   }
 
   private leaveIfActive(id: string | number): void {
-    if (this.router.url.startsWith(participantPath(id))) {
+    if (this.router.url.startsWith(AdminPaths.participant(id))) {
       this.leave();
     }
   }
 
   private leaveIfAnyActive(ids: (string | number)[]): void {
-    if (ids.some((id) => this.router.url.startsWith(participantPath(id)))) {
+    if (ids.some((id) => this.router.url.startsWith(AdminPaths.participant(id)))) {
       this.leave();
     }
   }
 
   private leave(): void {
-    this.router.navigateByUrl(ADMIN_PARTICIPANTS_PATH);
+    this.router.navigateByUrl(AdminPaths.participants);
   }
-}
 
-function toIds(rows: ParticipantRow[]): (string | number)[] {
-  return rows.map((r) => r.id).filter((id): id is string | number => id != null);
+  private static pluralize(n: number): string {
+    return n === 1 ? 'participant' : 'participants';
+  }
+
+  private static toIds(rows: ParticipantRow[]): (string | number)[] {
+    return rows.map((r) => r.id).filter((id): id is string | number => id != null);
+  }
 }

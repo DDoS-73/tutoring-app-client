@@ -43,6 +43,21 @@
     &:active {
       transform: scale(0.98);
     }
+
+    &:disabled {
+      background: $color-bg-overlay-avatar;
+      color: $color-text-muted;
+      box-shadow: none;
+      cursor: default;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .footer-hint {
+    font-size: 12px;
+    font-weight: 500;
+    color: $color-error;
   }
 
   .cancel-btn {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
-import { apiUrl } from '../api/api-url';
+import { ApiUrl } from '../api/api-url';
 import { ApiEndpoints } from '../api/endpoints';
 import { TokenStorage } from './token-storage.service';
 
@@ -28,7 +28,7 @@ export class UserService {
       return of(null);
     }
 
-    return this._http.get<User>(apiUrl(ApiEndpoints.User.me)).pipe(
+    return this._http.get<User>(ApiUrl.of(ApiEndpoints.User.me)).pipe(
       tap((user) => {
         this._currentUser.set(user);
         this._isLoaded = true;

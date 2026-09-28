@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuthService } from '../../../../core/services/auth.service';
-import { markAllTouched } from '../../../../shared/utils';
+import { FormUtils } from '../../../../shared/utils';
 import { PasswordFieldComponent } from '../../../../shared/components/password-field/password-field.component';
 import { AuthLayoutComponent } from '../auth-layout/auth-layout.component';
 
@@ -34,7 +34,7 @@ export class SignUpComponent {
 
   protected onSubmit(): void {
     if (this.signUpForm.invalid) {
-      markAllTouched(this.signUpForm);
+      FormUtils.markAllTouched(this.signUpForm);
       return;
     }
 

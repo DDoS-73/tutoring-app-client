@@ -6,11 +6,11 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { ConfirmBodyComponent } from '../../../../../shared/components/confirm-body/confirm-body.component';
-import { ParticipantRow, resolvePrice } from '../../../../../shared/models/participant-row.model';
+import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
 import { EventParticipantType } from '../../../../../shared/models/participant.model';
 import { AppModalService } from '../../../../../shared/services/app-modal.service';
-import { ADMIN_PARTICIPANTS_PATH } from '../../../admin.paths';
-import { isDeleteRequested, ParticipantModalResult } from '../../../models/participant-modal.model';
+import { AdminPaths } from '../../../admin.paths';
+import { ParticipantModalResult, ParticipantModalResults } from '../../../models/participant-modal.model';
 import { ParticipantCommandsService } from '../../../services/participant-commands.service';
 import { AddParticipantModalComponent } from '../add-participant-modal/add-participant-modal.component';
 import { ParticipantDetailService } from './participant-detail.service';
@@ -44,8 +44,7 @@ export class ParticipantDetailComponent {
   protected readonly commands = inject(ParticipantCommandsService);
 
   protected readonly EventParticipantType = EventParticipantType;
-  protected readonly resolvePrice = resolvePrice;
-  protected readonly participantsPath = ADMIN_PARTICIPANTS_PATH;
+  protected readonly participantsPath = AdminPaths.participants;
 
   protected readonly isResolving = this.participantDetail.isResolving;
   protected readonly participant = this.participantDetail.participant;
@@ -53,7 +52,7 @@ export class ParticipantDetailComponent {
   constructor() {
     effect(() => {
       if (!this.isResolving() && this.participant() === null) {
-        this.router.navigateByUrl(ADMIN_PARTICIPANTS_PATH);
+        this.router.navigateByUrl(AdminPaths.participants);
       }
     });
   }
@@ -65,7 +64,7 @@ export class ParticipantDetailComponent {
     );
 
     modalRef.afterClose.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
-      if (isDeleteRequested(result)) {
+      if (ParticipantModalResults.isDeleteRequested(result)) {
         this.onDelete(participant);
       }
     });

@@ -75,9 +75,26 @@
       color: $color-text-placeholder !important;
     }
 
+    .ant-picker-clear {
+      background: $color-bg-overlay !important;
+      color: $color-text-placeholder !important;
+
+      &:hover {
+        color: $color-text-main-light !important;
+      }
+    }
+
     &.ant-picker-focused {
       border-color: $color-accent !important;
       box-shadow: 0 0 0 2px rgba($color-accent, 0.15) !important;
+    }
+
+    &.ant-picker-status-error {
+      border-color: $color-error !important;
+
+      &.ant-picker-focused {
+        box-shadow: 0 0 0 2px rgba($color-error, 0.15) !important;
+      }
     }
   }
 

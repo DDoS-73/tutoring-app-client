@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, LOCALE_ID } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
@@ -8,9 +7,9 @@ import { ParticipantDto } from '../../../../../core/api/participant.api';
 import { ParticipantService } from '../../../../../core/services/participant.service';
 import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
 import { EventParticipantType } from '../../../../../shared/models/participant.model';
-import { toInitials } from '../../../../../shared/utils';
+import { FormUtils, StringUtils } from '../../../../../shared/utils';
 import { ParticipantModalResult } from '../../../models/participant-modal.model';
-import { buildParticipantForm, toParticipantDto } from '../../../utils/participant-form';
+import { ParticipantForm } from '../../../forms/participant.form';
 import { ParticipantFormComponent } from './participant-form/participant-form.component';
 
 @Component({
@@ -24,13 +23,15 @@ export class AddParticipantModalComponent {
   private readonly modalRef = inject<NzModalRef<AddParticipantModalComponent, ParticipantModalResult>>(NzModalRef);
   private readonly participantService = inject(ParticipantService);
   private readonly notification = inject(NzNotificationService);
+  private readonly locale = inject(LOCALE_ID);
 
   protected readonly editData = inject<ParticipantRow | null>(NZ_MODAL_DATA, { optional: true });
   protected readonly isEdit = !!this.editData;
 
   protected readonly EventParticipantType = EventParticipantType;
 
-  protected readonly form = buildParticipantForm(inject(FormBuilder), this.editData);
+  protected readonly form = new ParticipantForm(this.editData);
+  private readonly formChanges = FormUtils.events(this.form);
 
   protected readonly isPending = computed(() =>
     this.isEdit
@@ -38,8 +39,18 @@ export class AddParticipantModalComponent {
       : this.participantService.createMutation.isPending()
   );
 
+  protected readonly isInvalid = computed(() => {
+    this.formChanges();
+    return this.form.invalid;
+  });
+
+  protected readonly showInvalidHint = computed(() => {
+    this.formChanges();
+    return this.form.invalid && (this.form.dirty || this.form.touched);
+  });
+
   protected get initials(): string {
-    return toInitials(this.form?.controls.name.value || '');
+    return StringUtils.toInitials(this.form?.controls.name.value || '');
   }
 
   protected onClose(): void {
@@ -59,7 +70,7 @@ export class AddParticipantModalComponent {
       return;
     }
 
-    const dto = toParticipantDto(this.form);
+    const dto = this.form.toDto(this.locale);
     if (this.isEdit && this.editData?.id) {
       this.saveEdit(this.editData.id, dto);
     } else {
@@ -75,7 +86,8 @@ export class AddParticipantModalComponent {
           this.notification.success('Success', 'Changes saved successfully.');
           this.modalRef.close({ updated: dto });
         },
-        onError: () => {
+        onError: (error) => {
+          this.form.applyServerErrors(error);
           this.notification.error('Error', 'Failed to save changes. Please try again.');
         },
       }
@@ -88,7 +100,8 @@ export class AddParticipantModalComponent {
         this.notification.success('Success', 'Participant added successfully.');
         this.modalRef.close(true);
       },
-      onError: () => {
+      onError: (error) => {
+        this.form.applyServerErrors(error);
         this.notification.error('Error', 'Failed to add participant. Please try again.');
       },
     });

@@ -5,7 +5,7 @@ import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, ta
 import { TokensResponse } from '../../features/auth/models';
 import { MainPages } from '../../shared/models/pages';
 import { QueryClient } from '@tanstack/angular-query-experimental';
-import { apiUrl } from '../api/api-url';
+import { ApiUrl } from '../api/api-url';
 import { ApiEndpoints } from '../api/endpoints';
 import { TokenStorage } from './token-storage.service';
 import { UserService } from './user.service';
@@ -24,7 +24,7 @@ export class AuthService {
   private _refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
 
   public login(credentials: { email: string; password: string }): Observable<TokensResponse> {
-    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.login), credentials).pipe(
+    return this._http.post<TokensResponse>(ApiUrl.of(ApiEndpoints.Auth.login), credentials).pipe(
       tap((tokens) => this._setTokens(tokens)),
       switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
       tap(() => this._router.navigate([MainPages.Calendar]))
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   public signup(data: { name: string; email: string; password: string }): Observable<TokensResponse> {
-    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.signup), data).pipe(
+    return this._http.post<TokensResponse>(ApiUrl.of(ApiEndpoints.Auth.signup), data).pipe(
       tap((tokens) => this._setTokens(tokens)),
       switchMap((tokens) => this._userService.loadCurrentUser().pipe(map(() => tokens))),
       tap(() => this._router.navigate([MainPages.Calendar]))
@@ -51,7 +51,7 @@ export class AuthService {
     this._isRefreshing = true;
     this._refreshTokenSubject.next(null);
 
-    return this._http.post<TokensResponse>(apiUrl(ApiEndpoints.Auth.refresh), {}).pipe(
+    return this._http.post<TokensResponse>(ApiUrl.of(ApiEndpoints.Auth.refresh), {}).pipe(
       map((tokens) => {
         this._setTokens(tokens);
         this._isRefreshing = false;
@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   public logout(): void {
-    this._http.post(apiUrl(ApiEndpoints.Auth.logout), {}).subscribe({
+    this._http.post(ApiUrl.of(ApiEndpoints.Auth.logout), {}).subscribe({
       complete: () => this._clearSession(),
       error: () => this._clearSession(),
     });

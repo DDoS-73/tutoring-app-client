@@ -1,47 +1,41 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProblemDetails, ValidationProblemDetails } from '../models/problem-details.model';
 
-export const DEFAULT_ERROR_TITLE = 'Помилка';
-export const DEFAULT_ERROR_MESSAGE = 'Виникла неочікувана помилка';
-
 export interface ParsedError {
   title: string;
   message: string;
 }
 
-export function parseProblemDetails(errorResponse: HttpErrorResponse): ParsedError {
-  const problem = errorResponse.error as ProblemDetails | ValidationProblemDetails | null;
-  let errorTitle = DEFAULT_ERROR_TITLE;
-  let errorMessage = DEFAULT_ERROR_MESSAGE;
+export class ProblemDetailsParser {
+  public static readonly DEFAULT_TITLE = 'Помилка';
+  public static readonly DEFAULT_MESSAGE = 'Виникла неочікувана помилка';
 
-  if (problem && typeof problem === 'object') {
-    // Parse RFC 7807 standard properties
-    if (problem.title) {
-      errorTitle = problem.title;
-    }
-    if (problem.detail) {
-      errorMessage = problem.detail;
-    } else if (problem['message']) {
-      errorMessage = problem['message'];
+  public static parse(errorResponse: HttpErrorResponse): ParsedError {
+    const problem = errorResponse.error as ProblemDetails | ValidationProblemDetails | null;
+
+    if (problem && typeof problem === 'object') {
+      return {
+        title: problem.title || ProblemDetailsParser.DEFAULT_TITLE,
+        message:
+          ProblemDetailsParser.validationMessage(problem) ||
+          problem.detail ||
+          problem['message'] ||
+          ProblemDetailsParser.DEFAULT_MESSAGE,
+      };
     }
 
-    // Parse RFC 7807 validation errors dictionary (handles any casing of properties/fields)
-    const validationProblem = problem as ValidationProblemDetails;
-    if (validationProblem.errors && typeof validationProblem.errors === 'object') {
-      const validationList = Object.entries(validationProblem.errors).map(([field, messages]) => {
-        const msgList = Array.isArray(messages) ? messages.join(', ') : String(messages);
-        return `${field}: ${msgList}`;
-      });
-
-      if (validationList.length > 0) {
-        errorMessage = validationList.join('\n');
-      }
-    }
-  } else if (typeof problem === 'string') {
-    errorMessage = problem;
-  } else if (errorResponse.message) {
-    errorMessage = errorResponse.message;
+    return {
+      title: ProblemDetailsParser.DEFAULT_TITLE,
+      message: typeof problem === 'string' ? problem : errorResponse.message || ProblemDetailsParser.DEFAULT_MESSAGE,
+    };
   }
 
-  return { title: errorTitle, message: errorMessage };
+  private static validationMessage(problem: ValidationProblemDetails): string | null {
+    if (!problem.errors || typeof problem.errors !== 'object') return null;
+    const lines = Object.entries(problem.errors).map(([field, messages]) => {
+      const text = Array.isArray(messages) ? messages.join(', ') : String(messages);
+      return `${field}: ${text}`;
+    });
+    return lines.length > 0 ? lines.join('\n') : null;
+  }
 }

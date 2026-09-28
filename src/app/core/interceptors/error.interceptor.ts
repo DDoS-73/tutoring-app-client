@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ApiEndpoints } from '../api/endpoints';
-import { parseProblemDetails } from '../api/problem-details.parser';
+import { ProblemDetailsParser } from '../api/problem-details.parser';
 
 function shouldSuppress(request: HttpRequest<unknown>, errorResponse: HttpErrorResponse): boolean {
   const isFailedAuthUrl =
@@ -28,7 +28,7 @@ export function ErrorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
         return throwError(() => errorResponse);
       }
 
-      const { title, message } = parseProblemDetails(errorResponse);
+      const { title, message } = ProblemDetailsParser.parse(errorResponse);
 
       notificationService.error(title, message, {
         nzStyle: { whiteSpace: 'pre-line' },

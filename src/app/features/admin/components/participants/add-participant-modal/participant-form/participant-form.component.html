@@ -3,7 +3,7 @@
 
   <div class="form-field">
     <label class="field-label" for="fullName"> Full name <span class="required">*</span> </label>
-    <div class="input-wrap" [class.error]="form().controls.name.invalid && form().controls.name.touched">
+    <div class="input-wrap" [class.error]="nameError()">
       <input
         id="fullName"
         type="text"
@@ -13,7 +13,7 @@
         [readonly]="isPending()"
       />
     </div>
-    @if (form().controls.name.invalid && form().controls.name.touched) {
+    @if (nameError()) {
       <div class="error-msg">
         @if (form().controls.name.errors?.['required']) {
           Name is required.
@@ -50,13 +50,18 @@
     </div>
   </div>
 
+  @if (isStudent()) {
+    <hr class="divider" />
+    <app-additional-info-form [group]="form().controls.additionalInfo" [isPending]="isPending()" />
+  }
+
   <hr class="divider" />
 
   <div class="section-title">LESSONS</div>
 
   <div class="form-field">
     <label class="field-label" for="price"> Price per class <span class="required">*</span> </label>
-    <div class="price-input-container" [class.error]="form().controls.price.invalid && form().controls.price.touched">
+    <div class="price-input-container" [class.error]="priceError()">
       <span class="currency-symbol">₴</span>
       <input
         id="price"
@@ -68,7 +73,7 @@
         (focus)="onPriceFocus($event)"
       />
     </div>
-    @if (form().controls.price.invalid && form().controls.price.touched) {
+    @if (priceError()) {
       <div class="error-msg">Price is required and must be 0 or more.</div>
     }
     <div class="helper-text">

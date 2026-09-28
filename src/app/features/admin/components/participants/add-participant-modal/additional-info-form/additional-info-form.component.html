@@ -1,0 +1,126 @@
+<div class="section-title">ADDITIONAL INFORMATION</div>
+
+<ng-container [formGroup]="group()">
+  <app-basic-field-block
+    inputId="dateOfBirth"
+    [label]="labels[BasicFieldKey.DateOfBirth]"
+    [class.is-hidden]="hidden().has(BasicFieldKey.DateOfBirth)"
+  >
+    <app-hide-toggle
+      [label]="labels[BasicFieldKey.DateOfBirth]"
+      [isHidden]="hidden().has(BasicFieldKey.DateOfBirth)"
+      [disabled]="isPending()"
+      (toggled)="toggleHidden(BasicFieldKey.DateOfBirth)"
+    />
+    <nz-date-picker
+      nzId="dateOfBirth"
+      nzPlaceHolder="DD.MM.YYYY"
+      formControlName="dateOfBirth"
+      [nzFormat]="dateFormat"
+      [nzDisabledDate]="isOutsideBirthDateRange"
+      [nzInputReadOnly]="true"
+      [nzStatus]="errors().dateOfBirth ? 'error' : ''"
+    />
+    @if (errors().dateOfBirth; as error) {
+      <div class="field-hint error" aria-live="polite">{{ error }}</div>
+    }
+  </app-basic-field-block>
+
+  <app-basic-field-block
+    inputId="contact"
+    [label]="labels[BasicFieldKey.Contact]"
+    [class.is-hidden]="hidden().has(BasicFieldKey.Contact)"
+  >
+    <app-hide-toggle
+      [label]="labels[BasicFieldKey.Contact]"
+      [isHidden]="hidden().has(BasicFieldKey.Contact)"
+      [disabled]="isPending()"
+      (toggled)="toggleHidden(BasicFieldKey.Contact)"
+    />
+    <div class="input-wrap" [class.error]="!!errors().contact">
+      <input
+        id="contact"
+        type="text"
+        inputmode="numeric"
+        formControlName="contact"
+        appInputFormat="digits"
+        placeholder="380XXXXXXXXX"
+        autocomplete="off"
+        aria-describedby="contact-hint"
+        [maxDigits]="phoneMaxDigits"
+        [attr.aria-invalid]="!!errors().contact"
+        [readonly]="isPending()"
+      />
+    </div>
+    <div id="contact-hint" class="field-hint" [class.error]="!!errors().contact" aria-live="polite">
+      {{ errors().contact ?? hints.phone }}
+    </div>
+  </app-basic-field-block>
+
+  <app-basic-field-block
+    formGroupName="parentContact"
+    [label]="labels[BasicFieldKey.ParentContact]"
+    [boxed]="true"
+    [class.is-hidden]="hidden().has(BasicFieldKey.ParentContact)"
+  >
+    <app-hide-toggle
+      [label]="labels[BasicFieldKey.ParentContact]"
+      [isHidden]="hidden().has(BasicFieldKey.ParentContact)"
+      [disabled]="isPending()"
+      (toggled)="toggleHidden(BasicFieldKey.ParentContact)"
+    />
+
+    <div class="sub-field">
+      <label class="sub-label" for="parentName">
+        Name
+        @if (hasParentContact()) {
+          <span class="required">*</span>
+        }
+      </label>
+      <div class="input-wrap" [class.error]="!!errors().parentName">
+        <input
+          id="parentName"
+          type="text"
+          formControlName="name"
+          appInputFormat="capitalize"
+          placeholder="e.g. Олена Прохода"
+          autocomplete="off"
+          aria-describedby="parentName-hint"
+          [maxlength]="textMaxLength"
+          [attr.aria-invalid]="!!errors().parentName"
+          [readonly]="isPending()"
+        />
+      </div>
+      @if (errors().parentName; as error) {
+        <div id="parentName-hint" class="field-hint error" aria-live="polite">{{ error }}</div>
+      }
+    </div>
+
+    <div class="sub-field">
+      <label class="sub-label" for="parentPhone">
+        Phone
+        @if (hasParentContact()) {
+          <span class="required">*</span>
+        }
+      </label>
+      <div class="input-wrap" [class.error]="!!errors().parentPhone">
+        <input
+          id="parentPhone"
+          type="text"
+          inputmode="numeric"
+          formControlName="phone"
+          appInputFormat="digits"
+          placeholder="380XXXXXXXXX"
+          autocomplete="off"
+          aria-describedby="parentPhone-hint"
+          [maxDigits]="phoneMaxDigits"
+          [attr.aria-invalid]="!!errors().parentPhone"
+          [readonly]="isPending()"
+        />
+      </div>
+      <div id="parentPhone-hint" class="field-hint" [class.error]="!!errors().parentPhone" aria-live="polite">
+        {{ errors().parentPhone ?? hints.phone }}
+      </div>
+    </div>
+  </app-basic-field-block>
+</ng-container>

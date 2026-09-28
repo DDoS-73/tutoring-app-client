@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="hide-toggle"
+  [class.active]="isHidden()"
+  [attr.aria-pressed]="isHidden()"
+  [attr.aria-label]="(isHidden() ? 'Show ' : 'Hide ') + label()"
+  [disabled]="disabled()"
+  (click)="toggled.emit()"
+>
+  {{ isHidden() ? 'Hidden' : 'Hide' }}
+</button>

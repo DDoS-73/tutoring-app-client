@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { filter, map } from 'rxjs';
-import { participantPath } from '../../../admin.paths';
+import { AdminPaths } from '../../../admin.paths';
 import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
 import { ParticipantSelectionService } from '../../../services/participant-selection.service';
 
@@ -49,7 +49,7 @@ export class ParticipantRowComponent {
   protected readonly routeActive = computed(() => {
     const id = this.participant().id;
     if (id == null) return false;
-    return this.currentUrl().startsWith(participantPath(id));
+    return this.currentUrl().startsWith(AdminPaths.participant(id));
   });
 
   protected onRowClick(): void {

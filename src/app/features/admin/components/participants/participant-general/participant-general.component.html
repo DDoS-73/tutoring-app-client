@@ -13,6 +13,10 @@
       </div>
     </div>
 
+    @if (p.isStudent) {
+      <app-participant-additional-info [participant]="p" />
+    }
+
     <!-- Info/Payments Notice Card -->
     <div class="info-card">
       <div class="info-card-left">

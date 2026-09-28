@@ -1,0 +1,32 @@
+@let p = participant();
+
+<section class="detail-card" aria-labelledby="additional-info-title">
+  <div id="additional-info-title" class="card-section-title">ADDITIONAL INFORMATION</div>
+  @for (key of visibleFields(); track key) {
+    <div class="detail-row" [class.stacked]="key === BasicFieldKey.ParentContact">
+      <span class="row-label">{{ labels[key] }}</span>
+      @switch (key) {
+        @case (BasicFieldKey.DateOfBirth) {
+          <ng-container *ngTemplateOutlet="valueTpl; context: { $implicit: p.dateOfBirth | date: dateFormat }" />
+        }
+        @case (BasicFieldKey.Contact) {
+          <ng-container *ngTemplateOutlet="valueTpl; context: { $implicit: p.contact | phone }" />
+        }
+        @case (BasicFieldKey.ParentContact) {
+          <span class="row-values">
+            <ng-container *ngTemplateOutlet="valueTpl; context: { $implicit: p.parentContact?.name }" />
+            @if (p.parentContact?.phone | phone; as phone) {
+              <span class="row-secondary">{{ phone }}</span>
+            }
+          </span>
+        }
+      }
+    </div>
+  } @empty {
+    <p class="all-hidden">All basic fields are hidden for this student.</p>
+  }
+</section>
+
+<ng-template #valueTpl let-value>
+  <span class="row-value" [class.empty]="!value">{{ value || notProvided }}</span>
+</ng-template>

@@ -15,6 +15,7 @@ import {
   LogoutOutline,
   MailOutline,
   MenuOutline,
+  HolderOutline,
   PlusOutline,
   ReloadOutline,
   RightOutline,
@@ -70,6 +71,7 @@ export default [
       ArrowRightOutline,
       ReloadOutline,
       MenuOutline,
+      HolderOutline,
     ],
   },
 ];

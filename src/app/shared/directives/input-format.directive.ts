@@ -1,9 +1,10 @@
 import { Directive, ElementRef, inject, input } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { DateUtils } from '../utils/date.utils';
 import { PhoneUtils } from '../utils/phone.utils';
 import { StringUtils } from '../utils/string.utils';
 
-export type InputFormat = 'digits' | 'capitalize';
+export type InputFormat = 'digits' | 'capitalize' | 'date';
 
 @Directive({
   selector: 'input[appInputFormat]',
@@ -15,6 +16,7 @@ export class InputFormatDirective {
   private static readonly FORMATTERS: Record<InputFormat, (value: string, maxDigits: number) => string> = {
     digits: PhoneUtils.digitsOnly,
     capitalize: StringUtils.capitalizeFirst,
+    date: DateUtils.maskDisplayDate,
   };
 
   private readonly element = inject<ElementRef<HTMLInputElement>>(ElementRef);

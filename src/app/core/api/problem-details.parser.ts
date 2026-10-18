@@ -9,6 +9,7 @@ export interface ParsedError {
 export class ProblemDetailsParser {
   public static readonly DEFAULT_TITLE = 'Помилка';
   public static readonly DEFAULT_MESSAGE = 'Виникла неочікувана помилка';
+  private static readonly PARAMETER_SUFFIX = /\s*\(Parameter '[^']*'\)\s*$/;
 
   public static parse(errorResponse: HttpErrorResponse): ParsedError {
     const problem = errorResponse.error as ProblemDetails | ValidationProblemDetails | null;
@@ -18,7 +19,7 @@ export class ProblemDetailsParser {
         title: problem.title || ProblemDetailsParser.DEFAULT_TITLE,
         message:
           ProblemDetailsParser.validationMessage(problem) ||
-          problem.detail ||
+          ProblemDetailsParser.cleanDetail(problem.detail) ||
           problem['message'] ||
           ProblemDetailsParser.DEFAULT_MESSAGE,
       };
@@ -28,6 +29,10 @@ export class ProblemDetailsParser {
       title: ProblemDetailsParser.DEFAULT_TITLE,
       message: typeof problem === 'string' ? problem : errorResponse.message || ProblemDetailsParser.DEFAULT_MESSAGE,
     };
+  }
+
+  private static cleanDetail(detail: string | null | undefined): string | null {
+    return detail ? detail.replace(ProblemDetailsParser.PARAMETER_SUFFIX, '') : null;
   }
 
   private static validationMessage(problem: ValidationProblemDetails): string | null {

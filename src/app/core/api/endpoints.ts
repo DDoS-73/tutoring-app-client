@@ -3,6 +3,7 @@ export class ApiEndpoints {
   private static readonly USER = '/user';
   private static readonly EVENTS = '/events';
   private static readonly PARTICIPANTS = '/participants';
+  private static readonly CUSTOM_FIELDS = '/custom-participant-fields';
 
   static readonly User = {
     me: `${this.USER}/me`,
@@ -33,5 +34,12 @@ export class ApiEndpoints {
     bulkArchive: `${this.PARTICIPANTS}/archive`,
     bulkUnarchive: `${this.PARTICIPANTS}/unarchive`,
     bulkDelete: `${this.PARTICIPANTS}/delete`,
+    customFieldValues: (id: string | number) => `${this.PARTICIPANTS}/${id}/custom-field-values`,
+  } as const;
+
+  static readonly CustomFields = {
+    create: `${this.CUSTOM_FIELDS}`,
+    update: (id: string) => `${this.CUSTOM_FIELDS}/${id}`,
+    delete: (id: string) => `${this.CUSTOM_FIELDS}/${id}`,
   } as const;
 }

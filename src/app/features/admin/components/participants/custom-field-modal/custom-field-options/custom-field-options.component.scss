@@ -1,0 +1,61 @@
+@use "../../../../../../../styles/tokens" as *;
+@use "../../../../../../../styles/mixins" as mixins;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+
+  .input-wrap {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    box-sizing: border-box;
+
+    input {
+      font-size: 13.5px;
+    }
+  }
+}
+
+.drag-handle {
+  display: flex;
+  flex-shrink: 0;
+  color: $color-text-muted;
+  cursor: grab;
+}
+
+.remove-btn {
+  @include mixins.icon-button($color-text-main);
+  flex-shrink: 0;
+}
+
+.add-btn {
+  @include mixins.link-button;
+}
+
+:host .field-hint {
+  margin-top: 0;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.45;
+}
+
+.cdk-drag-animating,
+.cdk-drop-list-dragging .option-row:not(.cdk-drag-placeholder) {
+  transition: transform 0.2s ease;
+}

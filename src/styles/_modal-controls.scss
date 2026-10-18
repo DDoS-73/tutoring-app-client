@@ -18,6 +18,10 @@
       line-height: normal !important;
     }
 
+    .ant-select-selection-placeholder {
+      color: $color-text-placeholder !important;
+    }
+
     &:focus,
     &:active,
     &.ant-select-focused {

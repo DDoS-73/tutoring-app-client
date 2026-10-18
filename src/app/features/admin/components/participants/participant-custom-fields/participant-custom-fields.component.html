@@ -1,0 +1,21 @@
+<section class="detail-card" aria-labelledby="custom-fields-title">
+  <div id="custom-fields-title" class="card-section-title">CUSTOM FIELDS</div>
+  @if (query.data(); as fields) {
+    @if (fields.length) {
+      <div>
+        @for (field of fields; track field.id) {
+          <div class="detail-row">
+            <span class="row-label">{{ field.name }}</span>
+            <span class="row-value" [class.empty]="!field.displayValue">{{ field.displayValue ?? notProvided }}</span>
+          </div>
+        }
+      </div>
+      <button type="button" class="add-link" (click)="openAddField()">+ Add field</button>
+    } @else {
+      <p class="empty-text">No additional custom information yet.</p>
+      <button type="button" class="add-button" (click)="openAddField()">+ Add field</button>
+    }
+  } @else if (query.isError()) {
+    <p class="empty-text">{{ loadError }}</p>
+  }
+</section>

@@ -1,0 +1,13 @@
+@use "../../../../../../../../styles/tokens" as *;
+
+:host {
+  display: block;
+}
+
+.prefix {
+  margin-right: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-placeholder;
+  user-select: none;
+}

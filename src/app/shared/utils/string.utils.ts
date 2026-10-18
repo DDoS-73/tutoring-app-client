@@ -1,5 +1,16 @@
 export class StringUtils {
   private static readonly AVATAR_COLORS = ['#d6c2a1', '#c99b6e', '#e8d9c5', '#b58d6a', '#cbb089'];
+  private static readonly HTML_ENTITIES: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  public static escapeHtml(value: string): string {
+    return value.replace(/[&<>"']/g, (char) => StringUtils.HTML_ENTITIES[char]);
+  }
 
   public static toInitials(name: string | null | undefined): string {
     const safeName = (name || '').trim();
@@ -10,7 +21,8 @@ export class StringUtils {
   }
 
   public static capitalizeFirst(value: string): string {
-    return value.charAt(0).toLocaleUpperCase('uk') + value.slice(1);
+    const trimmed = value.trimStart();
+    return trimmed.charAt(0).toLocaleUpperCase('uk') + trimmed.slice(1);
   }
 
   public static emptyToNull(value: string): string | null {

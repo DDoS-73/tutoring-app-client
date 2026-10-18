@@ -1,0 +1,38 @@
+<div class="option-list" cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+  @for (option of options(); track option; let i = $index) {
+    <div class="option-row" cdkDrag cdkDragPreviewContainer="parent" [cdkDragDisabled]="isPending()">
+      <span class="drag-handle" cdkDragHandle title="Drag to reorder">
+        <nz-icon nzType="holder" nzTheme="outline" />
+      </span>
+      <div class="input-wrap" [class.error]="isRowInvalid(option)">
+        <input
+          type="text"
+          placeholder="Option value"
+          autocomplete="off"
+          [formControl]="option.controls.label"
+          [maxlength]="maxLength"
+          [readonly]="isPending()"
+          [attr.aria-label]="'Option ' + (i + 1)"
+        />
+      </div>
+      <button
+        class="remove-btn"
+        type="button"
+        [attr.aria-label]="'Remove option ' + (i + 1)"
+        [disabled]="isPending()"
+        (click)="form().removeOption(i)"
+      >
+        <nz-icon nzType="close" nzTheme="outline" />
+      </button>
+    </div>
+  }
+</div>
+
+@if (!isFull()) {
+  <button class="add-btn" type="button" [disabled]="isPending()" (click)="form().addOption()">
+    <nz-icon nzType="plus" nzTheme="outline" />
+    <span>Add option</span>
+  </button>
+}
+
+<div class="field-hint" [class.error]="hintIsError()" aria-live="polite">{{ hint() }}</div>

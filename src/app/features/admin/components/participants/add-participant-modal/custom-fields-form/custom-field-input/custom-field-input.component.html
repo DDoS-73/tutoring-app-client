@@ -1,0 +1,31 @@
+@if (field().isSelect) {
+  <nz-select nzPlaceHolder="Not provided" [nzId]="inputId()" [formControl]="control()">
+    <nz-option nzLabel="Not provided" [nzValue]="null" />
+    @for (option of field().options; track option.id) {
+      <nz-option [nzLabel]="option.label" [nzValue]="option.id" />
+    }
+  </nz-select>
+} @else {
+  <div class="input-wrap" [class.error]="!!error()">
+    @if (config().prefix; as prefix) {
+      <span class="prefix">{{ prefix }}</span>
+    }
+    <input
+      type="text"
+      autocomplete="off"
+      [id]="inputId()"
+      [formControl]="control()"
+      [appInputFormat]="config().format"
+      [maxDigits]="config().maxDigits"
+      [maxlength]="config().maxLength"
+      [placeholder]="config().placeholder"
+      [attr.inputmode]="config().inputMode"
+      [attr.aria-describedby]="hint() ? hintId() : null"
+      [attr.aria-invalid]="!!error()"
+      [readonly]="isPending()"
+    />
+  </div>
+  @if (hint(); as hint) {
+    <div class="field-hint" aria-live="polite" [id]="hintId()" [class.error]="!!error()">{{ hint }}</div>
+  }
+}

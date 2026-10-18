@@ -1,15 +1,16 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ParticipantDto } from '../../../core/api/participant.api';
-import { ValidationProblemDetails } from '../../../core/models/problem-details.model';
 import { DEFAULT_PARTICIPANT_PRICE, EventParticipantType, Participant } from '../../../shared/models/participant.model';
+import { FormUtils } from '../../../shared/utils';
 import { AdditionalInfoForm } from './additional-info.form';
+import { CustomFieldValuesForm } from './custom-field-values.form';
 
 export class ParticipantForm extends FormGroup<{
   name: FormControl<string>;
   type: FormControl<EventParticipantType>;
   price: FormControl<number>;
   additionalInfo: AdditionalInfoForm;
+  customValues: CustomFieldValuesForm;
 }> {
   public static readonly NAME_MIN_LENGTH = 2;
   public static readonly NAME_MAX_LENGTH = 24;
@@ -33,8 +34,9 @@ export class ParticipantForm extends FormGroup<{
         validators: [Validators.required, Validators.min(0)],
       }),
       additionalInfo: new AdditionalInfoForm(participant),
+      customValues: new CustomFieldValuesForm({}),
     });
-    this.syncAdditionalInfoState();
+    this.syncStudentSectionsState();
   }
 
   public get isStudent(): boolean {
@@ -43,7 +45,7 @@ export class ParticipantForm extends FormGroup<{
 
   public setType(type: EventParticipantType): void {
     this.controls.type.setValue(type);
-    this.syncAdditionalInfoState();
+    this.syncStudentSectionsState();
   }
 
   public toDto(locale: string): ParticipantDto {
@@ -53,25 +55,17 @@ export class ParticipantForm extends FormGroup<{
   }
 
   public applyServerErrors(error: unknown): void {
-    if (!(error instanceof HttpErrorResponse) || error.status !== HttpStatusCode.BadRequest) return;
-    const errors = (error.error as ValidationProblemDetails | null)?.errors;
-    if (!errors) return;
-
-    const targets = this.serverErrorTargets();
-    Object.entries(errors).forEach(([key, messages]) => {
-      const control = targets[key];
-      if (!control || !messages?.length) return;
-      control.setErrors({ server: messages[0] });
-      control.markAsTouched();
-    });
+    FormUtils.applyServerErrors(error, this.serverErrorTargets());
   }
 
-  private syncAdditionalInfoState(): void {
-    const additionalInfo = this.controls.additionalInfo;
+  private syncStudentSectionsState(): void {
+    const { additionalInfo, customValues } = this.controls;
     if (this.isStudent) {
       additionalInfo.enable();
+      customValues.enable();
     } else {
       additionalInfo.disable();
+      customValues.disable();
     }
   }
 

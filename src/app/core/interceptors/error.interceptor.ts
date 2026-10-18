@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ApiEndpoints } from '../api/endpoints';
+import { ErrorContext } from '../api/error-context';
 import { ProblemDetailsParser } from '../api/problem-details.parser';
 
 function shouldSuppress(request: HttpRequest<unknown>, errorResponse: HttpErrorResponse): boolean {
@@ -16,7 +17,7 @@ function shouldSuppress(request: HttpRequest<unknown>, errorResponse: HttpErrorR
     !request.url.includes(ApiEndpoints.Auth.signup);
 
   // Quiet failure for refresh/logout calls or general 401s on protected endpoints
-  return !!isFailedAuthUrl || isQuietEndpoint || isSilent401;
+  return !!isFailedAuthUrl || isQuietEndpoint || isSilent401 || ErrorContext.isSilenced(request, errorResponse.status);
 }
 
 export function ErrorInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {

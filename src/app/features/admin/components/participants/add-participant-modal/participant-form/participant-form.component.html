@@ -53,6 +53,7 @@
   @if (isStudent()) {
     <hr class="divider" />
     <app-additional-info-form [group]="form().controls.additionalInfo" [isPending]="isPending()" />
+    <ng-content />
   }
 
   <hr class="divider" />

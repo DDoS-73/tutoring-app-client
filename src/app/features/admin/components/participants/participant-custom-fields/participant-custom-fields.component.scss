@@ -1,0 +1,26 @@
+@use "../../../../../../styles/tokens" as *;
+@use "../../../../../../styles/mixins" as mixins;
+
+:host {
+  display: block;
+}
+
+@include mixins.detail-card;
+
+.add-link {
+  @include mixins.link-button;
+  margin-top: 14px;
+}
+
+.empty-text {
+  @include mixins.empty-text;
+  margin-bottom: 14px;
+}
+
+.add-button {
+  @include mixins.link-button;
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid $color-border-input;
+  border-radius: 10px;
+}

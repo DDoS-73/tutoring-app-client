@@ -20,7 +20,15 @@
     </button>
   </header>
 
-  <app-participant-form [form]="form" [isPending]="isPending()" (save)="onSave()" />
+  <app-participant-form [form]="form" [isPending]="isPending()" (save)="onSave()">
+    @if (customFieldsOwner) {
+      <app-custom-fields-form
+        [group]="form.controls.customValues"
+        [owner]="customFieldsOwner"
+        [isPending]="isPending()"
+      />
+    }
+  </app-participant-form>
 
   <!-- Footer -->
   <footer class="modal-footer">

@@ -1,0 +1,84 @@
+<div class="modal-wrapper">
+  <header class="modal-header">
+    <h2 class="header-title">{{ form.isEdit ? 'Edit custom field' : 'Add custom field' }}</h2>
+    <button class="close-btn" type="button" (click)="onClose()" aria-label="Close" [disabled]="isPending()">
+      <nz-icon nzType="close" nzTheme="outline" />
+    </button>
+  </header>
+
+  <div class="modal-body" [formGroup]="form">
+    <div class="form-field">
+      <label class="field-label" for="customFieldName">Field name <span class="required">*</span></label>
+      <div class="input-wrap" [class.error]="nameInvalid() || nameLength() >= maxLength">
+        <input
+          id="customFieldName"
+          type="text"
+          formControlName="name"
+          appInputFormat="capitalize"
+          placeholder="e.g. School Grade"
+          autocomplete="off"
+          [maxlength]="maxLength"
+          [readonly]="isPending()"
+          [attr.aria-invalid]="nameInvalid()"
+          [attr.aria-describedby]="nameError() || nameLength() >= counterFrom ? 'customFieldNameHint' : null"
+        />
+      </div>
+      @if (nameError(); as error) {
+        <div id="customFieldNameHint" class="field-hint error" aria-live="polite">{{ error }}</div>
+      } @else if (nameLength() >= maxLength) {
+        <div id="customFieldNameHint" class="field-hint error" aria-live="polite">{{ hints.maxName }}</div>
+      } @else if (nameLength() >= counterFrom) {
+        <div id="customFieldNameHint" class="field-hint">{{ nameLength() }}/{{ maxLength }}</div>
+      }
+    </div>
+
+    <div class="form-field">
+      <span class="field-label">Field type</span>
+      <div class="type-grid" role="group" aria-label="Field type">
+        @for (type of types; track type) {
+          <button
+            type="button"
+            [class.active]="isActiveType(type)"
+            [attr.aria-pressed]="isActiveType(type)"
+            [disabled]="form.isEdit || isPending()"
+            (click)="form.setType(type)"
+          >
+            {{ typeLabels[type] }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (form.isSelect) {
+      <div class="form-field">
+        <span class="field-label">Options</span>
+        <app-custom-field-options [form]="form" [isPending]="isPending()" />
+      </div>
+    }
+
+    @if (!form.isEdit) {
+      <label class="for-all">
+        <span class="checkbox-container">
+          <input type="checkbox" formControlName="forAll" />
+          <span class="checkmark"></span>
+        </span>
+        <span class="for-all-text">
+          <span class="for-all-title">Create this field for all students</span>
+          <span class="for-all-hint">{{ forAllHint() }}</span>
+        </span>
+      </label>
+    }
+  </div>
+
+  <footer class="modal-footer">
+    <div class="footer-right">
+      <button class="cancel-btn" type="button" (click)="onClose()" [disabled]="isPending()">Cancel</button>
+      <button class="save-btn" type="button" (click)="onSave()" [disabled]="isPending() || isInvalid()">
+        @if (isPending()) {
+          <nz-icon nzType="loading" />
+        }
+        <span>Save</span>
+      </button>
+    </div>
+  </footer>
+</div>

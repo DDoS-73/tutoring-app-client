@@ -15,6 +15,10 @@
   }
 }
 
+.ant-modal.teachup-modal--compact {
+  width: min(420px, 95vw) !important;
+}
+
 .ant-modal-confirm {
   width: 400px !important;
   max-width: 92vw !important;

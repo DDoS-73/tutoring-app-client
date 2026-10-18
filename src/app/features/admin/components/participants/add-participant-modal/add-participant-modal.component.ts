@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, LOCALE_ID, signal } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
@@ -7,9 +7,12 @@ import { ParticipantDto } from '../../../../../core/api/participant.api';
 import { ParticipantService } from '../../../../../core/services/participant.service';
 import { ParticipantRow } from '../../../../../shared/models/participant-row.model';
 import { EventParticipantType } from '../../../../../shared/models/participant.model';
-import { FormUtils, StringUtils } from '../../../../../shared/utils';
+import { FormUtils, ModalUtils, StringUtils } from '../../../../../shared/utils';
+import { CustomFieldOwner } from '../../../models/custom-field-modal.model';
 import { ParticipantModalResult } from '../../../models/participant-modal.model';
 import { ParticipantForm } from '../../../forms/participant.form';
+import { CustomFieldService } from '../../../services/custom-field.service';
+import { CustomFieldsFormComponent } from './custom-fields-form/custom-fields-form.component';
 import { ParticipantFormComponent } from './participant-form/participant-form.component';
 
 @Component({
@@ -17,26 +20,34 @@ import { ParticipantFormComponent } from './participant-form/participant-form.co
   templateUrl: './add-participant-modal.component.html',
   styleUrl: './add-participant-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzButtonModule, ParticipantFormComponent],
+  imports: [NzIconModule, NzButtonModule, ParticipantFormComponent, CustomFieldsFormComponent],
 })
 export class AddParticipantModalComponent {
+  private static readonly PARTIAL_SAVE_MESSAGE =
+    'Participant details were saved, but custom field values were not. Please try again.';
+
   private readonly modalRef = inject<NzModalRef<AddParticipantModalComponent, ParticipantModalResult>>(NzModalRef);
   private readonly participantService = inject(ParticipantService);
+  private readonly customFieldService = inject(CustomFieldService);
   private readonly notification = inject(NzNotificationService);
   private readonly locale = inject(LOCALE_ID);
 
   protected readonly editData = inject<ParticipantRow | null>(NZ_MODAL_DATA, { optional: true });
   protected readonly isEdit = !!this.editData;
+  protected readonly customFieldsOwner = CustomFieldOwner.of(this.editData);
 
   protected readonly EventParticipantType = EventParticipantType;
 
   protected readonly form = new ParticipantForm(this.editData);
   private readonly formChanges = FormUtils.events(this.form);
+  private readonly saving = signal(false);
 
-  protected readonly isPending = computed(() =>
-    this.isEdit
-      ? this.participantService.updateMutation.isPending()
-      : this.participantService.createMutation.isPending()
+  protected readonly isPending = computed(
+    () =>
+      this.saving() ||
+      (this.isEdit
+        ? this.participantService.updateMutation.isPending()
+        : this.participantService.createMutation.isPending())
   );
 
   protected readonly isInvalid = computed(() => {
@@ -48,6 +59,10 @@ export class AddParticipantModalComponent {
     this.formChanges();
     return this.form.invalid && (this.form.dirty || this.form.touched);
   });
+
+  constructor() {
+    ModalUtils.blockCloseWhile(this.modalRef, this.isPending);
+  }
 
   protected get initials(): string {
     return StringUtils.toInitials(this.form?.controls.name.value || '');
@@ -78,20 +93,35 @@ export class AddParticipantModalComponent {
     }
   }
 
-  private saveEdit(id: string | number, dto: ParticipantDto): void {
-    this.participantService.updateMutation.mutate(
-      { id, dto },
-      {
-        onSuccess: () => {
-          this.notification.success('Success', 'Changes saved successfully.');
-          this.modalRef.close({ updated: dto });
-        },
-        onError: (error) => {
-          this.form.applyServerErrors(error);
-          this.notification.error('Error', 'Failed to save changes. Please try again.');
-        },
-      }
-    );
+  private async saveEdit(id: string | number, dto: ParticipantDto): Promise<void> {
+    this.saving.set(true);
+    try {
+      await this.participantService.updateMutation.mutateAsync({ id, dto });
+    } catch (error) {
+      this.form.applyServerErrors(error);
+      this.failEdit();
+      return;
+    }
+    if (!(await this.saveCustomValues(id))) return;
+    this.notification.success('Success', 'Changes saved successfully.');
+    this.modalRef.close({ updated: dto });
+  }
+
+  private async saveCustomValues(participantId: string | number): Promise<boolean> {
+    const dto = this.form.controls.customValues.toDto();
+    if (!dto.values.length) return true;
+    try {
+      await this.customFieldService.saveValuesMutation.mutateAsync({ participantId, dto });
+      return true;
+    } catch {
+      this.failEdit(AddParticipantModalComponent.PARTIAL_SAVE_MESSAGE);
+      return false;
+    }
+  }
+
+  private failEdit(message = 'Failed to save changes. Please try again.'): void {
+    this.saving.set(false);
+    this.notification.error('Error', message);
   }
 
   private saveCreate(dto: ParticipantDto): void {

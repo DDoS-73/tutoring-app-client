@@ -1,0 +1,44 @@
+<hr class="divider" />
+<div class="subheading">Custom fields</div>
+
+@if (query.data()) {
+  @for (field of group().fields(); track field.id) {
+    <div class="field-block">
+      <div class="field-head">
+        <label class="field-label" [for]="field.inputId">{{ field.name }}</label>
+        <div class="field-actions">
+          @if (field.isForAll) {
+            <span class="all-pill">All students</span>
+          }
+          <button
+            type="button"
+            class="icon-btn"
+            [attr.title]="'Edit ' + field.name"
+            [attr.aria-label]="'Edit ' + field.name"
+            [disabled]="isPending()"
+            (click)="onEdit(field)"
+          >
+            <nz-icon nzType="edit" nzTheme="outline" />
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            [attr.title]="'Delete ' + field.name"
+            [attr.aria-label]="'Delete ' + field.name"
+            [disabled]="isPending()"
+            (click)="onDelete(field)"
+          >
+            <nz-icon nzType="delete" nzTheme="outline" />
+          </button>
+        </div>
+      </div>
+      <app-custom-field-input [field]="field" [control]="group().controls[field.id]" [isPending]="isPending()" />
+    </div>
+  } @empty {
+    <p class="empty">No additional custom information yet.</p>
+  }
+
+  <button type="button" class="add-btn" [disabled]="isPending()" (click)="onAdd()">+ Add field</button>
+} @else if (query.isError()) {
+  <p class="empty">{{ loadError }}</p>
+}

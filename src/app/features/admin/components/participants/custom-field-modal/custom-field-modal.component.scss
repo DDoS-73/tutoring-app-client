@@ -1,0 +1,87 @@
+@use "../../../../../../styles/tokens" as *;
+@use "../../../../../../styles/mixins" as mixins;
+
+:host {
+  display: block;
+}
+
+.modal-wrapper {
+  .header-title {
+    flex: 1;
+    font-size: 16.5px;
+  }
+
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  button {
+    height: 40px;
+    border: 1px solid $color-border;
+    border-radius: 9px;
+    background: transparent;
+    color: $color-text-muted-light;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background $transition-fast,
+      color $transition-fast,
+      border-color $transition-fast;
+
+    &.active {
+      background: $color-bg-overlay-avatar;
+      border-color: $color-border-input;
+      color: $color-text-main;
+      font-weight: 700;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+.for-all {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkbox-container {
+  @include mixins.checkbox;
+  flex-shrink: 0;
+}
+
+.for-all-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.for-all-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: $color-text-main;
+}
+
+.for-all-hint {
+  font-size: 12px;
+  line-height: 1.4;
+  color: $color-text-muted;
+}
+
+.save-btn nz-icon {
+  margin-right: 8px;
+}

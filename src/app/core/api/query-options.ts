@@ -9,6 +9,16 @@ export class QueryOptions {
     } as const;
   }
 
+  public static cachedUntilInvalidated() {
+    return {
+      staleTime: Infinity,
+      gcTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: true,
+    } as const;
+  }
+
   public static cachedForeverRefetchOnMount() {
     return {
       staleTime: 0,
